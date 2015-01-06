@@ -9,15 +9,15 @@ var Component = React.createClass({
   mixins: [
     require('react-onclickoutside')
   ],
-  
+
   componentDidMount: function() {
     this._fn = this.onClickOutside(this.handleOutsideClick);
   },
-  
+
   componentDidUnmount: function() {
     this._fn.remove();
   },
-  
+
   handleOutsideClick: function(evt) {
     // ...handling code goes here...
   }
@@ -37,16 +37,19 @@ var Component = React.createClass({
   mixins: [
     Onclickoutside
   ],
-  
+
   componentDidMount: function() {
     this._fn = this.onClickOutside(this.handleOutsideClick);
   },
-  
+
   componentDidUnmount: function() {
     this._fn.remove();
   },
-  
+
   handleOutsideClick: function(evt) {
     // ...handling code goes here...
   }
 });
+```
+
+For bugs and enhancements hit up https://github.com/Pomax/react-onclickoutside/issues
