@@ -33,7 +33,7 @@ Then use it as:
 ```
 var Component = React.createClass({
   mixins: [
-    Onclickoutside
+    OnClickOutside
   ],
 
   onClickOutside: function(evt) {
