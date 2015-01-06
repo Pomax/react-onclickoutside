@@ -2,7 +2,13 @@
 
 ## installation
 
-If you have Node.js needs, you can install this mixin via `npm`, using `npm install react-onclickoutside --save` (or `--save-dev` depending on your needs), and then use it in your components as:
+If you have Node.js needs, you can install this mixin via `npm`, using:
+
+```
+npm install react-onclickoutside --save
+```
+
+(or `--save-dev` depending on your needs). You then then use it in your components as:
 
 ```
 var Component = React.createClass({
@@ -10,15 +16,7 @@ var Component = React.createClass({
     require('react-onclickoutside')
   ],
 
-  componentDidMount: function() {
-    this._fn = this.onClickOutside(this.handleOutsideClick);
-  },
-
-  componentWillUnmount : function() {
-    this._fn.remove();
-  },
-
-  handleOutsideClick: function(evt) {
+  onClickOutside: function(evt) {
     // ...handling code goes here...
   }
 });
@@ -38,15 +36,7 @@ var Component = React.createClass({
     Onclickoutside
   ],
 
-  componentDidMount: function() {
-    this._fn = this.onClickOutside(this.handleOutsideClick);
-  },
-
-  componentWillUnmount : function() {
-    this._fn.remove();
-  },
-
-  handleOutsideClick: function(evt) {
+  onClickOutside: function(evt) {
     // ...handling code goes here...
   }
 });

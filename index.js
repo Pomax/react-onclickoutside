@@ -3,16 +3,13 @@
  * Note that we're not intercepting any events in this approach, and we're
  * not using double events for capturing and discarding in layers or wrappers.
  *
- * The idea is that components call:
+ * The idea is that components define function
  *
- *   this.onClickOutside(this.outsideHandler);
+ *   onClickOutside: function() { ... }
  *
- * in their .componentDidMount() function. The call returns an object with a
- * single function, .remove(), which can be called in the unmounting functions
- * to ensure the event listener is cleaned up properly.
- *
- * If no handler is passed in, an error will be thrown. There is no point
- * in having the code in place without pushing in an actual event handler.
+ * If no such function is defined, an error will be thrown, as this means
+ * either it still needs to be written, or the component should not be using
+ * this mixing since it will not exhibit onClickOutside behaviour.
  *
  */
 (function (root, factory) {
@@ -31,10 +28,15 @@
 }(this, function () {
   "use strict";
 
+  // Use a parallel array because we can't use
+  // objects as keys, they get toString-coerced
+  var registeredComponents = [];
+  var handlers = [];
+
   return {
-    onClickOutside: function(handler) {
-      if(!handler)
-        throw new Error("Component tried to set up onClickOutside behaviour without an event handler.");
+    componentDidMount: function() {
+      if(!this.onClickOutside)
+        throw new Error("Component lacks an onClickOutside function to handle outside click events.");
 
       var fn = (function(localNode, eventHandler) {
         return function(evt) {
@@ -52,18 +54,23 @@
           }
           eventHandler(evt);
         }
-      }(this.getDOMNode(), handler));
+      }(this.getDOMNode(), this.onClickOutside));
 
       document.addEventListener("click", fn);
 
-      // successful registration returns an object that we can cache
-      // so that we can call .remove() on it during component unmount.
-      return {
-        remove: function() {
+      var pos = registeredComponents.length;
+      registeredComponents.push(this);
+      handlers[pos] = fn;
+    },
+
+    componentWillUnmount: function() {
+      var pos = registeredComponents.indexOf(this);
+      if( pos>-1) {
+        var fn = handlers[pos];
+        if (fn) {
           document.removeEventListener("click", fn);
         }
-      };
-
+      }
     }
   };
 
