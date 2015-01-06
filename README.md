@@ -14,7 +14,7 @@ var Component = React.createClass({
     this._fn = this.onClickOutside(this.handleOutsideClick);
   },
 
-  componentDidUnmount: function() {
+  componentWillUnmount : function() {
     this._fn.remove();
   },
 
@@ -42,7 +42,7 @@ var Component = React.createClass({
     this._fn = this.onClickOutside(this.handleOutsideClick);
   },
 
-  componentDidUnmount: function() {
+  componentWillUnmount : function() {
     this._fn.remove();
   },
 
