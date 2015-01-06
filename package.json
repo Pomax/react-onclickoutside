@@ -1,0 +1,27 @@
+{
+  "name": "react-onclickoutside",
+  "version": "0.0.1",
+  "description": "An onClickOutside mixin for React components",
+  "main": "index.js",
+  "homepage": "https://github.com/Pomax/react-onclickoutside",
+  "authors": [
+    "Pomax <pomax@nihongoresources.com>"
+  ],
+  "keywords": [
+    "react",
+    "onclick",
+    "outside",
+    "onclickoutside"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pomax/react-onclickoutside.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Pomax/react-onclickoutside/issues"
+  },
+  "scripts": {
+    "test": "node test"
+  }
+}
