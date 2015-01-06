@@ -22,7 +22,13 @@ var Component = React.createClass({
 });
 ```
 
-via `bower`, using `bower install react-onclickoutside`, and then include it as script via:
+If you have plain-old-browser needs, you can install this mixin via `bower`, using:
+
+```
+bower install react-onclickoutside
+```
+
+and then include it as script via:
 
 ```
 <script src="bower_components/react-onclickoutside/index.js"></script>
