@@ -16,7 +16,7 @@ var Component = React.createClass({
     require('react-onclickoutside')
   ],
 
-  onClickOutside: function(evt) {
+  handleClickOutside: function(evt) {
     // ...handling code goes here...
   }
 });
@@ -36,7 +36,7 @@ var Component = React.createClass({
     OnClickOutside
   ],
 
-  onClickOutside: function(evt) {
+  handleClickOutside: function(evt) {
     // ...handling code goes here...
   }
 });
