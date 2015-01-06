@@ -8,7 +8,7 @@ If you have Node.js needs, you can install this mixin via `npm`, using:
 npm install react-onclickoutside --save
 ```
 
-(or `--save-dev` depending on your needs). You then then use it in your components as:
+(or `--save-dev` depending on your needs). You then use it in your components as:
 
 ```
 var Component = React.createClass({
