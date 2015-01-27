@@ -56,7 +56,8 @@
         }
       }(this.getDOMNode(), this.handleClickOutside));
 
-      document.addEventListener("click", fn);
+      document.addEventListener("mousedown", fn);
+      document.addEventListener("touchstart", fn);
 
       var pos = registeredComponents.length;
       registeredComponents.push(this);
@@ -68,7 +69,8 @@
       if( pos>-1) {
         var fn = handlers[pos];
         if (fn) {
-          document.removeEventListener("click", fn);
+          document.removeEventListener("mousedown", fn);
+          document.removeEventListener("touchstart", fn);
         }
       }
     }
