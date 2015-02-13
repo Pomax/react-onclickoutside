@@ -68,7 +68,11 @@
       var pos = registeredComponents.indexOf(this);
       if( pos>-1) {
         var fn = handlers[pos];
+
         if (fn) {
+          // clean up so we don't leak memory
+          handlers.splice(pos, 1);
+          registeredComponents.splice(pos, 1);
           document.removeEventListener("mousedown", fn);
           document.removeEventListener("touchstart", fn);
         }
