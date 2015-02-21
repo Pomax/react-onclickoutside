@@ -38,10 +38,11 @@
       if(!this.handleClickOutside)
         throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
 
-      var fn = (function(localNode, eventHandler) {
+      var fn = (function(component) {
         return function(evt) {
           var source = evt.target;
           var found = false;
+          var localNode = component.getDOMNode();
           // If source=local then this event came from "somewhere"
           // inside and should be ignored. We could handle this with
           // a layered approach, too, but that requires going back to
@@ -52,9 +53,9 @@
             if(found) return;
             source = source.parentNode;
           }
-          eventHandler(evt);
+          component.handleClickOutside(evt);
         }
-      }(this.getDOMNode(), this.handleClickOutside));
+      }(this));
 
       document.addEventListener("mousedown", fn);
       document.addEventListener("touchstart", fn);
