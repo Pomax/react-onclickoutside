@@ -5,7 +5,7 @@
  *
  * The idea is that components define function
  *
- *   onClickOutside: function() { ... }
+ *   handleClickOutside: function() { ... }
  *
  * If no such function is defined, an error will be thrown, as this means
  * either it still needs to be written, or the component should not be using
