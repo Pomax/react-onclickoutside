@@ -33,6 +33,8 @@
   var registeredComponents = [];
   var handlers = [];
 
+  var IGNORE_CLASS = 'ignore-react-onclickoutside';
+
   return {
     componentDidMount: function() {
       if(!this.handleClickOutside)
@@ -48,7 +50,7 @@
           // thinking in terms of Dom node nesting, running counter
           // to React's "you shouldn't care about the DOM" philosophy.
           while(source.parentNode) {
-            found = (source === localNode);
+            found = (source === localNode || source.classList.contains(IGNORE_CLASS));
             if(found) return;
             source = source.parentNode;
           }
