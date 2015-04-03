@@ -49,7 +49,7 @@
           // a layered approach, too, but that requires going back to
           // thinking in terms of Dom node nesting, running counter
           // to React's "you shouldn't care about the DOM" philosophy.
-          while(source.parentNode) {
+          while(source) {
             found = (source === localNode || source.classList.contains(IGNORE_CLASS));
             if(found) return;
             source = source.parentNode;
