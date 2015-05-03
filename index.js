@@ -95,8 +95,8 @@
             document.removeEventListener("touchstart", fn);
           } else if (document.detachEvent) {
             // Old IE
-            document.detachEvent("mousedown", fn);
-            document.detachEvent("touchstart", fn);
+            document.detachEvent("onmousedown", fn);
+            document.detachEvent("ontouchstart", fn);
           }
         }
       }
