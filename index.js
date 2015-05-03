@@ -28,6 +28,13 @@
 }(this, function () {
   "use strict";
 
+  // Use classList if available, else fall back to manual string comparison
+  var hasClass = document.body.classList
+    ? function(el, className) { return el.classList.contains(className); } 
+    : function(el, className) {
+      return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
+    }
+
   // Use a parallel array because we can't use
   // objects as keys, they get toString-coerced
   var registeredComponents = [];
@@ -42,7 +49,7 @@
 
       var fn = (function(localNode, eventHandler) {
         return function(evt) {
-          var source = evt.target;
+          var source = evt.target || evt.srcElement;
           var found = false;
           // If source=local then this event came from "somewhere"
           // inside and should be ignored. We could handle this with
@@ -50,7 +57,7 @@
           // thinking in terms of Dom node nesting, running counter
           // to React's "you shouldn't care about the DOM" philosophy.
           while(source.parentNode) {
-            found = (source === localNode || source.classList.contains(IGNORE_CLASS));
+            found = (source === localNode || hasClass(source, IGNORE_CLASS));
             if(found) return;
             source = source.parentNode;
           }
@@ -58,8 +65,15 @@
         }
       }(this.getDOMNode(), this.handleClickOutside));
 
-      document.addEventListener("mousedown", fn);
-      document.addEventListener("touchstart", fn);
+      if (document.addEventListener) {
+        // W3C events
+        document.addEventListener("mousedown", fn);
+        document.addEventListener("touchstart", fn);
+      } else if (document.attachEvent) {
+        // Old IE
+        document.attachEvent("onmousedown", fn);
+        document.attachEvent("ontouchstart", fn);
+      }
 
       var pos = registeredComponents.length;
       registeredComponents.push(this);
@@ -75,8 +89,15 @@
           // clean up so we don't leak memory
           handlers.splice(pos, 1);
           registeredComponents.splice(pos, 1);
-          document.removeEventListener("mousedown", fn);
-          document.removeEventListener("touchstart", fn);
+          if (document.removeEventListener) {
+              // W3C events
+            document.removeEventListener("mousedown", fn);
+            document.removeEventListener("touchstart", fn);
+          } else if (document.detachEvent) {
+            // Old IE
+            document.detachEvent("mousedown", fn);
+            document.detachEvent("touchstart", fn);
+          }
         }
       }
     }
