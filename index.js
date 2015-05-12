@@ -40,7 +40,7 @@
       if(!this.handleClickOutside)
         throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
 
-      var fn = (function(localNode, eventHandler) {
+      var fn = this.__outsideClickHandler = (function(localNode, eventHandler) {
         return function(evt) {
           var source = evt.target;
           var found = false;
@@ -58,27 +58,48 @@
         }
       }(this.getDOMNode(), this.handleClickOutside));
 
-      document.addEventListener("mousedown", fn);
-      document.addEventListener("touchstart", fn);
-
       var pos = registeredComponents.length;
       registeredComponents.push(this);
       handlers[pos] = fn;
+
+      // If there is a truthy disableOnClickOutside property for this
+      // component, don't immediately start listening for outside events.
+      if (!this.props.disableOnClickOutside) {
+        this.enableOnClickOutside();
+      }
     },
 
     componentWillUnmount: function() {
+      this.disableOnClickOutside();
+      this.__outsideClickHandler = false;
       var pos = registeredComponents.indexOf(this);
       if( pos>-1) {
-        var fn = handlers[pos];
-
-        if (fn) {
+        if (handlers[pos]) {
           // clean up so we don't leak memory
           handlers.splice(pos, 1);
           registeredComponents.splice(pos, 1);
-          document.removeEventListener("mousedown", fn);
-          document.removeEventListener("touchstart", fn);
         }
       }
+    },
+
+    /**
+     * Can be called to explicitly enable event listening
+     * for clicks and touches outside of this element.
+     */
+    enableOnClickOutside: function() {
+      var fn = this.__outsideClickHandler;
+      document.addEventListener("mousedown", fn);
+      document.addEventListener("touchstart", fn);
+    },
+
+    /**
+     * Can be called to explicitly disable event listening
+     * for clicks and touches outside of this element.
+     */
+    disableOnClickOutside: function(fn) {
+      var fn = this.__outsideClickHandler;
+      document.removeEventListener("mousedown", fn);
+      document.removeEventListener("touchstart", fn);
     }
   };
 
