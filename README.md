@@ -59,8 +59,8 @@ var Component = React.createClass({
 
 When using this mixin, a component has two functions that can be used to explicitly listen for, or do nothing with, outside clicks
 
-- enableOnClickOutside() - Enables outside click listening by setting up the event listening bindings.
-- disableOnClickOutside() - Disables outside click listening by explicitly removing the event listening bindings.
+- `enableOnClickOutside()` - Enables outside click listening by setting up the event listening bindings.
+- `disableOnClickOutside()` - Disables outside click listening by explicitly removing the event listening bindings.
  
 In addition, you can create a component that uses this mixin such that it has the code set up and ready to go, but not listening for outside click events until you explicitly issue its `enableOnClickOutside()`, by passing in a properly called `disableOnClickOutside`:
 
