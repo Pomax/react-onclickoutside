@@ -2,6 +2,8 @@
 
 This is a React mixin that you can add to your React components if you want to have them listen for clicks that occur somewhere in the document, outside of the element itself (for instance, if you need to hide a menu when people click anywhere else on your page).
 
+Note that this mixin relies on the `.classList` property, which is supported by all modern browsers, but not by no longer supported browsers like IE8 or even older. For setups that need to support deprecated browsers, using something like the [MDN classlist-polyfill](https://www.npmjs.com/package/classlist-polyfill) will be necessary.
+
 ## installation
 
 There are two ways to install this mixin, depending on your development process.
