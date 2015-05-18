@@ -20,5 +20,8 @@
   },
   "bugs": {
     "url": "https://github.com/Pomax/react-onclickoutside/issues"
+  },
+  "dependencies": {
+    "classlist-polyfill": "1.0.0"
   }
 }
