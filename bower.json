@@ -25,5 +25,8 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "classlist-polyfill": "https://github.com/yola/classlist-polyfill.git"
+  }
 }

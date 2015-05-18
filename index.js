@@ -30,6 +30,7 @@
 
   // Use a parallel array because we can't use
   // objects as keys, they get toString-coerced
+  require('classlist-polyfill');
   var registeredComponents = [];
   var handlers = [];
 
