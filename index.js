@@ -50,7 +50,7 @@
           // thinking in terms of Dom node nesting, running counter
           // to React's "you shouldn't care about the DOM" philosophy.
           while(source.parentNode) {
-            found = (source === localNode || source.classList.contains(IGNORE_CLASS));
+            found = (source === localNode || source.classList && source.classList.contains(IGNORE_CLASS));
             if(found) return;
             source = source.parentNode;
           }
