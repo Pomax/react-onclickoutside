@@ -15,17 +15,17 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define([], factory);
+    define(['react'], factory);
   } else if (typeof exports === 'object') {
     // Node. Note that this does not work with strict
     // CommonJS, but only CommonJS-like environments
     // that support module.exports
-    module.exports = factory();
+    module.exports = factory(require('react'));
   } else {
     // Browser globals (root is window)
-    root.OnClickOutside = factory();
+    root.OnClickOutside = factory(React);
   }
-}(this, function () {
+}(this, function (React) {
   "use strict";
 
   // Use a parallel array because we can't use
