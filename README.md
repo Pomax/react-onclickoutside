@@ -63,7 +63,7 @@ When using this mixin, a component has two functions that can be used to explici
 
 - `enableOnClickOutside()` - Enables outside click listening by setting up the event listening bindings.
 - `disableOnClickOutside()` - Disables outside click listening by explicitly removing the event listening bindings.
- 
+
 In addition, you can create a component that uses this mixin such that it has the code set up and ready to go, but not listening for outside click events until you explicitly issue its `enableOnClickOutside()`, by passing in a properly called `disableOnClickOutside`:
 
 ```
@@ -86,3 +86,8 @@ var Container = React.createClass({
 If you want the mixin to ignore certain elements, then add the class `ignore-react-onclickoutside` to that element and the callback won't be invoked when the click happens inside elements with that class.
 
 For bugs and enhancements hit up https://github.com/Pomax/react-onclickoutside/issues
+
+## Listening to the 'click' event instead of mousedown and touchstart
+
+By default, this mixin will call handleClickOutside() when either the mousedown or touchstart DOM events are fired.
+To listen instead to the 'click' event, set 'useClickEvent' property on your component to true
