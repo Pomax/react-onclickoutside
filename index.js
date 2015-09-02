@@ -112,7 +112,7 @@
      * Can be called to explicitly disable event listening
      * for clicks and touches outside of this element.
      */
-    disableOnClickOutside: function(fn) {
+    disableOnClickOutside: function() {
       var fn = this.__outsideClickHandler;
       document.removeEventListener("mousedown", fn);
       document.removeEventListener("touchstart", fn);
