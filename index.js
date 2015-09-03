@@ -45,10 +45,16 @@
     // that case.
     // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
     // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
-    if (source.correspondingElement) {
+    if (source.correspondingElement && source.correspondingElement.classList) {
       return source.correspondingElement.classList.contains(IGNORE_CLASS);
     }
-    return source.classList.contains(IGNORE_CLASS);
+
+    if (source.classList) {
+        return source.classList.contains(IGNORE_CLASS);
+    }
+    else {
+        return false;
+    }
   };
 
   return {
