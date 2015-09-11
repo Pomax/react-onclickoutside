@@ -53,7 +53,7 @@
 
   return {
     componentDidMount: function() {
-      if(!this.handleClickOutside)
+      if(typeof this.handleClickOutside !== "function")
         throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
 
       var fn = this.__outsideClickHandler = (function(localNode, eventHandler) {
