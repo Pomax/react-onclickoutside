@@ -46,9 +46,20 @@
     // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
     // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
     if (source.correspondingElement) {
-      return source.correspondingElement.classList.contains(IGNORE_CLASS);
+      var corrElClassStr = source.correspondingElement.getAttribute('class');
+      if(!corrElClassStr){
+        return false;
+      } else {
+        return (corrElClassStr.split(/\s+/).indexOf(IGNORE_CLASS) > -1);
+      }
     }
-    return source.classList.contains(IGNORE_CLASS);
+
+    var elClassStr = source.getAttribute('class');
+    if(!elClassStr){
+      return false;
+    } else {
+      return (elClassStr.split(/\s+/).indexOf(IGNORE_CLASS) > -1);
+    }
   };
 
   return {
