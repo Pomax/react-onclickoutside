@@ -18,7 +18,7 @@ npm install react-onclickoutside --save
 
 (or `--save-dev` depending on your needs). You then use it in your components as:
 
-```
+```javascript
 var Component = React.createClass({
   mixins: [
     require('react-onclickoutside')
@@ -39,13 +39,13 @@ bower install react-onclickoutside
 
 and then include it as script via:
 
-```
+```html
 <script src="bower_components/react-onclickoutside/index.js"></script>
 ```
 
 Then use it as:
 
-```
+```javascript
 var Component = React.createClass({
   mixins: [
     OnClickOutside
@@ -66,7 +66,7 @@ When using this mixin, a component has two functions that can be used to explici
  
 In addition, you can create a component that uses this mixin such that it has the code set up and ready to go, but not listening for outside click events until you explicitly issue its `enableOnClickOutside()`, by passing in a properly called `disableOnClickOutside`:
 
-```
+```javascript
 var Component = React.createClass({
   mixins: [ ... ],
   handleClickOutside: function(evt) {
@@ -84,5 +84,42 @@ var Container = React.createClass({
 ## Marking elements as "skip over this one" during the event loop
 
 If you want the mixin to ignore certain elements, then add the class `ignore-react-onclickoutside` to that element and the callback won't be invoked when the click happens inside elements with that class.
+
+## ES6/2015 class support via HOC / ES7 decorators
+
+Since mixins can't be used with ES6/2015 class React components a 
+[Higher-Order Component (HOC)](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750) 
+and [ES7 decorator](https://github.com/wycats/javascript-decorators) are bundled with the mixin: 
+
+```javascript
+import listensToClickOutside from 'react-onclickoutside/decorator'; 
+
+class Component extends React.Component {
+  handleClickOutside = (event) => {
+    // ...
+  }
+}
+
+export default listensToClickOutside(Component);
+
+// OR
+
+import listensToClickOutside from 'react-onclickoutside/decorator'; 
+
+@listensToClickOutside()
+class Component extends React.Component {
+  handleClickOutside = (event) => {
+    // ...
+  }
+}
+
+export default Component;
+```
+
+One difference when using the HOC/decorator compared to the mixin is that the `enableOnClickOutside()`
+and `disableOnClickOutside()` methods are not available as class methods, but rather on the `props`;
+so instead of `this.enableOnClickOutside()` you would call `this.props.enableOnClickOutside()`.
+
+In every other respect the the mixin and HOC/decorator provides the same functionality. 
 
 For bugs and enhancements hit up https://github.com/Pomax/react-onclickoutside/issues
