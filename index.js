@@ -58,11 +58,7 @@
 
       var fn = this.__outsideClickHandler = (function(localNode, eventHandler) {
         return function(evt) {
-          if (evt.stopImmediatePropagation) {
-            evt.stopImmediatePropagation();
-          } else {
-            evt.stopPropagation();
-          }
+          evt.stopPropagation();
           var source = evt.target;
           var found = false;
           // If source=local then this event came from "somewhere"
