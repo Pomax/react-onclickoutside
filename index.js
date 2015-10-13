@@ -15,17 +15,17 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(['react'], factory);
+    define(['react-dom'], factory);
   } else if (typeof exports === 'object') {
     // Node. Note that this does not work with strict
     // CommonJS, but only CommonJS-like environments
     // that support module.exports
-    module.exports = factory(require('react'));
+    module.exports = factory(require('react-dom'));
   } else {
     // Browser globals (root is window)
-    root.OnClickOutside = factory(React);
+    root.OnClickOutside = factory(ReactDom);
   }
-}(this, function (React) {
+}(this, function (ReactDom) {
   "use strict";
 
   // Use a parallel array because we can't use
@@ -73,7 +73,7 @@
           }
           eventHandler(evt);
         }
-      }(React.findDOMNode(this), this.handleClickOutside));
+      }(ReactDom.findDOMNode(this), this.handleClickOutside));
 
       var pos = registeredComponents.length;
       registeredComponents.push(this);
