@@ -105,8 +105,16 @@
      */
     enableOnClickOutside: function() {
       var fn = this.__outsideClickHandler;
-      document.addEventListener("mousedown", fn);
-      document.addEventListener("touchstart", fn);
+
+      // if there is a truthy useClickEvent property for this component,
+      // listen to the click event instead of mousedown and touchstart
+      if(this.props.useClickEvent) {
+        document.addEventListener("click", fn);
+      } else {
+        document.addEventListener("mousedown", fn);
+        document.addEventListener("touchstart", fn);
+      }
+
     },
 
     /**
@@ -115,8 +123,12 @@
      */
     disableOnClickOutside: function() {
       var fn = this.__outsideClickHandler;
-      document.removeEventListener("mousedown", fn);
-      document.removeEventListener("touchstart", fn);
+      if(this.props.useClickEvent) {
+        document.removeEventListener("click", fn);
+      } else {
+        document.removeEventListener("mousedown", fn);
+        document.removeEventListener("touchstart", fn);
+      }
     }
   };
 
