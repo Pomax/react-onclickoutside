@@ -103,10 +103,14 @@
      * Can be called to explicitly enable event listening
      * for clicks and touches outside of this element.
      */
-    enableOnClickOutside: function() {
+    enableOnClickOutside: function(opts) {
+      var opts = opts || {};
+      this.__outsideMouseEventType = opts.mouseup ? 'mouseup' : 'mousedown';
+      this.__outsideTouchEventType = opts.mouseup ? 'touchstart' : 'touchend';
+
       var fn = this.__outsideClickHandler;
-      document.addEventListener("mousedown", fn);
-      document.addEventListener("touchstart", fn);
+      document.addEventListener(this.__outsideMouseEventType, fn);
+      document.addEventListener(this.__outsideTouchEventType, fn);
     },
 
     /**
@@ -115,8 +119,8 @@
      */
     disableOnClickOutside: function() {
       var fn = this.__outsideClickHandler;
-      document.removeEventListener("mousedown", fn);
-      document.removeEventListener("touchstart", fn);
+      document.removeEventListener(this.__outsideMouseEventType, fn);
+      document.removeEventListener(this.__outsideTouchEventType, fn);
     }
   };
 
