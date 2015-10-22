@@ -105,8 +105,8 @@
      */
     enableOnClickOutside: function() {
       var fn = this.__outsideClickHandler;
-      document.addEventListener("mousedown", fn);
-      document.addEventListener("touchstart", fn);
+      document.addEventListener(this.props.outsideMouseEventType || "mousedown", fn);
+      document.addEventListener(this.props.outsideTouchEventType || "touchstart", fn);
     },
 
     /**
@@ -115,8 +115,8 @@
      */
     disableOnClickOutside: function() {
       var fn = this.__outsideClickHandler;
-      document.removeEventListener("mousedown", fn);
-      document.removeEventListener("touchstart", fn);
+      document.removeEventListener(this.props.outsideMouseEventType || "mousedown", fn);
+      document.removeEventListener(this.props.outsideTouchEventType || "touchstart", fn);
     }
   };
 
