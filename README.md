@@ -57,21 +57,6 @@ var Component = React.createClass({
 });
 ```
 
-## Listen for mouse or touch release events
-
-By default, this mixin listens to mouse and touch press events. To instead listen for mouse and touch releases, set one or both of the props on your component called `outsideMouseEventType` and `outsideTouchEventType`.
-
-```
-  ...
-  getDefaultProps: function () {
-    return {
-      ...,
-      outsideMouseEventType: 'mouseup'
-    };
-  },
-  ...
-```
-
 ## Regulate whether or not to listen for outside clicks
 
 When using this mixin, a component has two functions that can be used to explicitly listen for, or do nothing with, outside clicks
@@ -94,6 +79,22 @@ var Container = React.createClass({
     return <Component disableOnClickOutside={true} />
   }
 });
+```
+
+## Listen for mouse or touch release events
+
+By default, this mixin listens to mouse and touch press events. To instead listen for mouse and touch releases, you should pass that as an option into `enableOnClickOutside()`.
+
+```
+  getDefaultProps: function() {
+    return {
+      disableOnClickOutside: true
+    };
+  },
+
+  componentDidMount: function() {
+    this.enableOnClickOutside({ mouseup: true });
+  },
 ```
 
 ## Marking elements as "skip over this one" during the event loop
