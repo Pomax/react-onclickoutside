@@ -86,3 +86,9 @@ var Container = React.createClass({
 If you want the mixin to ignore certain elements, then add the class `ignore-react-onclickoutside` to that element and the callback won't be invoked when the click happens inside elements with that class.
 
 For bugs and enhancements hit up https://github.com/Pomax/react-onclickoutside/issues
+
+## Version compatibility
+
+If you still use React 0.13 or 0.12, any version up to and including 3.* will work. V4.* will not.
+
+If you use React 0.14 or above, use v4.* as that specifically uses `react-DOM` for the necessary DOM event bindings.
