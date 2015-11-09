@@ -105,8 +105,10 @@
      */
     enableOnClickOutside: function() {
       var fn = this.__outsideClickHandler;
-      document.addEventListener("mousedown", fn);
-      document.addEventListener("touchstart", fn);
+      if (global.document != null) {
+        document.addEventListener("mousedown", fn);
+        document.addEventListener("touchstart", fn);
+      }
     },
 
     /**
@@ -115,8 +117,10 @@
      */
     disableOnClickOutside: function() {
       var fn = this.__outsideClickHandler;
-      document.removeEventListener("mousedown", fn);
-      document.removeEventListener("touchstart", fn);
+      if (global.document != null) {
+        document.removeEventListener("mousedown", fn);
+        document.removeEventListener("touchstart", fn);
+      }
     }
   };
 
