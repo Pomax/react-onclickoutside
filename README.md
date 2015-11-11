@@ -126,6 +126,6 @@ For bugs and enhancements hit up https://github.com/Pomax/react-onclickoutside/i
 
 ## Version compatibility
 
-If you still use React 0.13 or 0.12, any version up to and including 3.* will work. Any version v4.* or above will not work due to relying on modules not introduced until React 0.14.
+If you still use React 0.13 or 0.12, any version up to and including 2.4 will work. Any version v4.* or above will not work due to relying on modules not introduced until React 0.14.
 
 If you use React 0.14 or above, use v4.*, as that specifically uses `react-DOM` for the necessary DOM event bindings.
