@@ -105,7 +105,7 @@
      */
     enableOnClickOutside: function() {
       var fn = this.__outsideClickHandler;
-      if (global.document != null) {
+      if (root.document != null) {
         document.addEventListener("mousedown", fn);
         document.addEventListener("touchstart", fn);
       }
@@ -117,7 +117,7 @@
      */
     disableOnClickOutside: function() {
       var fn = this.__outsideClickHandler;
-      if (global.document != null) {
+      if (root.document != null) {
         document.removeEventListener("mousedown", fn);
         document.removeEventListener("touchstart", fn);
       }
