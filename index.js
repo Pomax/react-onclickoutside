@@ -22,7 +22,7 @@
     // Node. Note that this does not work with strict
     // CommonJS, but only CommonJS-like environments
     // that support module.exports
-    module.exports = factory(require(root, 'react-dom'));
+    module.exports = factory(root, require('react-dom'));
   } else {
     // Browser globals (root is window)
     root.OnClickOutside = factory(root, ReactDOM);
