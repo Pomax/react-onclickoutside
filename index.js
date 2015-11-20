@@ -13,6 +13,7 @@
  *
  */
 (function (root, factory) {
+  var root = this;
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(['react-dom'], function(reactDom) {
