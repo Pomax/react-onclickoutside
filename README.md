@@ -116,6 +116,21 @@ class Component extends React.Component {
 export default Component;
 ```
 
+The HOC wraps the original component so any public methods of that component will no longer be
+available to its parent. This may be problematic, especially, for example, when wrapping inputs
+of which the `focus()` and `blur()` methods are often used. 
+
+To expose these methods on the HOC supply the method names as an array on the second argument of the 
+wrapper function or first argument of the decorator:
+
+```javascript
+  Child = listensToClickOutside(Child, ['focus', 'blur']);
+  
+  // OR
+  
+  @listensToClickOutside(['focus', 'blur'])
+```
+
 One difference when using the HOC/decorator compared to the mixin is that the `enableOnClickOutside()`
 and `disableOnClickOutside()` methods are not available as class methods, but rather on the `props`;
 so instead of `this.enableOnClickOutside()` you would call `this.props.enableOnClickOutside()`.
