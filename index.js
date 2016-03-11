@@ -73,6 +73,9 @@
             if(found) return;
             source = source.parentNode;
           }
+          // If element is in detached DOM, consider it not clicked
+          // outside as it can't be known whether it was outside.
+          if(source !== document) return;
           eventHandler(evt);
         }
       }(ReactDOM.findDOMNode(this), this.handleClickOutside));
