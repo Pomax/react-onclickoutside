@@ -49,8 +49,11 @@
     // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
     if (source.correspondingElement) {
       return source.correspondingElement.classList.contains(IGNORE_CLASS);
+    } else if (source.classList) {
+      return source.classList.contains(IGNORE_CLASS);
+    } else {
+      return false;
     }
-    return source.classList.contains(IGNORE_CLASS);
   };
 
   return {
