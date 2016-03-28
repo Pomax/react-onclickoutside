@@ -129,3 +129,12 @@ For bugs and enhancements hit up https://github.com/Pomax/react-onclickoutside/i
 If you still use React 0.13 or 0.12, any version up to and including 2.4 will work. Any version v4.* or above will not work due to relying on modules not introduced until React 0.14.
 
 If you use React 0.14 or above, use v2.5 or higher, as that specifically uses `react-DOM` for the necessary DOM event bindings.
+
+
+## IE does not support classList for SVG elements!
+
+This is true, but also an edge-case problem that needs to be fixed in IE, not in individual libraries so that IE can keep getting away with not implementing proper support for all HTML5 elements. If you rely on this, I fully expect you to have already filed this as a feature request, to be added to MS Edge, or to have voted on getting it implemented.
+
+If you haven't, and you *just* want this library fixed, then you already have the power to completely fix this problem yourself without needing to file any PRs: simply add a shim for `classList` to your page(s), loaded before you load your React code, and you'll have instantly fixed *every* library that you might remotely rely on that makes use of the `classList` property. You can find several shims quite easily, the usualy "first try" shim is the one given over on https://developer.mozilla.org/en/docs/Web/API/Element/classList
+
+*A note on PRs for this issue*: I will not accept PRs to fix this issue. You already have the power to fix it, and I expect you to take responsibility as a fellow developer to let Microsoft know you need them to implement this.
