@@ -37,7 +37,7 @@
 
   var IGNORE_CLASS = 'ignore-react-onclickoutside';
 
-  var isSourceFound = function(source, localNode) {
+  var isSourceFound = function(source, localNode, ignoreClass) {
     if (source === localNode) {
       return true;
     }
@@ -48,9 +48,9 @@
     // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
     // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
     if (source.correspondingElement) {
-      return source.correspondingElement.classList.contains(IGNORE_CLASS);
+      return source.correspondingElement.classList.contains(ignoreClass);
     }
-    return source.classList.contains(IGNORE_CLASS);
+    return source.classList.contains(ignoreClass);
   };
 
   return {
@@ -63,13 +63,14 @@
           evt.stopPropagation();
           var source = evt.target;
           var found = false;
+          var ignoreClass = this.props.outsideClickIgnoreClass || IGNORE_CLASS;
           // If source=local then this event came from "somewhere"
           // inside and should be ignored. We could handle this with
           // a layered approach, too, but that requires going back to
           // thinking in terms of Dom node nesting, running counter
           // to React's "you shouldn't care about the DOM" philosophy.
           while(source.parentNode) {
-            found = isSourceFound(source, localNode);
+            found = isSourceFound(source, localNode, ignoreClass);
             if(found) return;
             source = source.parentNode;
           }
