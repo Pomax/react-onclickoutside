@@ -58,12 +58,11 @@
       if(typeof this.handleClickOutside !== "function")
         throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
 
-      var fn = this.__outsideClickHandler = (function(localNode, eventHandler) {
+      var fn = this.__outsideClickHandler = (function(localNode, eventHandler, ignoreClass) {
         return function(evt) {
           evt.stopPropagation();
           var source = evt.target;
           var found = false;
-          var ignoreClass = this.props.outsideClickIgnoreClass || IGNORE_CLASS;
           // If source=local then this event came from "somewhere"
           // inside and should be ignored. We could handle this with
           // a layered approach, too, but that requires going back to
@@ -79,7 +78,7 @@
           if(source !== document) return;
           eventHandler(evt);
         }
-      }(ReactDOM.findDOMNode(this), this.handleClickOutside));
+      }(ReactDOM.findDOMNode(this), this.handleClickOutside, this.props.outsideClickIgnoreClass || IGNORE_CLASS));
 
       var pos = registeredComponents.length;
       registeredComponents.push(this);
