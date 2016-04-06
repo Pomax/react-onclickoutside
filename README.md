@@ -120,6 +120,8 @@ One difference when using the HOC/decorator compared to the mixin is that the `e
 and `disableOnClickOutside()` methods are not available as class methods, but rather on the `props`;
 so instead of `this.enableOnClickOutside()` you would call `this.props.enableOnClickOutside()`.
 
+Another difference is that you can't call `this.props.disableOnClickOutside()` directly from `componentDidMount()`. With the mixin, a direct call will disable the click listener, but using the HOC, you need to call `disableOnClickOutside()` asynchronously (e.g., `setTimeout(()=>this.disableOnClickOutside(), 0)`).
+
 In every other respect the the mixin and HOC/decorator provides the same functionality.
 
 For bugs and enhancements hit up https://github.com/Pomax/react-onclickoutside/issues
