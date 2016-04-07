@@ -21,11 +21,11 @@ function addClickOutsideListener(Component) {
     },
 
     render: function render() {
-      return React.createElement(Component, objectAssign({
+      return React.createElement(Component, objectAssign({}, this.props, {
         enableOnClickOutside: this.enableOnClickOutside,
         disableOnClickOutside: this.disableOnClickOutside,
         ref: 'inner'
-      }, this.props));
+      }));
     }
   });
 }
