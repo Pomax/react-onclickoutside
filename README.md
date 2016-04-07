@@ -81,6 +81,8 @@ var Container = React.createClass({
 });
 ```
 
+Using `disableOnClickOutside()` or `enableOnClickOutside()` within `componentDidMount` or `componentWillMount` is considered an anti-pattern, and does not have consistent behavior when using the mixin and HOC/ES7 Decorator. Favor setting the `disableOnClickOutside` property on the component.
+
 ## Marking elements as "skip over this one" during the event loop
 
 If you want the mixin to ignore certain elements, then add the class `ignore-react-onclickoutside` to that element and the callback won't be invoked when the click happens inside elements with that class. This class can be changed by setting the `outsideClickIgnoreClass` property on the component.
@@ -119,8 +121,6 @@ export default Component;
 One difference when using the HOC/decorator compared to the mixin is that the `enableOnClickOutside()`
 and `disableOnClickOutside()` methods are not available as class methods, but rather on the `props`;
 so instead of `this.enableOnClickOutside()` you would call `this.props.enableOnClickOutside()`.
-
-Another difference is that you can't call `this.props.disableOnClickOutside()` directly from `componentDidMount()`. With the mixin, a direct call will disable the click listener, but using the HOC, you need to call `disableOnClickOutside()` asynchronously (e.g., `setTimeout(()=>this.disableOnClickOutside(), 0)`).
 
 In every other respect the the mixin and HOC/decorator provides the same functionality.
 
