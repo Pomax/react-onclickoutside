@@ -1,5 +1,4 @@
 var React = require('react');
-var objectAssign = require('react/lib/Object.assign');
 var OnClickOutsideMixin = require('react-onclickoutside');
 
 
@@ -21,7 +20,7 @@ function addClickOutsideListener(Component) {
     },
 
     render: function render() {
-      return React.createElement(Component, objectAssign({
+      return React.createElement(Component, Object.assign({
         enableOnClickOutside: this.enableOnClickOutside,
         disableOnClickOutside: this.disableOnClickOutside,
         ref: 'inner'
