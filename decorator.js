@@ -1,5 +1,5 @@
 var React = require('react');
-var objectAssign = require('react/lib/Object.assign');
+var objectAssign = require('object-assign');
 var OnClickOutsideMixin = require('react-onclickoutside');
 
 
