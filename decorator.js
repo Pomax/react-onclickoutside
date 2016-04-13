@@ -3,9 +3,9 @@ var objectAssign = require('object-assign');
 var OnClickOutsideMixin = require('react-onclickoutside');
 
 
-function addClickOutsideListener(Component) {
+function addClickOutsideListener(Component, componentMethodsToExpose) {
 
-  return React.createClass({
+  var classDefinition = {
 
     displayName: (Component.displayName || Component.name) + 'ClickOutside',
 
@@ -27,7 +27,17 @@ function addClickOutsideListener(Component) {
         ref: 'inner'
       }, this.props));
     }
-  });
+  };
+
+  if (componentMethodsToExpose) {
+    componentMethodsToExpose.forEach(function(method) {
+      classDefinition[method] = function() {
+        this.refs.inner[method].apply(this.refs.inner, arguments);
+      };
+    });
+  }
+
+  return React.createClass(classDefinition);
 }
 
 
@@ -80,18 +90,33 @@ function addClickOutsideListener(Component) {
  *     }
  *   }
  *
+ * The HOC wraps the original component so any public methods of that component will no longer be
+ * available to its parent. This may be problematic, especially, for example, when wrapping inputs
+ * of which the `focus()` and `blur()` methods are often used. To expose these methods on the HOC supply
+ * the method names as an array on the second argument of the wrapper function or first argument of
+ * the decorator:
+ *
+ *   Child = listenToClickOutside(Child, ['focus', 'blur']);
+ *
+ *   // OR
+ *
+ *   @listensToClickOutside(['focus', 'blur'])
+ *
  * @param {React.Component} [Component] The component outside of which to listen to clicks.
+ * @param {Array} [componentMethodsToExpose] An array of method names on the wrapped component which should be
+ *                                           available on the higher order component.
  * @returns {React.Component} or {Function} if using the decorator pattern.
  */
-function listensToClickOutside(Component) {
+function listensToClickOutside(Component, componentMethodsToExpose) {
   // support decorator pattern
-  if (!Component) {
+  if (!arguments.length || Array.isArray(Component)) {
+    var _componentMethodsToExpose = Component;
     return function listensToClickOutsideDecorator(ComponentToDecorate) {
-      return addClickOutsideListener(ComponentToDecorate);
+      return addClickOutsideListener(ComponentToDecorate, _componentMethodsToExpose);
     };
   }
 
-  return addClickOutsideListener(Component);
+  return addClickOutsideListener(Component, componentMethodsToExpose);
 }
 
 module.exports = listensToClickOutside;
