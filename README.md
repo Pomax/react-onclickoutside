@@ -81,6 +81,8 @@ var Container = React.createClass({
 });
 ```
 
+Using `disableOnClickOutside()` or `enableOnClickOutside()` within `componentDidMount` or `componentWillMount` is considered an anti-pattern, and does not have consistent behavior when using the mixin and HOC/ES7 Decorator. Favor setting the `disableOnClickOutside` property on the component.
+
 ## Marking elements as "skip over this one" during the event loop
 
 If you want the mixin to ignore certain elements, then add the class `ignore-react-onclickoutside` to that element and the callback won't be invoked when the click happens inside elements with that class. This class can be changed by setting the `outsideClickIgnoreClass` property on the component.
