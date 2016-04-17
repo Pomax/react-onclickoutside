@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>OnOutsideClick</title>
+    <style>
+      html, body, #app {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+      .concentric {
+        width: 90%;
+        height: 90%;
+        padding: 5% 5%;
+        background: rgba(0,0,0,0.4);
+        border-radius: 100%;
+        position: relative;
+      }
+      .concentric.highlight {
+        background: rgba(255,255,0,0.5);
+      }
+      .concentric .label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        color: white;
+      }
+      .concentric.highlight .label {
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="../../node_modules/react/dist/react-with-addons.js"></script>
+    <script src="../../node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="../../index.js"></script>
+    <script src="testit.js"></script>
+  </body>
+</html>

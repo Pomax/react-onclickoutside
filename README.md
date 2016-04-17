@@ -1,142 +1,130 @@
-# An onClickOutside mixin for React components
+# An onClickOutside wrapper for React components
 
-This is a React mixin that you can add to your React components if you want to have them listen for clicks that occur somewhere in the document, outside of the element itself (for instance, if you need to hide a menu when people click anywhere else on your page).
+This is a React **H**igher **O**rder **C**omponent that you can use with your own React components if you want to have them listen for clicks that occur somewhere in the document, outside of the element itself (for instance, if you need to hide a menu when people click anywhere else on your page).
 
-Note that this mixin relies on the `.classList` property, which is supported by all modern browsers, but not by no longer supported browsers like IE9 or even older. For setups that need to support deprecated browsers, using a [classlist-polyfill](https://github.com/eligrey/classList.js/) will be necessary.
+Note that this HOC relies on the `.classList` property, which is supported by all modern browsers, but not by no longer supported browsers like IE9 or older. If your code relies on classList in any way, you want to use a [classlist-polyfill](https://github.com/eligrey/classList.js).
 
-## installation
+## Installation
 
-There are two ways to install this mixin, depending on your development process.
-
-### NPM
-
-If you have Node.js needs, you can install this mixin via `npm`, using:
+Use `npm`:
 
 ```
-npm install react-onclickoutside --save
+$> npm install react-onclickoutside --save
 ```
 
 (or `--save-dev` depending on your needs). You then use it in your components as:
 
 ```javascript
-var Component = React.createClass({
-  mixins: [
-    require('react-onclickoutside')
-  ],
+// load the HOC:
+var onClickOutside = require('react-onclickoutside');
 
+// create a new component, wrapped by this onclickoutside HOC:
+var MyComponent = onClickOutside(React.createClass({
+  ...,
   handleClickOutside: function(evt) {
     // ...handling code goes here...
-  }
-});
-```
-### For the browser (not recommended)
-
-If you have plain-old-browser needs and for some reason are unable to use the modern browserify/webpack approach to building your JS payloads, you can install this mixin via `bower`, using:
+  },
+  ...
+}));
 
 ```
-bower install react-onclickoutside
-```
 
-and then include it as script via:
-
-```html
-<script src="bower_components/react-onclickoutside/index.js"></script>
-```
-
-Then use it as:
-
-```javascript
-var Component = React.createClass({
-  mixins: [
-    OnClickOutside
-  ],
-
-  handleClickOutside: function(evt) {
-    // ...handling code goes here...
-  }
-});
-```
+Note that if you try to wrap a React component class without `handleClickOutside(evt)` handler, the HOC will throw an error. If you want onClickOutside functionality, you *must* have this function defined.
 
 ## Regulate whether or not to listen for outside clicks
 
-When using this mixin, a component has two functions that can be used to explicitly listen for, or do nothing with, outside clicks
+Wrapped components have two functions that can be used to explicitly listen for, or do nothing with, outside clicks
 
 - `enableOnClickOutside()` - Enables outside click listening by setting up the event listening bindings.
 - `disableOnClickOutside()` - Disables outside click listening by explicitly removing the event listening bindings.
 
-In addition, you can create a component that uses this mixin such that it has the code set up and ready to go, but not listening for outside click events until you explicitly issue its `enableOnClickOutside()`, by passing in a properly called `disableOnClickOutside`:
+In addition, you can create a component that uses this HOC such that it has the code set up and ready to go, but not listening for outside click events until you explicitly issue its `enableOnClickOutside()`, by passing in a properly called `disableOnClickOutside`:
 
 ```javascript
-var Component = React.createClass({
-  mixins: [ ... ],
+var onClickOutside = require('react-onclickoutside');
+
+var MyComponent = onClickOutside(React.createClass({
+  ...,
   handleClickOutside: function(evt) {
     // ...
-  }
-});
+  },
+  ...
+}));
 
 var Container = React.createClass({
   render: function(evt) {
-    return <Component disableOnClickOutside={true} />
+    return <MyComponent disableOnClickOutside={true} />
   }
 });
 ```
 
 Using `disableOnClickOutside()` or `enableOnClickOutside()` within `componentDidMount` or `componentWillMount` is considered an anti-pattern, and does not have consistent behavior when using the mixin and HOC/ES7 Decorator. Favor setting the `disableOnClickOutside` property on the component.
 
+## Regulating `evt.preventDefault()` and `evt.stopPropagation()`
+
+Technically this HOC lets you pass in `preventDefault={true/false}` and `preventDefault={true/false}` to regulate what happens to the event when it hits your `handleClickOutside(evt)` function, but beware: `stopPropagation` may not do what you expect it to do.
+
+Each component adds new event listeners to the document, which may or may not cause as many event triggers as there are event listening bindings. In the test file found in `./test/browser/index.html`, the coded uses `stopPropagation={true}` but sibling events still make it to "parents".   
+
 ## Marking elements as "skip over this one" during the event loop
 
-If you want the mixin to ignore certain elements, then add the class `ignore-react-onclickoutside` to that element and the callback won't be invoked when the click happens inside elements with that class. This class can be changed by setting the `outsideClickIgnoreClass` property on the component.
+If you want the HOC to ignore certain elements, you can tell the HOC which CSS class name it should use for this purposes. If you want explicit control over the class name, use `outsideClickIgnoreClass={some string}` as component property, or if you don't, the default string used is `ignore-react-onclickoutside`.
 
-## ES6/2015 class support via HOC / ES7 decorators
+## Older React code: "What happened to the Mixin??"
 
-Since mixins can't be used with ES6/2015 class React components a
-[Higher-Order Component (HOC)](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750)
-and [ES7 decorator](https://github.com/wycats/javascript-decorators) are bundled with the mixin:
+Due to ES2015/ES6 `class` syntax making mixins essentially impossible, and the fact that HOC wrapping works perfectly fine in ES5 and older versions of React, as of this package's version 5.0.0 no Mixin is offered anymore.
+
+If you *absolutely* need a mixin... you really don't.
+
+### But how can I access my component? It has an API that I rely on!
+
+No, I get that. I constantly have that problem myself, so while there is no universal agreement on how to do that, this HOC offers a `getInstance()` function that you can call for a reference to the component you wrapped, so that you can call its API without headaches:
 
 ```javascript
-import listensToClickOutside from 'react-onclickoutside/decorator';
+var onClickOutside = require('react-onclickoutside');
 
-class Component extends React.Component {
-  handleClickOutside = (event) => {
+var MyComponent = onClickOutside(React.createClass({
+  ...,
+  handleClickOutside: function(evt) {
     // ...
+  },
+  ...
+}));
+
+var Container = React.createClass({
+  someFunction: function() {
+    var ref = this.refs.mycomp;
+    // 1) Get the wrapped component instance: 
+    var superTrueMyComponent = ref.getInstance();   
+    // and call instance functions defined for it: 
+    superTrueMyComponent.customFunction();
+  },
+
+  render: function(evt) {
+    return <MyComponent disableOnClickOutside={true} ref="mycomp"/>
   }
-}
-
-export default listensToClickOutside(Component);
-
-// OR
-
-import listensToClickOutside from 'react-onclickoutside/decorator';
-
-@listensToClickOutside()
-class Component extends React.Component {
-  handleClickOutside = (event) => {
-    // ...
-  }
-}
-
-export default Component;
+});
 ```
 
-One difference when using the HOC/decorator compared to the mixin is that the `enableOnClickOutside()`
-and `disableOnClickOutside()` methods are not available as class methods, but rather on the `props`;
-so instead of `this.enableOnClickOutside()` you would call `this.props.enableOnClickOutside()`.
+Note that there is also a `getClass()` function, to get the original Class that was passed into the HOC wrapper, but if you find yourself needing this you're probably doing something wrong: you really want to define your classes as real, require'able etc. units, and then write wrapped components separately, so that you can always access the original class's `statics` etc. properties without needing to extract them out of a HOC.
 
-In every other respect the the mixin and HOC/decorator provides the same functionality.
+## Which version do I need for which version of React?
 
-For bugs and enhancements hit up https://github.com/Pomax/react-onclickoutside/issues
+If you use **React 0.12 or 0.13**, **version 2.4 and below** will work.
 
-## Version compatibility
+If you use **React 0.14*, use **v2.5 through v4.9**, as these specifically use `react-DOM` for the necessary DOM event bindings.
 
-If you still use React 0.13 or 0.12, any version up to and including 2.4 will work. Any version v4.* or above will not work due to relying on modules not introduced until React 0.14.
+If you use **React 15** (or higher), you can use **v4.x, which offers both a mixin and HOC, or use v5.x, which is HOC-only**.
 
-If you use React 0.14 or above, use v2.5 or higher, as that specifically uses `react-DOM` for the necessary DOM event bindings.
+### Support-wise, only the latest version will receive updates and bug fixes.
 
+I do not believe in perpetual support for outdated libraries, so if you find one of the older versions is not playing nice with an even older React: you know what to do, and it's not "keep using that old version of React".
 
 ## IE does not support classList for SVG elements!
 
-This is true, but also an edge-case problem that needs to be fixed in IE, not in individual libraries so that IE can keep getting away with not implementing proper support for all HTML5 elements. If you rely on this, I fully expect you to have already filed this as a feature request, to be added to MS Edge, or to have voted on getting it implemented.
+This is true, but also an edge-case problem that needs to be fixed in IE, not by thousands of individual libraries that assume browsers have proper HTML API implementations. If you need this to work, you have two options (and you should exercise both):
 
-If you haven't, and you *just* want this library fixed, then you already have the power to completely fix this problem yourself without needing to file any PRs: simply add a shim for `classList` to your page(s), loaded before you load your React code, and you'll have instantly fixed *every* library that you might remotely rely on that makes use of the `classList` property. You can find several shims quite easily, the usualy "first try" shim is the one given over on https://developer.mozilla.org/en/docs/Web/API/Element/classList
+1. I fully expect you to have already filed this as a feature request for the upcoming version of IE (or if it already exists, I expect you to have voted on it), and
+2. you can add a shim for `classList` to your page(s), loaded before you load your React code, and you'll have instantly fixed *every* library that you might remotely rely on that makes use of the `classList` property. You can find several shims quite easily, the usualy "first try" shim is the one given over on https://developer.mozilla.org/en/docs/Web/API/Element/classList
 
-*A note on PRs for this issue*: I will not accept PRs to fix this issue. You already have the power to fix it, and I expect you to take responsibility as a fellow developer to let Microsoft know you need them to implement this.
+Eventually this program will stop being one, but in the mean time *you* responsible for helping the entire world fix this problem in the only place it *should* be fixed: IE. As such, **if you file a PR to fix classList-and-SVG issues specifically for this library, your PR will be clossed and I will politely point you to this README.md section**. I will not accept PRs to fix this issue. You already have the power to fix it, and I expect you to take responsibility as a fellow developer to let Microsoft know you need them to implement this.
