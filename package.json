@@ -21,7 +21,25 @@
   "bugs": {
     "url": "https://github.com/Pomax/react-onclickoutside/issues"
   },
+  "scripts": {
+    "test": "karma start --single-run"
+  },
   "dependencies": {
     "object-assign": "^4.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "karma": "^0.13.22",
+    "karma-chai": "^0.1.0",
+    "karma-mocha": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-spec-reporter": "0.0.25",
+    "karma-webpack": "^1.7.0",
+    "mocha": "^2.4.5",
+    "phantomjs-prebuilt": "^2.1.7",
+    "react": "^0.14.8",
+    "react-addons-test-utils": "^0.14.8",
+    "react-dom": "^0.14.8",
+    "webpack": "^1.12.14"
   }
 }
