@@ -184,6 +184,10 @@
         }
       });
 
+      // Add display name for React devtools
+      var displayName = 'OnClickOustide(' + Component.displayName + ')';
+      wrapComponentWithOnClickOutsideHandling.displayName = displayName;
+
       return wrapComponentWithOnClickOutsideHandling;
     };
   }
