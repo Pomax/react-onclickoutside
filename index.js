@@ -185,9 +185,10 @@
       });
 
       // Add display name for React devtools
-      var componentName = Component.displayName || Component.name || 'Component'
-      var displayName = 'OnClickOustide(' + componentName + ')';
-      wrapComponentWithOnClickOutsideHandling.displayName = displayName;
+      (function bindWrappedComponentName(c, wrapper) {
+        var componentName = c.displayName || c.name || 'Component'
+        wrapper.displayName = 'OnClickOustide(' + componentName + ')';
+      }(Component, wrapComponentWithOnClickOutsideHandling));
 
       return wrapComponentWithOnClickOutsideHandling;
     };
