@@ -154,8 +154,10 @@
         enableOnClickOutside: function() {
           var fn = this.__outsideClickHandler;
           if (typeof document !== "undefined") {
-            document.addEventListener("click", fn);
-            document.addEventListener("touchstart", fn);
+            var events = this.props.eventTypes || ["mousedown", "touchstart"];
+            events.forEach(function (eventName) {
+              document.addEventListener(eventName, fn);
+            });
           }
         },
 
@@ -166,8 +168,10 @@
         disableOnClickOutside: function() {
           var fn = this.__outsideClickHandler;
           if (typeof document !== "undefined") {
-            document.removeEventListener("click", fn);
-            document.removeEventListener("touchstart", fn);
+            var events = this.props.eventTypes || ["mousedown", "touchstart"];
+            events.forEach(function (eventName) {
+              document.removeEventListener(eventName, fn);
+            });
           }
         },
 
