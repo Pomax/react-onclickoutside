@@ -156,6 +156,7 @@
           var fn = this.__outsideClickHandler;
           if (typeof document !== "undefined") {
             var events = this.props.eventTypes || DEFAULT_EVENTS;
+            if (!events.forEach) { events = [events] };
             events.forEach(function (eventName) {
               document.addEventListener(eventName, fn);
             });
@@ -170,6 +171,7 @@
           var fn = this.__outsideClickHandler;
           if (typeof document !== "undefined") {
             var events = this.props.eventTypes || DEFAULT_EVENTS;
+            if (!events.forEach) { events = [events] };
             events.forEach(function (eventName) {
               document.removeEventListener(eventName, fn);
             });
