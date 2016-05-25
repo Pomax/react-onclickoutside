@@ -8,6 +8,7 @@
   var registeredComponents = [];
   var handlers = [];
   var IGNORE_CLASS = 'ignore-react-onclickoutside';
+  var DEFAULT_EVENTS = ['mousedown', 'touchstart'];
 
   /**
    * Check whether some DOM node is our Component's node.
@@ -154,7 +155,7 @@
         enableOnClickOutside: function() {
           var fn = this.__outsideClickHandler;
           if (typeof document !== "undefined") {
-            var events = this.props.eventTypes || ["mousedown", "touchstart"];
+            var events = this.props.eventTypes || DEFAULT_EVENTS;
             events.forEach(function (eventName) {
               document.addEventListener(eventName, fn);
             });
@@ -168,7 +169,7 @@
         disableOnClickOutside: function() {
           var fn = this.__outsideClickHandler;
           if (typeof document !== "undefined") {
-            var events = this.props.eventTypes || ["mousedown", "touchstart"];
+            var events = this.props.eventTypes || DEFAULT_EVENTS;
             events.forEach(function (eventName) {
               document.removeEventListener(eventName, fn);
             });
