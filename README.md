@@ -31,6 +31,20 @@ var MyComponent = onClickOutside(React.createClass({
 
 Note that if you try to wrap a React component class without `handleClickOutside(evt)` handler, the HOC will throw an error. If you want onClickOutside functionality, you *must* have this function defined.
 
+## Regulate which events to listen for
+
+By default, "outside clicks" are based on both `mousedown` and `touchstart` events; if that is what you need, then you do not need to specify anything special. However, if you need different events, you can specify these using the `eventTypes` property. If you just need one event, you can pass in the event name as plain string:
+
+```
+<MyComponent eventTypes="click" ... />
+```
+
+For multiple events, you can pass in the array of event names you need to listen for:
+
+```
+<MyComponent eventTypes={["click", "touchend"]} ... />
+```
+
 ## Regulate whether or not to listen for outside clicks
 
 Wrapped components have two functions that can be used to explicitly listen for, or do nothing with, outside clicks
