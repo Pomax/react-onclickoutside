@@ -2,7 +2,7 @@
 
 This is a React **H**igher **O**rder **C**omponent that you can use with your own React components if you want to have them listen for clicks that occur somewhere in the document, outside of the element itself (for instance, if you need to hide a menu when people click anywhere else on your page).
 
-Note that this HOC relies on the `.classList` property, which is supported by all modern browsers, but not by no longer supported browsers like IE9 or older. If your code relies on classList in any way, you want to use a [classlist-polyfill](https://github.com/eligrey/classList.js).
+Note that this HOC relies on the `.classList` property, which is supported by all modern browsers, but not by no longer supported browsers like IE9 or older. If your code relies on classList in any way, you want to use a polyfill like [dom4](https://github.com/WebReflection/dom4)
 
 ## Installation
 
@@ -138,6 +138,6 @@ I do not believe in perpetual support for outdated libraries, so if you find one
 
 This is true, but also an edge-case problem that only exists for older versions of IE (including IE11), and should be addressed by you, rather than by  thousands of individual libraries that assume browsers have proper HTML API implementations (IE Edge has proper `classList` support even for SVG).
 
-If you need this to work, you can add a shim for `classList` to your page(s), loaded before you load your React code, and you'll have instantly fixed *every* library that you might remotely rely on that makes use of the `classList` property. You can find several shims quite easily, the usualy "first try" shim is the one given over on https://developer.mozilla.org/en/docs/Web/API/Element/classList
+If you need this to work, you can add a shim for `classList` to your page(s), loaded before you load your React code, and you'll have instantly fixed *every* library that you might remotely rely on that makes use of the `classList` property. You can find several shims quite easily, a good one to start with is the [dom4](https://github.com/WebReflection/dom4) shim, which addss all manner of good DOM4 properties to "not quite at DOM4 yet" browser implementations.
 
 Eventually this problem will stop being one, but in the mean time *you* are responsible for making *your* site work by shimming everything that needs shimming for IE.  As such, **if you file a PR to fix classList-and-SVG issues specifically for this library, your PR will be clossed and I will politely point you to this README.md section**. I will not accept PRs to fix this issue. You already have the power to fix it, and I expect you to take responsibility as a fellow developer to let Microsoft know you need them to implement this.
