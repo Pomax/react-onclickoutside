@@ -104,9 +104,16 @@
             throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
           }
 
+          // react@15.x will emit warnings when methods are bound using the
+          // .bind() syntax; this provides a way to delegate to
+          // `handleClickOutside` without React emitting a `console.warn`.
+          var delegateHandler = function() {
+            instance.handleClickOutside.apply(instance, arguments);
+          }
+
           var fn = this.__outsideClickHandler = generateOutsideCheck(
             ReactDOM.findDOMNode(instance),
-            instance.handleClickOutside.bind(instance),
+            delegateHandler,
             this.props.outsideClickIgnoreClass || IGNORE_CLASS,
             this.props.preventDefault || false,
             this.props.stopPropagation || false
