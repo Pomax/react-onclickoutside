@@ -60,16 +60,6 @@
     }
   };
 
-  /*
-   * A workaround for issue #89, where React will emit a console.warn when it
-   * detects methods bound using `.bind`
-   */
-  var delegateHandler = function(instance) {
-    return function() {
-      instance.handleClickOutside.apply(instance, arguments);
-    }
-  };
-
   /**
    * This function generates the HOC function that you'll use
    * in order to impart onOutsideClick listening to an
@@ -115,7 +105,7 @@
 
           var fn = this.__outsideClickHandler = generateOutsideCheck(
             ReactDOM.findDOMNode(instance),
-            delegateHandler(instance),
+            instance.handleClickOutside.bind(instance, undefined),
             this.props.outsideClickIgnoreClass || IGNORE_CLASS,
             this.props.preventDefault || false,
             this.props.stopPropagation || false
