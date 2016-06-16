@@ -60,6 +60,7 @@
     }
   };
 
+
   /**
    * This function generates the HOC function that you'll use
    * in order to impart onOutsideClick listening to an
