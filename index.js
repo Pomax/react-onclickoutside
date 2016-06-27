@@ -183,10 +183,13 @@
          */
         render: function() {
           var passedProps = this.props;
-          var props = { ref: 'instance' };
+          var props = {};
           Object.keys(this.props).forEach(function(key) {
             props[key] = passedProps[key];
           });
+          props.ref = 'instance';
+          props.disableOnClickOutside = this.disableOnClickOutside;
+          props.enableOnClickOutside = this.enableOnClickOutside;
           return React.createElement(Component,  props);
         }
       });
