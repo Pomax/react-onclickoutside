@@ -106,7 +106,7 @@
 
           var fn = this.__outsideClickHandler = generateOutsideCheck(
             ReactDOM.findDOMNode(instance),
-            instance.handleClickOutside.bind(instance, undefined),
+            instance.handleClickOutside.bind(instance),
             this.props.outsideClickIgnoreClass || IGNORE_CLASS,
             this.props.preventDefault || false,
             this.props.stopPropagation || false
