@@ -12,7 +12,11 @@ describe('onclickoutside hoc', function() {
       };
     },
 
-    handleClickOutside: function() {
+    handleClickOutside: function(event) {
+      if (event === undefined) {
+          throw new Error("event cannot be undefined");
+      }
+
       this.setState({
         clickOutsideHandled: true
       });
