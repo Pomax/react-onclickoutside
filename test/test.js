@@ -5,11 +5,29 @@ var wrapComponent = require('../index');
 
 describe('onclickoutside hoc', function() {
 
+  var externalToggleEnableClickOutside;
+
   var Component = React.createClass({
     getInitialState: function() {
       return {
-        clickOutsideHandled: false
+        clickOutsideHandled: false,
+        timesHandlerCalled: 0
       };
+    },
+
+    toggleEnableClickOutside: function(on) {
+      if(on) {
+        this.props.enableOnClickOutside();
+      }
+      else {
+        this.props.disableOnClickOutside();
+      }
+    },
+
+    componentDidMount: function() {
+      externalToggleEnableClickOutside = function(on) {
+        this.toggleEnableClickOutside(on);
+      }.bind(this);
     },
 
     handleClickOutside: function(event) {
@@ -18,7 +36,8 @@ describe('onclickoutside hoc', function() {
       }
 
       this.setState({
-        clickOutsideHandled: true
+        clickOutsideHandled: true,
+        timesHandlerCalled: this.state.timesHandlerCalled + 1
       });
     },
 
@@ -55,5 +74,27 @@ describe('onclickoutside hoc', function() {
     } catch (e) {
       assert(e, "component was not wrapped");
     }
+  });
+
+  it('should not call handleClickOutside if this.props.disableOnClickOutside() is called, until this.props.enableOnClickOutside() is called.', function() {
+    var element = React.createElement(WrappedComponent);
+    var component = TestUtils.renderIntoDocument(element);
+    document.dispatchEvent(new Event('mousedown'));
+    var instance = component.getInstance();
+    assert(instance.state.timesHandlerCalled === 1, "handleClickOutside called");
+
+    try {
+      externalToggleEnableClickOutside(false);
+    }
+    catch(error) {
+      assert(false, 'this.props.disableOnClickOutside() should not be undefined.');
+    }
+
+    document.dispatchEvent(new Event('mousedown'));
+    assert(instance.state.timesHandlerCalled === 1, "handleClickOutside not called after disableOnClickOutside()");
+
+    externalToggleEnableClickOutside(true);
+    document.dispatchEvent(new Event('mousedown'));
+    assert(instance.state.timesHandlerCalled === 2, "handleClickOutside called after enableOnClickOutside()");
   });
 });
