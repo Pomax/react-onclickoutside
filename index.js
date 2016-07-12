@@ -33,7 +33,7 @@
    * Generate the event handler that checks whether a clicked DOM node
    * is inside of, or lives outside of, our Component's node tree.
    */
-  var generateOutsideCheck = function(componentNode, eventHandler, instance, ignoreClass, preventDefault, stopPropagation) {
+  var generateOutsideCheck = function(componentNode, componentInstance, ignoreClass, preventDefault, stopPropagation) {
     return function(evt) {
       if (preventDefault) {
         evt.preventDefault();
@@ -56,7 +56,7 @@
       // If element is in a detached DOM, consider it "not clicked
       // outside", as it cannot be known whether it was outside.
       if(current !== document) return;
-      eventHandler.bind(instance, evt)();
+      componentInstance.handleClickOutside.bind(componentInstance, evt)();
     }
   };
 
@@ -106,7 +106,6 @@
 
           var fn = this.__outsideClickHandler = generateOutsideCheck(
             ReactDOM.findDOMNode(instance),
-            instance.handleClickOutside,
             instance,
             this.props.outsideClickIgnoreClass || IGNORE_CLASS,
             this.props.preventDefault || false,
