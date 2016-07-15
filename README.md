@@ -19,7 +19,9 @@ $> npm install react-onclickoutside --save
 var onClickOutside = require('react-onclickoutside');
 
 // create a new component, wrapped by this onclickoutside HOC:
-var MyComponent = onClickOutside(React.createClass({
+var MyComponent = onClickOutside(
+    // ...config can go here...
+)(React.createClass({
   ...,
   handleClickOutside: function(evt) {
     // ...handling code goes here...
@@ -29,22 +31,24 @@ var MyComponent = onClickOutside(React.createClass({
 
 ```
 Note that if you try to wrap a React component class without `handleClickOutside(evt)` handler like this, the HOC will throw an error.
-If you want to execute method different than `handleClickOutside(evt)`, you can specify it as a second parameter to `onClickOutside` like this:
+If you want to execute method different than `handleClickOutside(evt)`, you can specify it using the config parameter of `onClickOutside` like this:
 
 ```javascript
 // load the HOC:
 var onClickOutside = require('react-onclickoutside');
 
 // create a new component, wrapped by this onclickoutside HOC:
-var MyComponent = onClickOutside(React.createClass({
+var MyComponent = onClickOutside({
+    onClickOutside: function (instance) {
+        return instance.myClickOutsideHandler;
+    }
+})(React.createClass({
   ...,
   myClickOutsideHandler: function(evt) {
     // ...handling code goes here...
   },
   ...
-}), function (instance) {
-    instance.myClickOutsideHandler
-});
+}));
 
 ```
 

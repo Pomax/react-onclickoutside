@@ -27,7 +27,7 @@ describe('onclickoutside hoc', function() {
     }
   });
 
-  var WrappedComponent = wrapComponent(Component);
+  var WrappedComponent = wrapComponent()(Component);
 
   // tests
 
@@ -50,7 +50,7 @@ describe('onclickoutside hoc', function() {
     });
 
     try {
-      var bad = wrapComponent(BadComponent);
+      var bad = wrapComponent()(BadComponent);
       assert(false, "component was wrapped, despite not implementing handleClickOutside(evt)");
     } catch (e) {
       assert(e, "component was not wrapped");
@@ -81,9 +81,11 @@ describe('onclickoutside hoc', function() {
       }
     });
 
-    var WrappedWithCustomHandler = wrapComponent(CustomComponent, function(instance) {
-      return instance.myOnClickHandler;
-    });
+    var WrappedWithCustomHandler = wrapComponent({
+      onClickOutside: function(instance) {
+        return instance.myOnClickHandler;
+      }
+    })(CustomComponent);
 
     var element = React.createElement(WrappedWithCustomHandler);
     assert(element, "element can be created");
@@ -102,9 +104,11 @@ describe('onclickoutside hoc', function() {
     });
 
     try {
-      var bad = wrapComponent(BadComponent, function(instance){
+      var bad = wrapComponent({
+        onClickOutside: function(instance){
           return instance.nonExistentMethod;
-      });
+        }
+      })(BadComponent);
       assert(false, "component was wrapped, despite not implementing the custom handler");
     } catch (e) {
       assert(e, "component was not wrapped");
