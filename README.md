@@ -23,12 +23,20 @@ var MyComponent = onClickOutside(
     // ...config can go here...
 )(React.createClass({
   ...,
-  handleClickOutside: function(evt) {
+  handleClickOutside: function (evt) {
     // ...handling code goes here...
   },
   ...
 }));
 
+// to maintain compatibility with previous versions, the wrapper can be also called like this:
+var MyLegacyComponent = onClickOutside(React.createClass({
+  ...,
+  handleClickOutside: function (evt) {
+    // ...handling code goes here...
+  },
+  ...
+}));
 ```
 Note that if you try to wrap a React component class without `handleClickOutside(evt)` handler like this, the HOC will throw an error.
 If you want to execute method different than `handleClickOutside(evt)`, you can specify it using the config parameter of `onClickOutside` like this:
@@ -44,7 +52,7 @@ var MyComponent = onClickOutside({
     }
 })(React.createClass({
   ...,
-  myClickOutsideHandler: function(evt) {
+  myClickOutsideHandler: function (evt) {
     // ...handling code goes here...
   },
   ...
