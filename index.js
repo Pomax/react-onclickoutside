@@ -104,21 +104,21 @@
           if(typeof clickOutsideAccessor === "function") {
             clickOutsideHandler = clickOutsideAccessor(instance);
             if(typeof clickOutsideHandler !== "function") {
-              throw new Error("Component lacks a function for processing outside click events specified by the onClickOutside parameter.");
+              throw new Error("Component lacks a function for processing outside click events specified by the onClickOutside config parameter.");
             }
           } else {
-              if(typeof instance.handleClickOutside !== "function") {
-                throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
-              }
-              clickOutsideHandler = instance.handleClickOutside;
+            if(typeof instance.handleClickOutside !== "function") {
+              throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
+            }
+            clickOutsideHandler = instance.handleClickOutside;
           }
 
           var fn = this.__outsideClickHandler = generateOutsideCheck(
-              ReactDOM.findDOMNode(instance),
-              clickOutsideHandler.bind(instance),
-              this.props.outsideClickIgnoreClass || IGNORE_CLASS,
-              this.props.preventDefault || false,
-              this.props.stopPropagation || false
+            ReactDOM.findDOMNode(instance),
+            clickOutsideHandler.bind(instance),
+            this.props.outsideClickIgnoreClass || IGNORE_CLASS,
+            this.props.preventDefault || false,
+            this.props.stopPropagation || false
           );
 
           var pos = registeredComponents.length;
@@ -128,7 +128,7 @@
           // If there is a truthy disableOnClickOutside property for this
           // component, don't immediately start listening for outside events.
           if (!this.props.disableOnClickOutside) {
-              this.enableOnClickOutside();
+            this.enableOnClickOutside();
           }
         },
 
@@ -137,9 +137,9 @@
         */
         componentWillReceiveProps: function(nextProps) {
           if (this.props.disableOnClickOutside && !nextProps.disableOnClickOutside) {
-              this.enableOnClickOutside();
+            this.enableOnClickOutside();
           } else if (!this.props.disableOnClickOutside && nextProps.disableOnClickOutside) {
-              this.disableOnClickOutside();
+            this.disableOnClickOutside();
           }
         },
 
@@ -151,9 +151,9 @@
           this.__outsideClickHandler = false;
           var pos = registeredComponents.indexOf(this);
           if( pos>-1) {
-              // clean up so we don't leak memory
-              if (handlers[pos]) { handlers.splice(pos, 1); }
-              registeredComponents.splice(pos, 1);
+            // clean up so we don't leak memory
+            if (handlers[pos]) { handlers.splice(pos, 1); }
+            registeredComponents.splice(pos, 1);
           }
         },
 
@@ -164,11 +164,11 @@
         enableOnClickOutside: function() {
           var fn = this.__outsideClickHandler;
           if (typeof document !== "undefined") {
-              var events = this.props.eventTypes || DEFAULT_EVENTS;
-              if (!events.forEach) { events = [events] };
-              events.forEach(function (eventName) {
+            var events = this.props.eventTypes || DEFAULT_EVENTS;
+            if (!events.forEach) { events = [events] };
+            events.forEach(function (eventName) {
               document.addEventListener(eventName, fn);
-              });
+            });
           }
         },
 
@@ -179,11 +179,11 @@
         disableOnClickOutside: function() {
           var fn = this.__outsideClickHandler;
           if (typeof document !== "undefined") {
-              var events = this.props.eventTypes || DEFAULT_EVENTS;
-              if (!events.forEach) { events = [events] };
-              events.forEach(function (eventName) {
+            var events = this.props.eventTypes || DEFAULT_EVENTS;
+            if (!events.forEach) { events = [events] };
+            events.forEach(function (eventName) {
               document.removeEventListener(eventName, fn);
-              });
+            });
           }
         },
 
@@ -194,7 +194,7 @@
           var passedProps = this.props;
           var props = { ref: 'instance' };
           Object.keys(this.props).forEach(function(key) {
-              props[key] = passedProps[key];
+            props[key] = passedProps[key];
           });
           return React.createElement(Component,  props);
         }
@@ -202,8 +202,8 @@
 
       // Add display name for React devtools
       (function bindWrappedComponentName(c, wrapper) {
-          var componentName = c.displayName || c.name || 'Component'
-          wrapper.displayName = 'OnClickOutside(' + componentName + ')';
+        var componentName = c.displayName || c.name || 'Component'
+        wrapper.displayName = 'OnClickOutside(' + componentName + ')';
       }(Component, wrapComponentWithOnClickOutsideHandling));
 
       return wrapComponentWithOnClickOutsideHandling;
