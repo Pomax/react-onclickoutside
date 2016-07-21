@@ -5,8 +5,6 @@ var wrapComponent = require('../index');
 
 describe('onclickoutside hoc', function() {
 
-  var externalToggleEnableClickOutside;
-
   var Component = React.createClass({
     getInitialState: function() {
       return {
@@ -22,12 +20,6 @@ describe('onclickoutside hoc', function() {
       else {
         this.props.disableOnClickOutside();
       }
-    },
-
-    componentDidMount: function() {
-      externalToggleEnableClickOutside = function(on) {
-        this.toggleEnableClickOutside(on);
-      }.bind(this);
     },
 
     handleClickOutside: function(event) {
@@ -84,7 +76,7 @@ describe('onclickoutside hoc', function() {
     assert(instance.state.timesHandlerCalled === 1, "handleClickOutside called");
 
     try {
-      externalToggleEnableClickOutside(false);
+      instance.toggleEnableClickOutside(false);
     }
     catch(error) {
       assert(false, 'this.props.disableOnClickOutside() should not be undefined.');
@@ -93,7 +85,7 @@ describe('onclickoutside hoc', function() {
     document.dispatchEvent(new Event('mousedown'));
     assert(instance.state.timesHandlerCalled === 1, "handleClickOutside not called after disableOnClickOutside()");
 
-    externalToggleEnableClickOutside(true);
+    instance.toggleEnableClickOutside(true);
     document.dispatchEvent(new Event('mousedown'));
     assert(instance.state.timesHandlerCalled === 2, "handleClickOutside called after enableOnClickOutside()");
   });
