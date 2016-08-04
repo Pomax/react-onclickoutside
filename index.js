@@ -68,7 +68,8 @@
    */
   function setupHOC(root, React, ReactDOM) {
 
-    var hocBody = function(Component, config) {
+    // The actual Component-wrapping HOC:
+    return function(Component, clickOutsideHandlerAccessor) {
       var wrapComponentWithOnClickOutsideHandling = React.createClass({
         statics: {
           /**
@@ -98,17 +99,16 @@
          */
         componentDidMount: function() {
           var instance = this.getInstance();
-          var clickOutsideAccessor = config && config.onClickOutside;
           var clickOutsideHandler;
 
-          if(typeof clickOutsideAccessor === "function") {
-            clickOutsideHandler = clickOutsideAccessor(instance);
+          if(typeof clickOutsideHandlerAccessor === "function") {
+            clickOutsideHandler = clickOutsideHandlerAccessor(instance);
             if(typeof clickOutsideHandler !== "function") {
-              throw new Error("Component lacks a function for processing outside click events specified by the onClickOutside config parameter.");
+              throw new Error("Component lacks a function for processing outside click events specified by the clickOutsideHandlerAccessor parameter.");
             }
           } else {
-            if(typeof instance.handleClickOutside !== "function") {
-              throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
+              if(typeof instance.handleClickOutside !== "function") {
+                throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
             }
             clickOutsideHandler = instance.handleClickOutside;
           }
@@ -207,18 +207,6 @@
       }(Component, wrapComponentWithOnClickOutsideHandling));
 
       return wrapComponentWithOnClickOutsideHandling;
-    };
-
-    // The actual Component-wrapping HOC:
-    return function(configOrComponent) {
-      // Detect the legacy call
-      if (typeof configOrComponent === 'function'){
-        return hocBody(configOrComponent);
-      }
-
-      return function(Component) {
-        return hocBody(Component, configOrComponent);
-      };
     };
   }
 
