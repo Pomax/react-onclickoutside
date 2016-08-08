@@ -69,7 +69,7 @@
   function setupHOC(root, React, ReactDOM) {
 
     // The actual Component-wrapping HOC:
-    return function(Component, clickOutsideHandlerAccessor) {
+    return function(Component, config) {
       var wrapComponentWithOnClickOutsideHandling = React.createClass({
         statics: {
           /**
@@ -101,10 +101,10 @@
           var instance = this.getInstance();
           var clickOutsideHandler;
 
-          if(typeof clickOutsideHandlerAccessor === "function") {
-            clickOutsideHandler = clickOutsideHandlerAccessor(instance);
+          if(config && typeof config.handleClickOutside === "function") {
+            clickOutsideHandler = config.handleClickOutside(instance);
             if(typeof clickOutsideHandler !== "function") {
-              throw new Error("Component lacks a function for processing outside click events specified by the clickOutsideHandlerAccessor parameter.");
+              throw new Error("Component lacks a function for processing outside click events specified by the handleClickOutside config option.");
             }
           } else {
               if(typeof instance.handleClickOutside !== "function") {
@@ -116,7 +116,7 @@
           var fn = this.__outsideClickHandler = generateOutsideCheck(
             ReactDOM.findDOMNode(instance),
             instance,
-            clickOutsideHandler.bind(instance),
+            clickOutsideHandler,
             this.props.outsideClickIgnoreClass || IGNORE_CLASS,
             this.props.preventDefault || false,
             this.props.stopPropagation || false
