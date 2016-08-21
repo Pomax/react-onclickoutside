@@ -56,4 +56,62 @@ describe('onclickoutside hoc', function() {
       assert(e, "component was not wrapped");
     }
   });
+
+
+  it('should call the specified handler when clicking the document', function() {
+    var CustomComponent = React.createClass({
+      getInitialState: function() {
+        return {
+          clickOutsideHandled: false
+        };
+      },
+
+      myOnClickHandler: function(event) {
+        if (event === undefined) {
+            throw new Error("event cannot be undefined");
+        }
+
+        this.setState({
+          clickOutsideHandled: true
+        });
+      },
+
+      render: function() {
+        return React.createElement('div');
+      }
+    });
+
+    var WrappedWithCustomHandler = wrapComponent(CustomComponent, {
+      handleClickOutside: function (instance) {
+        return instance.myOnClickHandler;
+      }
+    });
+
+    var element = React.createElement(WrappedWithCustomHandler);
+    assert(element, "element can be created");
+    var component = TestUtils.renderIntoDocument(element);
+    assert(component, "component renders correctly");
+    document.dispatchEvent(new Event('mousedown'));
+    var instance = component.getInstance();
+    assert(instance.state.clickOutsideHandled, "clickOutsideHandled got flipped");
+  });
+
+  it('should throw an error when a custom handler is specified, but the component does not implement it', function() {
+    var BadComponent = React.createClass({
+      render: function() {
+        return React.createElement('div');
+      }
+    });
+
+    try {
+      var bad = wrapComponent(BadComponent, {
+        handleClickOutside: function (instance) {
+          return instance.nonExistentMethod;
+        }
+      });
+      assert(false, "component was wrapped, despite not implementing the custom handler");
+    } catch (e) {
+      assert(e, "component was not wrapped");
+    }
+  });
 });

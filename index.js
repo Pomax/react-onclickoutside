@@ -33,7 +33,7 @@
    * Generate the event handler that checks whether a clicked DOM node
    * is inside of, or lives outside of, our Component's node tree.
    */
-  var generateOutsideCheck = function(componentNode, componentInstance, ignoreClass, preventDefault, stopPropagation) {
+  var generateOutsideCheck = function(componentNode, componentInstance, eventHandler, ignoreClass, preventDefault, stopPropagation) {
     return function(evt) {
       if (preventDefault) {
         evt.preventDefault();
@@ -56,7 +56,7 @@
       // If element is in a detached DOM, consider it "not clicked
       // outside", as it cannot be known whether it was outside.
       if(current !== document) return;
-      componentInstance.handleClickOutside.bind(componentInstance, evt)();
+      eventHandler(evt);
     }
   };
 
@@ -69,7 +69,7 @@
   function setupHOC(root, React, ReactDOM) {
 
     // The actual Component-wrapping HOC:
-    return function(Component) {
+    return function(Component, config) {
       var wrapComponentWithOnClickOutsideHandling = React.createClass({
         statics: {
           /**
@@ -99,14 +99,24 @@
          */
         componentDidMount: function() {
           var instance = this.getInstance();
+          var clickOutsideHandler;
 
-          if(typeof instance.handleClickOutside !== "function") {
-            throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
+          if(config && typeof config.handleClickOutside === "function") {
+            clickOutsideHandler = config.handleClickOutside(instance);
+            if(typeof clickOutsideHandler !== "function") {
+              throw new Error("Component lacks a function for processing outside click events specified by the handleClickOutside config option.");
+            }
+          } else {
+              if(typeof instance.handleClickOutside !== "function") {
+                throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
+            }
+            clickOutsideHandler = instance.handleClickOutside;
           }
 
           var fn = this.__outsideClickHandler = generateOutsideCheck(
             ReactDOM.findDOMNode(instance),
             instance,
+            clickOutsideHandler,
             this.props.outsideClickIgnoreClass || IGNORE_CLASS,
             this.props.preventDefault || false,
             this.props.stopPropagation || false
