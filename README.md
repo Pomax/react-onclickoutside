@@ -28,9 +28,8 @@ var MyComponent = onClickOutside(React.createClass({
 }));
 
 ```
-Note that if you try to wrap a React component class without a `handleClickOutside(evt)` handler like this, the HOC will throw an error.
-In order to use a custom event handler, you can specify the function to be used by the HOC as second parameter
-(this can be useful in environments like TypeScript, where the fact, that the wrapped component does not implement the handler becomes apparent at compile-time):
+Note that if you try to wrap a React component class without a `handleClickOutside(evt)` handler like this, the HOC will throw an error. In order to use a custom event handler, you can specify the function to be used by the HOC as second parameter
+(this can be useful in environments like TypeScript, where the fact that the wrapped component does not implement the handler can be fallged at compile-time):
 
 ```javascript
 // load the HOC:
@@ -51,7 +50,7 @@ var MyComponent = onClickOutside(React.createClass({
 
 ```
 
-Note that if you try to wrap a React component class while specifying a custom handler and the component does not implement it, the HOC will throw an error at run-time.
+Note that if you try to wrap a React component with a custom handler that the component does not implement, the HOC will throw an error at run-time.
 
 ## Regulate which events to listen for
 
