@@ -57,7 +57,6 @@ describe('onclickoutside hoc', function() {
     }
   });
 
-
   it('should call the specified handler when clicking the document', function() {
     var CustomComponent = React.createClass({
       getInitialState: function() {
@@ -88,12 +87,41 @@ describe('onclickoutside hoc', function() {
     });
 
     var element = React.createElement(WrappedWithCustomHandler);
-    assert(element, "element can be created");
+		assert(element, "element can be created");
     var component = TestUtils.renderIntoDocument(element);
     assert(component, "component renders correctly");
     document.dispatchEvent(new Event('mousedown'));
     var instance = component.getInstance();
     assert(instance.state.clickOutsideHandled, "clickOutsideHandled got flipped");
+  });
+
+	it('should fallback to call component.props.handleClickOutside when no component.handleClickOutside is defined', function() {
+		var StatelessComponent = React.createClass({
+			render: function() {
+				return React.createElement('div');
+			}
+		});
+    var clickOutsideHandled = false;
+		var WrappedStatelessComponent = wrapComponent(StatelessComponent);
+		var element = React.createElement(
+			WrappedStatelessComponent,
+			{
+				handleClickOutside: function(event) {
+					if (event === undefined) {
+		          throw new Error("event cannot be undefined");
+		      }
+
+		      clickOutsideHandled = true;
+				}
+			}
+		);
+
+    assert(element, "element can be created");
+    var component = TestUtils.renderIntoDocument(element);
+    assert(component, "component renders correctly");
+    document.dispatchEvent(new Event('mousedown'));
+    var instance = component.getInstance();
+    assert(clickOutsideHandled, "clickOutsideHandled got flipped");
   });
 
   it('should throw an error when a custom handler is specified, but the component does not implement it', function() {

@@ -107,10 +107,13 @@
               throw new Error("Component lacks a function for processing outside click events specified by the handleClickOutside config option.");
             }
           } else {
-              if(typeof instance.handleClickOutside !== "function") {
-                throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
+            if(typeof instance.handleClickOutside === "function") {
+              clickOutsideHandler = instance.handleClickOutside;
+            } else if(typeof instance.props.handleClickOutside === "function") {
+              clickOutsideHandler = instance.props.handleClickOutside;
+						} else {
+              throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
             }
-            clickOutsideHandler = instance.handleClickOutside;
           }
 
           var fn = this.__outsideClickHandler = generateOutsideCheck(
