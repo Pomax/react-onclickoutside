@@ -1,7 +1,7 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var wrapComponent = require('../index');
+var assert = require('chai').assert;
 
 describe('onclickoutside hoc', function() {
 
@@ -14,7 +14,7 @@ describe('onclickoutside hoc', function() {
 
     handleClickOutside: function(event) {
       if (event === undefined) {
-          throw new Error("event cannot be undefined");
+        throw new Error('event cannot be undefined');
       }
 
       this.setState({
@@ -33,12 +33,12 @@ describe('onclickoutside hoc', function() {
 
   it('should call handleClickOutside when clicking the document', function() {
     var element = React.createElement(WrappedComponent);
-    assert(element, "element can be created");
+    assert(element, 'element can be created');
     var component = TestUtils.renderIntoDocument(element);
-    assert(component, "component renders correctly");
+    assert(component, 'component renders correctly');
     document.dispatchEvent(new Event('mousedown'));
     var instance = component.getInstance();
-    assert(instance.state.clickOutsideHandled, "clickOutsideHandled got flipped");
+    assert(instance.state.clickOutsideHandled, 'clickOutsideHandled got flipped');
   });
 
 
@@ -50,10 +50,10 @@ describe('onclickoutside hoc', function() {
     });
 
     try {
-      var bad = wrapComponent(BadComponent);
-      assert(false, "component was wrapped, despite not implementing handleClickOutside(evt)");
+      wrapComponent(BadComponent);
+      assert(false, 'component was wrapped, despite not implementing handleClickOutside(evt)');
     } catch (e) {
-      assert(e, "component was not wrapped");
+      assert(e, 'component was not wrapped');
     }
   });
 
@@ -67,7 +67,7 @@ describe('onclickoutside hoc', function() {
 
       myOnClickHandler: function(event) {
         if (event === undefined) {
-            throw new Error("event cannot be undefined");
+          throw new Error('event cannot be undefined');
         }
 
         this.setState({
@@ -87,41 +87,41 @@ describe('onclickoutside hoc', function() {
     });
 
     var element = React.createElement(WrappedWithCustomHandler);
-		assert(element, "element can be created");
+    assert(element, 'element can be created');
     var component = TestUtils.renderIntoDocument(element);
-    assert(component, "component renders correctly");
+    assert(component, 'component renders correctly');
     document.dispatchEvent(new Event('mousedown'));
     var instance = component.getInstance();
-    assert(instance.state.clickOutsideHandled, "clickOutsideHandled got flipped");
+    assert(instance.state.clickOutsideHandled, 'clickOutsideHandled got flipped');
   });
 
-	it('should fallback to call component.props.handleClickOutside when no component.handleClickOutside is defined', function() {
-		var StatelessComponent = React.createClass({
-			render: function() {
-				return React.createElement('div');
-			}
-		});
+  it('should fallback to call component.props.handleClickOutside when no component.handleClickOutside is defined', function() {
+    var StatelessComponent = React.createClass({
+      render: function() {
+        return React.createElement('div');
+      }
+    });
     var clickOutsideHandled = false;
-		var WrappedStatelessComponent = wrapComponent(StatelessComponent);
-		var element = React.createElement(
+    var WrappedStatelessComponent = wrapComponent(StatelessComponent);
+    var element = React.createElement(
 			WrappedStatelessComponent,
-			{
-				handleClickOutside: function(event) {
-					if (event === undefined) {
-		          throw new Error("event cannot be undefined");
-		      }
+      {
+        handleClickOutside: function(event) {
+          if (event === undefined) {
+            throw new Error('event cannot be undefined');
+          }
 
-		      clickOutsideHandled = true;
-				}
-			}
+          clickOutsideHandled = true;
+        }
+      }
 		);
 
-    assert(element, "element can be created");
+    assert(element, 'element can be created');
     var component = TestUtils.renderIntoDocument(element);
-    assert(component, "component renders correctly");
+    assert(component, 'component renders correctly');
     document.dispatchEvent(new Event('mousedown'));
-    var instance = component.getInstance();
-    assert(clickOutsideHandled, "clickOutsideHandled got flipped");
+    component.getInstance();
+    assert(clickOutsideHandled, 'clickOutsideHandled got flipped');
   });
 
   it('should throw an error when a custom handler is specified, but the component does not implement it', function() {
@@ -132,14 +132,14 @@ describe('onclickoutside hoc', function() {
     });
 
     try {
-      var bad = wrapComponent(BadComponent, {
+      wrapComponent(BadComponent, {
         handleClickOutside: function (instance) {
           return instance.nonExistentMethod;
         }
       });
-      assert(false, "component was wrapped, despite not implementing the custom handler");
+      assert(false, 'component was wrapped, despite not implementing the custom handler');
     } catch (e) {
-      assert(e, "component was not wrapped");
+      assert(e, 'component was not wrapped');
     }
   });
 });

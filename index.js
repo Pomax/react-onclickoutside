@@ -2,7 +2,7 @@
  * A higher-order-component for handling onClickOutside for React components.
  */
 (function(root) {
-  "use strict";
+  'use strict';
 
   // administrative
   var registeredComponents = [];
@@ -57,7 +57,7 @@
       // outside", as it cannot be known whether it was outside.
       if(current !== document) return;
       eventHandler(evt);
-    }
+    };
   };
 
 
@@ -91,7 +91,7 @@
         },
 
         // this is given meaning in componentDidMount
-        __outsideClickHandler: function(evt) {},
+        __outsideClickHandler: function() {},
 
         /**
          * Add click listeners to the current document,
@@ -101,18 +101,18 @@
           var instance = this.getInstance();
           var clickOutsideHandler;
 
-          if(config && typeof config.handleClickOutside === "function") {
+          if(config && typeof config.handleClickOutside === 'function') {
             clickOutsideHandler = config.handleClickOutside(instance);
-            if(typeof clickOutsideHandler !== "function") {
-              throw new Error("Component lacks a function for processing outside click events specified by the handleClickOutside config option.");
+            if(typeof clickOutsideHandler !== 'function') {
+              throw new Error('Component lacks a function for processing outside click events specified by the handleClickOutside config option.');
             }
           } else {
-            if(typeof instance.handleClickOutside === "function") {
+            if(typeof instance.handleClickOutside === 'function') {
               clickOutsideHandler = instance.handleClickOutside;
-            } else if(typeof instance.props.handleClickOutside === "function") {
+            } else if(typeof instance.props.handleClickOutside === 'function') {
               clickOutsideHandler = instance.props.handleClickOutside;
-						} else {
-              throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
+            } else {
+              throw new Error('Component lacks a handleClickOutside(event) function for processing outside click events.');
             }
           }
 
@@ -167,9 +167,9 @@
          */
         enableOnClickOutside: function() {
           var fn = this.__outsideClickHandler;
-          if (typeof document !== "undefined") {
+          if (typeof document !== 'undefined') {
             var events = this.props.eventTypes || DEFAULT_EVENTS;
-            if (!events.forEach) { events = [events] };
+            if (!events.forEach) { events = [events]; }
             events.forEach(function (eventName) {
               document.addEventListener(eventName, fn);
             });
@@ -182,9 +182,9 @@
          */
         disableOnClickOutside: function() {
           var fn = this.__outsideClickHandler;
-          if (typeof document !== "undefined") {
+          if (typeof document !== 'undefined') {
             var events = this.props.eventTypes || DEFAULT_EVENTS;
-            if (!events.forEach) { events = [events] };
+            if (!events.forEach) { events = [events]; }
             events.forEach(function (eventName) {
               document.removeEventListener(eventName, fn);
             });
@@ -206,7 +206,7 @@
 
       // Add display name for React devtools
       (function bindWrappedComponentName(c, wrapper) {
-        var componentName = c.displayName || c.name || 'Component'
+        var componentName = c.displayName || c.name || 'Component';
         wrapper.displayName = 'OnClickOutside(' + componentName + ')';
       }(Component, wrapComponentWithOnClickOutsideHandling));
 
