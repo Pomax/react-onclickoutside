@@ -22,13 +22,17 @@
     "url": "https://github.com/Pomax/react-onclickoutside/issues"
   },
   "scripts": {
-    "test": "karma start test/karma.conf.js --single-run"
+    "test": "karma start test/karma.conf.js --single-run",
+    "lint": "eslint .",
+    "precommit": "npm run lint"
   },
   "dependencies": {
     "object-assign": "^4.0.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^3.3.1",
+    "husky": "^0.11.6",
     "karma": "^0.13.22",
     "karma-chai": "^0.1.0",
     "karma-mocha": "^0.2.2",

@@ -1,12 +1,13 @@
 /**
  * Human-triggered for now, this should become a normal phantom test instead
  */
+/* global onClickOutside */
 var Nested = React.createClass({
   getInitialState: function() {
     return { highlight: false };
   },
 
-  handleClickOutside: function(evt) {
+  handleClickOutside: function() {
     this.setState({ highlight: false });
   },
 
@@ -16,8 +17,8 @@ var Nested = React.createClass({
   },
 
   render: function() {
-    var className = "concentric" + (this.state.highlight? " highlight" : '');
-    return React.createElement("div", {
+    var className = 'concentric' + (this.state.highlight? ' highlight' : '');
+    return React.createElement('div', {
       className: className,
       children: this.props.children,
       onClick: this.highlight
@@ -38,7 +39,7 @@ var App = React.createClass({
         children: React.createElement(Nested, {
           id: 3,
           stopPropagation: true,
-          children: React.createElement("div", { className: "label", children: ["test"] })
+          children: React.createElement('div', { className: 'label', children: ['test'] })
         })
       })
     });
