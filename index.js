@@ -64,12 +64,14 @@
   /**
    * This function generates the HOC function that you'll use
    * in order to impart onOutsideClick listening to an
-   * arbitrary component.
+   * arbitrary component. It gets called at the end of the
+   * bootstrapping code to yield an instance of the
+   * onClickOutsideHOC function defined inside setupHOC().
    */
   function setupHOC(root, React, ReactDOM) {
 
     // The actual Component-wrapping HOC:
-    return function(Component, config) {
+    return function onClickOutsideHOC(Component, config) {
       var wrapComponentWithOnClickOutsideHandling = React.createClass({
         statics: {
           /**
@@ -193,10 +195,13 @@
          */
         render: function() {
           var passedProps = this.props;
-          var props = { ref: 'instance' };
+          var props = {};
           Object.keys(this.props).forEach(function(key) {
             props[key] = passedProps[key];
           });
+          props.ref = 'instance';
+          props.disableOnClickOutside = this.disableOnClickOutside;
+          props.enableOnClickOutside = this.enableOnClickOutside;
           return React.createElement(Component,  props);
         }
       });
