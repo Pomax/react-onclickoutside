@@ -23,7 +23,7 @@
   },
   "scripts": {
     "test": "npm run lint && karma start test/karma.conf.js --single-run",
-    "lint": "eslint index.js test/*.js",
+    "lint": "eslint index.js ./test",
     "precommit": "npm run lint"
   },
   "dependencies": {
