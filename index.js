@@ -2,7 +2,6 @@
  * A higher-order-component for handling onClickOutside for React components.
  */
 (function(root) {
-  "use strict";
 
   // administrative
   var registeredComponents = [];
@@ -43,21 +42,21 @@
       }
       var current = evt.target;
       var found = false;
-      // If source=local then this event came from "somewhere"
+      // If source=local then this event came from 'somewhere'
       // inside and should be ignored. We could handle this with
       // a layered approach, too, but that requires going back to
       // thinking in terms of Dom node nesting, running counter
-      // to React's "you shouldn't care about the DOM" philosophy.
+      // to React's 'you shouldn't care about the DOM' philosophy.
       while(current.parentNode) {
         found = isNodeFound(current, componentNode, ignoreClass);
         if(found) return;
         current = current.parentNode;
       }
-      // If element is in a detached DOM, consider it "not clicked
-      // outside", as it cannot be known whether it was outside.
+      // If element is in a detached DOM, consider it 'not clicked
+      // outside', as it cannot be known whether it was outside.
       if(current !== document) return;
       eventHandler(evt);
-    }
+    };
   };
 
 
@@ -93,7 +92,7 @@
         },
 
         // this is given meaning in componentDidMount
-        __outsideClickHandler: function(evt) {},
+        __outsideClickHandler: function() {},
 
         /**
          * Add click listeners to the current document,
@@ -103,14 +102,14 @@
           var instance = this.getInstance();
           var clickOutsideHandler;
 
-          if(config && typeof config.handleClickOutside === "function") {
+          if(config && typeof config.handleClickOutside === 'function') {
             clickOutsideHandler = config.handleClickOutside(instance);
-            if(typeof clickOutsideHandler !== "function") {
-              throw new Error("Component lacks a function for processing outside click events specified by the handleClickOutside config option.");
+            if(typeof clickOutsideHandler !== 'function') {
+              throw new Error('Component lacks a function for processing outside click events specified by the handleClickOutside config option.');
             }
           } else {
-              if(typeof instance.handleClickOutside !== "function") {
-                throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
+            if(typeof instance.handleClickOutside !== 'function') {
+              throw new Error('Component lacks a handleClickOutside(event) function for processing outside click events.');
             }
             clickOutsideHandler = instance.handleClickOutside;
           }
@@ -166,9 +165,11 @@
          */
         enableOnClickOutside: function() {
           var fn = this.__outsideClickHandler;
-          if (typeof document !== "undefined") {
+          if (typeof document !== 'undefined') {
             var events = this.props.eventTypes || DEFAULT_EVENTS;
-            if (!events.forEach) { events = [events] };
+            if (!events.forEach) {
+              events = [events];
+            }
             events.forEach(function (eventName) {
               document.addEventListener(eventName, fn);
             });
@@ -181,9 +182,11 @@
          */
         disableOnClickOutside: function() {
           var fn = this.__outsideClickHandler;
-          if (typeof document !== "undefined") {
+          if (typeof document !== 'undefined') {
             var events = this.props.eventTypes || DEFAULT_EVENTS;
-            if (!events.forEach) { events = [events] };
+            if (!events.forEach) {
+              events = [events];
+            }
             events.forEach(function (eventName) {
               document.removeEventListener(eventName, fn);
             });
@@ -208,7 +211,7 @@
 
       // Add display name for React devtools
       (function bindWrappedComponentName(c, wrapper) {
-        var componentName = c.displayName || c.name || 'Component'
+        var componentName = c.displayName || c.name || 'Component';
         wrapper.displayName = 'OnClickOutside(' + componentName + ')';
       }(Component, wrapComponentWithOnClickOutsideHandling));
 
