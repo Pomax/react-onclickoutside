@@ -1,5 +1,4 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var wrapComponent = require('../index');
 
@@ -24,7 +23,7 @@ describe('onclickoutside hoc', function() {
 
     handleClickOutside: function(event) {
       if (event === undefined) {
-          throw new Error("event cannot be undefined");
+        throw new Error('event cannot be undefined');
       }
 
       this.setState({
@@ -44,12 +43,12 @@ describe('onclickoutside hoc', function() {
 
   it('should call handleClickOutside when clicking the document', function() {
     var element = React.createElement(WrappedComponent);
-    assert(element, "element can be created");
+    assert(element, 'element can be created');
     var component = TestUtils.renderIntoDocument(element);
-    assert(component, "component renders correctly");
+    assert(component, 'component renders correctly');
     document.dispatchEvent(new Event('mousedown'));
     var instance = component.getInstance();
-    assert(instance.state.clickOutsideHandled, "clickOutsideHandled got flipped");
+    assert(instance.state.clickOutsideHandled, 'clickOutsideHandled got flipped');
   });
 
 
@@ -61,10 +60,10 @@ describe('onclickoutside hoc', function() {
     });
 
     try {
-      var bad = wrapComponent(BadComponent);
-      assert(false, "component was wrapped, despite not implementing handleClickOutside(evt)");
+      wrapComponent(BadComponent);
+      assert(false, 'component was wrapped, despite not implementing handleClickOutside(evt)');
     } catch (e) {
-      assert(e, "component was not wrapped");
+      assert(e, 'component was not wrapped');
     }
   });
 
@@ -79,7 +78,7 @@ describe('onclickoutside hoc', function() {
 
       myOnClickHandler: function(event) {
         if (event === undefined) {
-            throw new Error("event cannot be undefined");
+          throw new Error('event cannot be undefined');
         }
 
         this.setState({
@@ -99,12 +98,12 @@ describe('onclickoutside hoc', function() {
     });
 
     var element = React.createElement(WrappedWithCustomHandler);
-    assert(element, "element can be created");
+    assert(element, 'element can be created');
     var component = TestUtils.renderIntoDocument(element);
-    assert(component, "component renders correctly");
+    assert(component, 'component renders correctly');
     document.dispatchEvent(new Event('mousedown'));
     var instance = component.getInstance();
-    assert(instance.state.clickOutsideHandled, "clickOutsideHandled got flipped");
+    assert(instance.state.clickOutsideHandled, 'clickOutsideHandled got flipped');
   });
 
 
@@ -116,14 +115,14 @@ describe('onclickoutside hoc', function() {
     });
 
     try {
-      var bad = wrapComponent(BadComponent, {
+      wrapComponent(BadComponent, {
         handleClickOutside: function (instance) {
           return instance.nonExistentMethod;
         }
       });
-      assert(false, "component was wrapped, despite not implementing the custom handler");
+      assert(false, 'component was wrapped, despite not implementing the custom handler');
     } catch (e) {
-      assert(e, "component was not wrapped");
+      assert(e, 'component was not wrapped');
     }
   });
 
@@ -133,7 +132,7 @@ describe('onclickoutside hoc', function() {
     var component = TestUtils.renderIntoDocument(element);
     document.dispatchEvent(new Event('mousedown'));
     var instance = component.getInstance();
-    assert(instance.state.timesHandlerCalled === 1, "handleClickOutside called");
+    assert(instance.state.timesHandlerCalled === 1, 'handleClickOutside called');
 
     try {
       instance.toggleEnableClickOutside(false);
@@ -143,10 +142,10 @@ describe('onclickoutside hoc', function() {
     }
 
     document.dispatchEvent(new Event('mousedown'));
-    assert(instance.state.timesHandlerCalled === 1, "handleClickOutside not called after disableOnClickOutside()");
+    assert(instance.state.timesHandlerCalled === 1, 'handleClickOutside not called after disableOnClickOutside()');
 
     instance.toggleEnableClickOutside(true);
     document.dispatchEvent(new Event('mousedown'));
-    assert(instance.state.timesHandlerCalled === 2, "handleClickOutside called after enableOnClickOutside()");
+    assert(instance.state.timesHandlerCalled === 2, 'handleClickOutside called after enableOnClickOutside()');
   });
 });
