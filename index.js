@@ -108,12 +108,20 @@
               throw new Error('Component lacks a function for processing outside click events specified by the handleClickOutside config option.');
             }
           } else if(typeof instance.handleClickOutside === 'function') {
-            clickOutsideHandler = instance.handleClickOutside;
+            if (React.Component.prototype.isPrototypeOf(instance)) {
+              clickOutsideHandler = instance.handleClickOutside.bind(instance);
+            } else {
+              clickOutsideHandler = instance.handleClickOutside;
+            }
           } else if(typeof instance.props.handleClickOutside === 'function') {
-            clickOutsideHandler = instance.props.handleClickOutside;
+            if (React.Component.prototype.isPrototypeOf(instance)) {
+              clickOutsideHandler = instance.props.handleClickOutside.bind(instance);
+            } else {
+              clickOutsideHandler = instance.props.handleClickOutside;
+            }
           } else {
             throw new Error('Component lacks a handleClickOutside(event) function for processing outside click events.');
-          }             
+          }
 
           var fn = this.__outsideClickHandler = generateOutsideCheck(
             ReactDOM.findDOMNode(instance),
