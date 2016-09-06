@@ -69,14 +69,15 @@ describe('onclickoutside hoc', function() {
 
 
   it('should call the specified handler when clicking the document', function() {
-    var Component = React.createClass({
-      getInitialState: function() {
-        return {
+    class Component extends React.Component {
+      constructor(...args) {
+        super(...args);
+        this.state = {
           clickOutsideHandled: false
         };
-      },
+      }
 
-      myOnClickHandler: function(event) {
+      handleClickOutside (event) {
         if (event === undefined) {
           throw new Error('event cannot be undefined');
         }
@@ -84,18 +85,14 @@ describe('onclickoutside hoc', function() {
         this.setState({
           clickOutsideHandled: true
         });
-      },
+      }
 
-      render: function() {
+      render() {
         return React.createElement('div');
       }
-    });
+    }
 
-    var WrappedWithCustomHandler = wrapComponent(Component, {
-      handleClickOutside: function (instance) {
-        return instance.myOnClickHandler;
-      }
-    });
+    var WrappedWithCustomHandler = wrapComponent(Component);
 
     var element = React.createElement(WrappedWithCustomHandler);
     assert(element, 'element can be created');
