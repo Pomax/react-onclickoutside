@@ -114,11 +114,7 @@
               clickOutsideHandler = instance.handleClickOutside;
             }
           } else if(typeof instance.props.handleClickOutside === 'function') {
-            if (React.Component.prototype.isPrototypeOf(instance)) {
-              clickOutsideHandler = instance.props.handleClickOutside.bind(instance);
-            } else {
-              clickOutsideHandler = instance.props.handleClickOutside;
-            }
+            clickOutsideHandler = instance.props.handleClickOutside;
           } else {
             throw new Error('Component lacks a handleClickOutside(event) function for processing outside click events.');
           }
