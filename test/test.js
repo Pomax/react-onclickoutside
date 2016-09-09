@@ -66,7 +66,7 @@ describe('onclickoutside hoc', function() {
       assert(e, 'component was not wrapped');
     }
   });
-  
+
 
   describe('with instance method', function() {
     it('and class inheritance, should call the specified handler when clicking the document', function() {
@@ -112,17 +112,17 @@ describe('onclickoutside hoc', function() {
             clickOutsideHandled: false
           };
         },
- 
+
         handleClickOutside: function(event) {
           if (event === undefined) {
             throw new Error('event cannot be undefined');
           }
-  
+
           this.setState({
             clickOutsideHandled: true
           });
         },
-   
+
         render: function() {
           return React.createElement('div');
         }
@@ -195,9 +195,8 @@ describe('onclickoutside hoc', function() {
       assert(clickOutsideHandled, 'clickOutsideHandled got flipped');
     });
 
-    
-    // ToDo: Does not work
-    it.skip('and stateless function, should call the specified handler when clicking the document', function() {
+
+    it('and stateless function, should call the specified handler when clicking the document', function() {
       var Component = function() {
         return React.createElement('div');
       };
