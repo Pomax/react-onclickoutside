@@ -4,6 +4,8 @@ This is a React **H**igher **O**rder **C**omponent that you can use with your ow
 
 Note that this HOC relies on the `.classList` property, which is supported by all modern browsers, but not by no longer supported browsers like IE9 or older. If your code relies on classList in any way, you want to use a polyfill like [dom4](https://github.com/WebReflection/dom4)
 
+This HOC supports stateless components as of v5.7.0
+
 ## Installation
 
 Use `npm`:
