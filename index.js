@@ -99,6 +99,13 @@
          * linked to this component's state.
          */
         componentDidMount: function() {
+          // If we are in an environment without a DOM such 
+          // as shallow rendering or snapshots then we exit 
+          // early to prevent any unhandled errors being thrown.
+          if (!ReactDOM.findDOMNode){
+            return;
+          }
+
           var instance = this.getInstance();
           var clickOutsideHandler;
 
