@@ -15,7 +15,6 @@
   "globals": {
     "React": true,
     "ReactDOM": true,
-    "ExecutionEnvironment": true,
     "assert": true
   },
   "rules": {
