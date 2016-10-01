@@ -67,7 +67,7 @@
    * bootstrapping code to yield an instance of the
    * onClickOutsideHOC function defined inside setupHOC().
    */
-  function setupHOC(root, React, ReactDOM, ExecutionEnvironment) {
+  function setupHOC(root, React, ReactDOM) {
 
     // The actual Component-wrapping HOC:
     return function onClickOutsideHOC(Component, config) {
@@ -102,7 +102,7 @@
           // If we are in an environment without a DOM such 
           // as shallow rendering or snapshots then we exit 
           // early to prevent any unhandled errors being thrown.
-          if (!ExecutionEnvironment.canUseDOM){
+          if (typeof document === 'undefined' || !document.createElement){
             return;
           }
 
@@ -241,20 +241,17 @@
   function setupBinding(root, factory) {
     if (typeof define === 'function' && define.amd) {
       // AMD. Register as an anonymous module.
-      define(['react','react-dom', 'exenv'], function(React, ReactDom, ExecutionEnvironment) {
-        return factory(root, React, ReactDom, ExecutionEnvironment);
+      define(['react','react-dom'], function(React, ReactDom) {
+        return factory(root, React, ReactDom);
       });
     } else if (typeof exports === 'object') {
       // Node. Note that this does not work with strict
       // CommonJS, but only CommonJS-like environments
       // that support module.exports
-      module.exports = factory(root, 
-        require('react'), 
-        require('react-dom'),
-        require('exenv'));
+      module.exports = factory(root, require('react'), require('react-dom'));
     } else {
       // Browser globals (root is window)
-      root.onClickOutside = factory(root, React, ReactDOM, ExecutionEnvironment);
+      root.onClickOutside = factory(root, React, ReactDOM);
     }
   }
 

@@ -28,7 +28,6 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "exenv": "^1.2.1",
     "object-assign": "^4.0.1"
   },
   "devDependencies": {
