@@ -22,7 +22,8 @@
     "url": "https://github.com/Pomax/react-onclickoutside/issues"
   },
   "scripts": {
-    "test": "npm run lint && karma start test/karma.conf.js --single-run",
+    "test": "npm run lint && karma start test/karma.conf.js --single-run && npm run test:nodom",
+    "test:nodom": "mocha test/no-dom-test.js",
     "lint": "eslint index.js ./test",
     "precommit": "npm run lint"
   },
@@ -45,6 +46,8 @@
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.0.0",
     "react-dom": "^15.0.0",
+    "react-test-renderer": "^15.0.0",
+    "require-hijack": "^1.2.1",
     "webpack": "^1.12.14"
   }
 }
