@@ -1,9 +1,11 @@
 {
   "name": "react-onclickoutside",
-  "version": "5.7.1",
+  "version": "5.7.2",
   "description": "An onClickOutside mixin for React components",
   "main": "index.js",
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "homepage": "https://github.com/Pomax/react-onclickoutside",
   "authors": [
     "Pomax <pomax@nihongoresources.com>"
