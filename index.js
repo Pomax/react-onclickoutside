@@ -25,7 +25,7 @@
     if (current.correspondingElement) {
       return current.correspondingElement.classList.contains(ignoreClass);
     }
-    return current.classList.contains(ignoreClass);
+    return current.classList && current.classList.contains(ignoreClass);
   };
 
   /**
