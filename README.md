@@ -99,7 +99,7 @@ Using `disableOnClickOutside()` or `enableOnClickOutside()` within `componentDid
 
 ## Regulating `evt.preventDefault()` and `evt.stopPropagation()`
 
-Technically this HOC lets you pass in `preventDefault={true/false}` and `preventDefault={true/false}` to regulate what happens to the event when it hits your `handleClickOutside(evt)` function, but beware: `stopPropagation` may not do what you expect it to do.
+Technically this HOC lets you pass in `preventDefault={true/false}` and `stopPropagation={true/false}` to regulate what happens to the event when it hits your `handleClickOutside(evt)` function, but beware: `stopPropagation` may not do what you expect it to do.
 
 Each component adds new event listeners to the document, which may or may not cause as many event triggers as there are event listening bindings. In the test file found in `./test/browser/index.html`, the coded uses `stopPropagation={true}` but sibling events still make it to "parents".   
 
