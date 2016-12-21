@@ -31,13 +31,38 @@
       .concentric.highlight .label {
         color: black;
       }
+
+      hr {
+        margin: 2em 0;
+        border: none;
+        border-bottom: 5px dotted black;
+      }
     </style>
   </head>
   <body>
-    <div id="app"></div>
     <script src="../../node_modules/react/dist/react-with-addons.js"></script>
     <script src="../../node_modules/react-dom/dist/react-dom.js"></script>
     <script src="../../index.js"></script>
-    <script src="testit.js"></script>
+
+
+    <button onclick="console.log('test')">test</button>
+
+    <hr>
+
+    <div id="app1"></div>
+    <script src="test1.js"></script>
+
+    <hr>
+
+    <div id="app2"></div>
+    <link ref="stylesheet" href="style2.css">
+    <script src="test2.js"></script>
+
+    <hr>
+
+    <p>Test 3 should have generated a large error and warning text in the console.</p>
+    <div id="app3"></div>
+    <script src="test3.js"></script>
+
   </body>
 </html>

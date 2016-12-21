@@ -294,4 +294,21 @@ describe('onclickoutside hoc', function() {
     assert(clickOutsideHandled, 'clickOutsideHandled got flipped');
   });
 
+  describe('with child rendering as null', function() {
+    var StatelessComponent = React.createClass({
+      render: function() {
+        return null;
+      }
+    });
+
+    it('should throw an error when wrapped component renders as null', function() {
+      try {
+        wrapComponent(StatelessComponent);
+        assert(false, 'component was wrapped despite having no DOM node on mount');
+      } catch(e) {
+        assert(true, 'an error was thrown');
+      }
+    });
+  });
+
 });
