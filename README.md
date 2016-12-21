@@ -31,7 +31,7 @@ var MyComponent = onClickOutside(React.createClass({
 
 ```
 Note that if you try to wrap a React component class without a `handleClickOutside(evt)` handler like this, the HOC will throw an error. In order to use a custom event handler, you can specify the function to be used by the HOC as second parameter
-(this can be useful in environments like TypeScript, where the fact that the wrapped component does not implement the handler can be fallged at compile-time):
+(this can be useful in environments like TypeScript, where the fact that the wrapped component does not implement the handler can be flagged at compile-time):
 
 ```javascript
 // load the HOC:
@@ -96,7 +96,7 @@ class UI extends React.Component {
 }
 ```
 
-Runnign this code will result in a console log that looks like this:
+Running this code will result in a console log that looks like this:
 
 ![](warning.png)
 
@@ -188,7 +188,7 @@ var Container = React.createClass({
 });
 ```
 
-Using `disableOnClickOutside()` or `enableOnClickOutside()` within `componentDidMount` or `componentWillMount` is considered an anti-pattern, and does not have consistent behavior when using the mixin and HOC/ES7 Decorator. Favor setting the `disableOnClickOutside` property on the component.
+Using `disableOnClickOutside()` or `enableOnClickOutside()` within `componentDidMount` or `componentWillMount` is considered an anti-pattern, and does not have consistent behaviour when using the mixin and HOC/ES7 Decorator. Favour setting the `disableOnClickOutside` property on the component.
 
 ## Regulating `evt.preventDefault()` and `evt.stopPropagation()`
 
@@ -254,6 +254,6 @@ I do not believe in perpetual support for outdated libraries, so if you find one
 
 This is true, but also an edge-case problem that only exists for older versions of IE (including IE11), and should be addressed by you, rather than by  thousands of individual libraries that assume browsers have proper HTML API implementations (IE Edge has proper `classList` support even for SVG).
 
-If you need this to work, you can add a shim for `classList` to your page(s), loaded before you load your React code, and you'll have instantly fixed *every* library that you might remotely rely on that makes use of the `classList` property. You can find several shims quite easily, a good one to start with is the [dom4](https://github.com/WebReflection/dom4) shim, which addss all manner of good DOM4 properties to "not quite at DOM4 yet" browser implementations.
+If you need this to work, you can add a shim for `classList` to your page(s), loaded before you load your React code, and you'll have instantly fixed *every* library that you might remotely rely on that makes use of the `classList` property. You can find several shims quite easily, a good one to start with is the [dom4](https://github.com/WebReflection/dom4) shim, which adds all manner of good DOM4 properties to "not quite at DOM4 yet" browser implementations.
 
-Eventually this problem will stop being one, but in the mean time *you* are responsible for making *your* site work by shimming everything that needs shimming for IE.  As such, **if you file a PR to fix classList-and-SVG issues specifically for this library, your PR will be clossed and I will politely point you to this README.md section**. I will not accept PRs to fix this issue. You already have the power to fix it, and I expect you to take responsibility as a fellow developer to shim what you need instead of getting obsolete quirks supported by libraries whose job isn't to support obsolete quirks.
+Eventually this problem will stop being one, but in the mean time *you* are responsible for making *your* site work by shimming everything that needs shimming for IE.  As such, **if you file a PR to fix classList-and-SVG issues specifically for this library, your PR will be closed and I will politely point you to this README.md section**. I will not accept PRs to fix this issue. You already have the power to fix it, and I expect you to take responsibility as a fellow developer to shim what you need instead of getting obsolete quirks supported by libraries whose job isn't to support obsolete quirks.
