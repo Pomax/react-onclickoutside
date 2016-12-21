@@ -1,6 +1,6 @@
 {
   "name": "react-onclickoutside",
-  "version": "5.7.2",
+  "version": "5.8.0",
   "description": "An onClickOutside mixin for React components",
   "main": "index.js",
   "files": [
