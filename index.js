@@ -154,7 +154,6 @@
               'render all of *its* children, but it should never return `null` for itself. It is not responsible',
               'for that decision.'
             ].join(' '));
-            throw new Error('onClickOutside was NOT applied to', instance.constructor.name);
           }
 
           var fn = this.__outsideClickHandler = generateOutsideCheck(
