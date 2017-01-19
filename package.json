@@ -30,9 +30,6 @@
     "lint": "eslint index.js ./test",
     "precommit": "npm run lint"
   },
-  "dependencies": {
-    "object-assign": "^4.0.1"
-  },
   "devDependencies": {
     "babel-preset-es2015": "^6.14.0",
     "chai": "^3.5.0",
