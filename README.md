@@ -16,7 +16,7 @@ $> npm install react-onclickoutside --save
 
 (or `--save-dev` depending on your needs). You then use it in your components as:
 
-```javascript
+```js
 // load the HOC:
 var onClickOutside = require('react-onclickoutside');
 
@@ -33,7 +33,7 @@ var MyComponent = onClickOutside(React.createClass({
 Note that if you try to wrap a React component class without a `handleClickOutside(evt)` handler like this, the HOC will throw an error. In order to use a custom event handler, you can specify the function to be used by the HOC as second parameter
 (this can be useful in environments like TypeScript, where the fact that the wrapped component does not implement the handler can be flagged at compile-time):
 
-```javascript
+```js
 // load the HOC:
 var onClickOutside = require('react-onclickoutside');
 
@@ -59,7 +59,7 @@ Note that if you try to wrap a React component with a custom handler that the co
 If you are using this HOC to toggle visibility of UI elements, make sure you understand how responsibility for this works in React. While in a traditional web setting you would simply call something like `.show()` and `.hide()` on a part of the UI you want to toggle visibility for, using CSS properties, React instead is about *simply not showing UI unless it should be visible*.
 
 As such, doing **the following is a guaranteed error** for onClickOutside:
-```
+```js
 class InitiallyHidden extends React.Component {
   constructor(props) {
     super(props);
@@ -104,9 +104,9 @@ The reason this code will fail is that this component can mount *without* a DOM 
 
 Instead, the parent should decide whether some child component should render at all, and any component should assume that when its `render()` function is called, it should render itself.
 
-A refactor is typically trivially effected, and **the following code will work fine**: 
+A refactor is typically trivially effected, and **the following code will work fine**:
 
-```
+```js
 class InitiallyHidden extends React.Component {
   constructor(props) {
     super(props);
@@ -145,19 +145,19 @@ class UI extends React.Component {
 
 Here we have code where each component trusts that its `render()` will only get called when there is in fact something to render, and the `UI` component does this by making sure to check what *it* needs to render.
 
-The onOutsideClick HOC will work just fine with this kind of code. 
+The onOutsideClick HOC will work just fine with this kind of code.
 
 ## Regulate which events to listen for
 
 By default, "outside clicks" are based on both `mousedown` and `touchstart` events; if that is what you need, then you do not need to specify anything special. However, if you need different events, you can specify these using the `eventTypes` property. If you just need one event, you can pass in the event name as plain string:
 
-```
+```js
 <MyComponent eventTypes="click" ... />
 ```
 
 For multiple events, you can pass in the array of event names you need to listen for:
 
-```
+```js
 <MyComponent eventTypes={["click", "touchend"]} ... />
 ```
 
@@ -170,7 +170,7 @@ Wrapped components have two functions that can be used to explicitly listen for,
 
 In addition, you can create a component that uses this HOC such that it has the code set up and ready to go, but not listening for outside click events until you explicitly issue its `enableOnClickOutside()`, by passing in a properly called `disableOnClickOutside`:
 
-```javascript
+```js
 var onClickOutside = require('react-onclickoutside');
 
 var MyComponent = onClickOutside(React.createClass({
@@ -194,7 +194,7 @@ Using `disableOnClickOutside()` or `enableOnClickOutside()` within `componentDid
 
 Technically this HOC lets you pass in `preventDefault={true/false}` and `stopPropagation={true/false}` to regulate what happens to the event when it hits your `handleClickOutside(evt)` function, but beware: `stopPropagation` may not do what you expect it to do.
 
-Each component adds new event listeners to the document, which may or may not cause as many event triggers as there are event listening bindings. In the test file found in `./test/browser/index.html`, the coded uses `stopPropagation={true}` but sibling events still make it to "parents".   
+Each component adds new event listeners to the document, which may or may not cause as many event triggers as there are event listening bindings. In the test file found in `./test/browser/index.html`, the coded uses `stopPropagation={true}` but sibling events still make it to "parents".
 
 ## Marking elements as "skip over this one" during the event loop
 
@@ -210,7 +210,7 @@ If you *absolutely* need a mixin... you really don't.
 
 No, I get that. I constantly have that problem myself, so while there is no universal agreement on how to do that, this HOC offers a `getInstance()` function that you can call for a reference to the component you wrapped, so that you can call its API without headaches:
 
-```javascript
+```js
 var onClickOutside = require('react-onclickoutside');
 
 var MyComponent = onClickOutside(React.createClass({
@@ -224,9 +224,9 @@ var MyComponent = onClickOutside(React.createClass({
 var Container = React.createClass({
   someFunction: function() {
     var ref = this.refs.mycomp;
-    // 1) Get the wrapped component instance: 
-    var superTrueMyComponent = ref.getInstance();   
-    // and call instance functions defined for it: 
+    // 1) Get the wrapped component instance:
+    var superTrueMyComponent = ref.getInstance();
+    // and call instance functions defined for it:
     superTrueMyComponent.customFunction();
   },
 
@@ -242,7 +242,7 @@ Note that there is also a `getClass()` function, to get the original Class that 
 
 If you use **React 0.12 or 0.13**, **version 2.4 and below** will work.
 
-If you use **React 0.14*, use **v2.5 through v4.9**, as these specifically use `react-DOM` for the necessary DOM event bindings.
+If you use **React 0.14**, use **v2.5 through v4.9**, as these specifically use `react-DOM` for the necessary DOM event bindings.
 
 If you use **React 15** (or higher), you can use **v4.x, which offers both a mixin and HOC, or use v5.x, which is HOC-only**.
 
