@@ -43,10 +43,10 @@
     "karma-webpack": "^2.0.2",
     "mocha": "^3.2.0",
     "phantomjs-prebuilt": "^2.1.7",
-    "react": "^15.0.0",
-    "react-addons-test-utils": "^15.0.0",
-    "react-dom": "^15.0.0",
-    "react-test-renderer": "^15.0.0",
+    "react": "^15.4.2",
+    "react-addons-test-utils": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-test-renderer": "^15.4.2",
     "require-hijack": "^1.2.1",
     "webpack": "^1.12.14"
   }
