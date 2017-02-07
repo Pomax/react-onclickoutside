@@ -190,6 +190,24 @@ var Container = React.createClass({
 
 Using `disableOnClickOutside()` or `enableOnClickOutside()` within `componentDidMount` or `componentWillMount` is considered an anti-pattern, and does not have consistent behaviour when using the mixin and HOC/ES7 Decorator. Favour setting the `disableOnClickOutside` property on the component.
 
+## Regulate whether or not to listen to scrollbar clicks
+
+By default this HOC will listen for "clicks inside the document", which may include clicks that occur on the scrollbar. Quite often clicking on the scrollbar *should* close whatever is open but in case your project invalidates that assumption you can use the `excludeScrollbar` property to explicitly tell the HOC that clicks on the scrollbar should be ignored:
+
+```js
+var onClickOutside = require('react-onclickoutside');
+
+var MyComponent = onClickOutside(React.createClass({
+  ...
+}));
+
+var Container = React.createClass({
+  render: function(evt) {
+    return <MyComponent excludeScrollbar={true} />
+  }
+});
+``` 
+
 ## Regulating `evt.preventDefault()` and `evt.stopPropagation()`
 
 Technically this HOC lets you pass in `preventDefault={true/false}` and `stopPropagation={true/false}` to regulate what happens to the event when it hits your `handleClickOutside(evt)` function, but beware: `stopPropagation` may not do what you expect it to do.
