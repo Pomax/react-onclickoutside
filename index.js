@@ -162,14 +162,19 @@
               'for that decision.'
             ].join(' '));
           }
-          
+
           if (this.__node === componentNode) {
             /*
-              If the node hasnt changed after an update, then return
+              If the node hasnt changed after an update, then return.
             */
             return;
+          } else {
+            /*
+              Disable existing click handlers because we will set new ones.
+            */
+            this.disableOnClickOutside();
           }
-          
+
           this.__node = componentNode;
 
           var fn = this.__outsideClickHandler = generateOutsideCheck(
@@ -181,12 +186,12 @@
             this.props.preventDefault || false,
             this.props.stopPropagation || false
           );
-          
+
           if (!this.__pos) {
             this.__pos = registeredComponents.length;
             registeredComponents.push(this);
           }
-         
+
           handlers[this.__pos] = fn;
 
           // If there is a truthy disableOnClickOutside property for this
@@ -195,14 +200,14 @@
             this.enableOnClickOutside();
           }
         },
-        
+
         componentDidMount: function() {
           this.__setOutsideClickHandler();
         },
-        
+
         componentDidUpdate: function(prevProps) {
           this.__setOutsideClickHandler();
-          
+
           if (this.props.disableOnClickOutside && !prevProps.disableOnClickOutside) {
             this.disableOnClickOutside();
           } else if (!this.props.disableOnClickOutside && prevProps.disableOnClickOutside) {
