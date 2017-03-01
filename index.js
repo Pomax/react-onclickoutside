@@ -199,17 +199,11 @@
         componentDidMount: function() {
           this.__setOutsideClickHandler();
         },
-        /**
-        * Track for disableOnClickOutside props changes and enable/disable click outside
-        */
-        componentWillReceiveProps: function(nextProps) {
-         
-        },
         
         componentDidUpdate: function(prevProps) {
           this.__setOutsideClickHandler();
           
-           if (this.props.disableOnClickOutside && !prevProps.disableOnClickOutside) {
+          if (this.props.disableOnClickOutside && !prevProps.disableOnClickOutside) {
             this.disableOnClickOutside();
           } else if (!this.props.disableOnClickOutside && prevProps.disableOnClickOutside) {
             this.enableOnClickOutside();
