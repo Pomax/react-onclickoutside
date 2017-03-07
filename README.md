@@ -30,6 +30,23 @@ var MyComponent = onClickOutside(React.createClass({
 }));
 
 ```
+
+or:
+
+```js
+// ES6 Class Syntax
+import React, { Component } from 'react'
+import onClickOutside from 'react-onclickoutside'
+
+class MyComponent extends Component {
+  handleClickOutside = evt => {
+    // ..handling code goes here...
+  }
+}
+
+export default onClickOutside(MyComponent)
+```
+
 Note that if you try to wrap a React component class without a `handleClickOutside(evt)` handler like this, the HOC will throw an error. In order to use a custom event handler, you can specify the function to be used by the HOC as second parameter
 (this can be useful in environments like TypeScript, where the fact that the wrapped component does not implement the handler can be flagged at compile-time):
 
