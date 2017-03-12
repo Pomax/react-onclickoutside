@@ -55,7 +55,7 @@
    * Check if the browser scrollbar was clicked
    */
   var clickedScrollbar = function(evt) {
-    return document.documentElement.clientWidth <= evt.clientX;
+    return document.documentElement.clientWidth <= evt.clientX || document.documentElement.clientHeight <= evt.clientY;
   };
 
   /**
