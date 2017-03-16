@@ -225,6 +225,16 @@ var Container = React.createClass({
 });
 ``` 
 
+Alternatively, you can specify this behavior as default for all instances of your component passing a configuration object as second parameter:
+
+```js
+var MyComponent = onClickOutside(React.createClass({
+  ...
+}), {
+  excludeScrollbar: true
+});
+``` 
+
 ## Regulating `evt.preventDefault()` and `evt.stopPropagation()`
 
 Technically this HOC lets you pass in `preventDefault={true/false}` and `stopPropagation={true/false}` to regulate what happens to the event when it hits your `handleClickOutside(evt)` function, but beware: `stopPropagation` may not do what you expect it to do.

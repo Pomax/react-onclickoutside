@@ -112,6 +112,12 @@
         // this is given meaning in componentDidMount
         __outsideClickHandler: function() {},
 
+        getDefaultProps: function() {
+          return {
+            excludeScrollbar: config && config.excludeScrollbar
+          };
+        },
+
         /**
          * Add click listeners to the current document,
          * linked to this component's state.
