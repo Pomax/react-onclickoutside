@@ -174,7 +174,7 @@
             instance,
             clickOutsideHandler,
             this.props.outsideClickIgnoreClass || IGNORE_CLASS,
-            this.props.excludeScrollbar,
+            this.props.excludeScrollbar, // fallback not needed, prop always exists because of getDefaultProps
             this.props.preventDefault || false,
             this.props.stopPropagation || false
           );
