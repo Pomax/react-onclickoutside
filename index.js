@@ -174,7 +174,7 @@
             instance,
             clickOutsideHandler,
             this.props.outsideClickIgnoreClass || IGNORE_CLASS,
-            this.props.excludeScrollbar || false,
+            this.props.excludeScrollbar,
             this.props.preventDefault || false,
             this.props.stopPropagation || false
           );
