@@ -112,6 +112,12 @@
         // this is given meaning in componentDidMount
         __outsideClickHandler: function() {},
 
+        getDefaultProps: function() {
+          return {
+            excludeScrollbar: config && config.excludeScrollbar
+          };
+        },
+
         /**
          * Add click listeners to the current document,
          * linked to this component's state.
@@ -168,7 +174,7 @@
             instance,
             clickOutsideHandler,
             this.props.outsideClickIgnoreClass || IGNORE_CLASS,
-            this.props.excludeScrollbar || false,
+            this.props.excludeScrollbar, // fallback not needed, prop always exists because of getDefaultProps
             this.props.preventDefault || false,
             this.props.stopPropagation || false
           );
