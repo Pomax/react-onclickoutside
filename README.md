@@ -294,7 +294,9 @@ If you use **React 0.12 or 0.13**, **version 2.4 and below** will work.
 
 If you use **React 0.14**, use **v2.5 through v4.9**, as these specifically use `react-DOM` for the necessary DOM event bindings.
 
-If you use **React 15** (or higher), you can use **v4.x, which offers both a mixin and HOC, or use v5.x, which is HOC-only**.
+If you use **React 15**, you can use **v4.x, which offers both a mixin and HOC, or use v5.x, which is HOC-only**.
+
+If you use **React 15.5** (or higher), you can use **v5.11.x, which works with the externalised `create-react-class` rather than `React.createClass`.
 
 ### Support-wise, only the latest version will receive updates and bug fixes.
 
