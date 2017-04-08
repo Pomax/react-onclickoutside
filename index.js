@@ -85,11 +85,11 @@
    * bootstrapping code to yield an instance of the
    * onClickOutsideHOC function defined inside setupHOC().
    */
-  function setupHOC(root, React, ReactDOM) {
+  function setupHOC(root, React, ReactDOM, createReactClass) {
 
     // The actual Component-wrapping HOC:
     return function onClickOutsideHOC(Component, config) {
-      var wrapComponentWithOnClickOutsideHandling = React.createClass({
+      var wrapComponentWithOnClickOutsideHandling = createReactClass({
         statics: {
           /**
            * Access the wrapped Component's class.
@@ -287,17 +287,17 @@
   function setupBinding(root, factory) {
     if (typeof define === 'function' && define.amd) {
       // AMD. Register as an anonymous module.
-      define(['react','react-dom'], function(React, ReactDom) {
-        return factory(root, React, ReactDom);
+      define(['react','react-dom','create-react-class'], function(React, ReactDom, createReactClass) {
+        return factory(root, React, ReactDom, createReactClass);
       });
     } else if (typeof exports === 'object') {
       // Node. Note that this does not work with strict
       // CommonJS, but only CommonJS-like environments
       // that support module.exports
-      module.exports = factory(root, require('react'), require('react-dom'));
+      module.exports = factory(root, require('react'), require('react-dom'), require('create-react-class'));
     } else {
       // Browser globals (root is window)
-      root.onClickOutside = factory(root, React, ReactDOM);
+      root.onClickOutside = factory(root, React, ReactDOM, createReactClass);
     }
   }
 

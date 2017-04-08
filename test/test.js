@@ -1,10 +1,11 @@
 var React = require('react');
+var createReactClass = require('create-react-class');
 var TestUtils = require('react-addons-test-utils');
 var wrapComponent = require('../index');
 
 describe('onclickoutside hoc', function() {
 
-  var Component = React.createClass({
+  var Component = createReactClass({
     getInitialState: function() {
       return {
         clickOutsideHandled: false,
@@ -53,7 +54,7 @@ describe('onclickoutside hoc', function() {
 
 
   it('should throw an error when a component without handleClickOutside(evt) is wrapped', function() {
-    var BadComponent = React.createClass({
+    var BadComponent = createReactClass({
       render: function() {
         return React.createElement('div');
       }
@@ -106,7 +107,7 @@ describe('onclickoutside hoc', function() {
 
 
     it('and createClass method, should call the specified handler when clicking the document', function() {
-      var Component = React.createClass({
+      var Component = createReactClass({
         getInitialState: function() {
           return {
             clickOutsideHandled: false
@@ -170,7 +171,7 @@ describe('onclickoutside hoc', function() {
 
 
     it('and createClass method, should call the specified handler when clicking the document', function() {
-      var Component = React.createClass({
+      var Component = createReactClass({
         render: function() {
           return React.createElement('div');
         }
@@ -223,7 +224,7 @@ describe('onclickoutside hoc', function() {
 
 
   it('should throw an error when a custom handler is specified, but the component does not implement it', function() {
-    var BadComponent = React.createClass({
+    var BadComponent = createReactClass({
       render: function() {
         return React.createElement('div');
       }
@@ -266,7 +267,7 @@ describe('onclickoutside hoc', function() {
 
 
   it('should fallback to call component.props.handleClickOutside when no component.handleClickOutside is defined', function() {
-    var StatelessComponent = React.createClass({
+    var StatelessComponent = createReactClass({
       render: function() {
         return React.createElement('div');
       }
@@ -295,7 +296,7 @@ describe('onclickoutside hoc', function() {
   });
 
   describe('with child rendering as null', function() {
-    var StatelessComponent = React.createClass({
+    var StatelessComponent = createReactClass({
       render: function() {
         return null;
       }
