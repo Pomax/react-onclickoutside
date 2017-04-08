@@ -288,6 +288,7 @@
     if (typeof define === 'function' && define.amd) {
       // AMD. Register as an anonymous module.
       define(['react','react-dom','create-react-class'], function(React, ReactDom, createReactClass) {
+        if (!createReactClass) createReactClass = React.createClass;
         return factory(root, React, ReactDom, createReactClass);
       });
     } else if (typeof exports === 'object') {
@@ -297,6 +298,7 @@
       module.exports = factory(root, require('react'), require('react-dom'), require('create-react-class'));
     } else {
       // Browser globals (root is window)
+      var createReactClass = React.createClass ? React.createClass : window.createReactClass;
       root.onClickOutside = factory(root, React, ReactDOM, createReactClass);
     }
   }
