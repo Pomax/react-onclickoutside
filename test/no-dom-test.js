@@ -1,11 +1,12 @@
 var assert = require('assert');
 var React = require('react');
+var createReactClass = require('create-react-class');
 var renderer = require('react-test-renderer');
 var requireHijack = require('require-hijack');
 
 describe('onclickoutside hoc with no DOM', function() {
 
-  var Component = React.createClass({    
+  var Component = createReactClass({
 
     handleClickOutside: function() {
     },
@@ -16,7 +17,7 @@ describe('onclickoutside hoc with no DOM', function() {
   });
 
   // tests
-  
+
   it('should not throw an error if rendered in an environment with no DOM', function() {
     // Needed until React 15.4 lands due to https://github.com/facebook/react/issues/7386.
     requireHijack.replace('react-dom').with({

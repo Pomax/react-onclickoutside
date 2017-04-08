@@ -19,9 +19,10 @@ $> npm install react-onclickoutside --save
 ```js
 // load the HOC:
 var onClickOutside = require('react-onclickoutside');
+var createReactClass = require('create-react-class');
 
 // create a new component, wrapped by this onclickoutside HOC:
-var MyComponent = onClickOutside(React.createClass({
+var MyComponent = onClickOutside(createReactClass({
   ...,
   handleClickOutside: function(evt) {
     // ...handling code goes here...
@@ -53,9 +54,10 @@ Note that if you try to wrap a React component class without a `handleClickOutsi
 ```js
 // load the HOC:
 var onClickOutside = require('react-onclickoutside');
+var createReactClass = require('create-react-class');
 
 // create a new component, wrapped by this onclickoutside HOC:
-var MyComponent = onClickOutside(React.createClass({
+var MyComponent = onClickOutside(createReactClass({
   ...,
   myClickOutsideHandler: function(evt) {
     // ...handling code goes here...
@@ -189,8 +191,9 @@ In addition, you can create a component that uses this HOC such that it has the 
 
 ```js
 var onClickOutside = require('react-onclickoutside');
+var createReactClass = require('create-react-class');
 
-var MyComponent = onClickOutside(React.createClass({
+var MyComponent = onClickOutside(createReactClass({
   ...,
   handleClickOutside: function(evt) {
     // ...
@@ -198,7 +201,7 @@ var MyComponent = onClickOutside(React.createClass({
   ...
 }));
 
-var Container = React.createClass({
+var Container = createReactClass({
   render: function(evt) {
     return <MyComponent disableOnClickOutside={true} />
   }
@@ -213,27 +216,28 @@ By default this HOC will listen for "clicks inside the document", which may incl
 
 ```js
 var onClickOutside = require('react-onclickoutside');
+var createReactClass = require('create-react-class');
 
-var MyComponent = onClickOutside(React.createClass({
+var MyComponent = onClickOutside(createReactClass({
   ...
 }));
 
-var Container = React.createClass({
+var Container = createReactClass({
   render: function(evt) {
     return <MyComponent excludeScrollbar={true} />
   }
 });
-``` 
+```
 
 Alternatively, you can specify this behavior as default for all instances of your component passing a configuration object as second parameter:
 
 ```js
-var MyComponent = onClickOutside(React.createClass({
+var MyComponent = onClickOutside(createReactClass({
   ...
 }), {
   excludeScrollbar: true
 });
-``` 
+```
 
 ## Regulating `evt.preventDefault()` and `evt.stopPropagation()`
 
@@ -257,8 +261,9 @@ No, I get that. I constantly have that problem myself, so while there is no univ
 
 ```js
 var onClickOutside = require('react-onclickoutside');
+var createReactClass = require('create-react-class');
 
-var MyComponent = onClickOutside(React.createClass({
+var MyComponent = onClickOutside(createReactClass({
   ...,
   handleClickOutside: function(evt) {
     // ...
@@ -266,7 +271,7 @@ var MyComponent = onClickOutside(React.createClass({
   ...
 }));
 
-var Container = React.createClass({
+var Container = createReactClass({
   someFunction: function() {
     var ref = this.refs.mycomp;
     // 1) Get the wrapped component instance:
