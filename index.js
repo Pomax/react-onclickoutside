@@ -115,7 +115,7 @@
         getDefaultProps: function() {
           return {
             excludeScrollbar: config && config.excludeScrollbar,
-            passiveListener: (config && config.passiveListener === false) ? false : true
+            passiveListener: config && config.passiveListener
           };
         },
 
@@ -227,9 +227,17 @@
             if (!events.forEach) {
               events = [events];
             }
-            var options = isPassiveListenerSupported() ? { passive: this.props.passiveListener } : false;
+            var options;
+            if (typeof this.props.passiveListener === 'boolean' && isPassiveListenerSupported()) {
+              options = { passive: this.props.passiveListener };
+            }
             events.forEach(function (eventName) {
-              document.addEventListener(eventName, fn, options);
+              if (options) {
+                document.addEventListener(eventName, fn, options);
+              }
+              else {
+                document.addEventListener(eventName, fn);
+              }
             });
           }
         },
