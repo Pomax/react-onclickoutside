@@ -122,7 +122,7 @@
          * Add click listeners to the current document,
          * linked to this component's state.
          */
-        componentDidMount: function() {
+        __setOutsideClickHandler: function() {
           // If we are in an environment without a DOM such
           // as shallow rendering or snapshots then we exit
           // early to prevent any unhandled errors being thrown.
@@ -169,6 +169,20 @@
             ].join(' '));
           }
 
+          if (this.__node === componentNode) {
+            /*
+              If the node hasnt changed after an update, then return.
+            */
+            return;
+          } else {
+            /*
+              Disable existing click handlers because we will set new ones.
+            */
+            this.disableOnClickOutside();
+          }
+
+          this.__node = componentNode;
+
           var fn = this.__outsideClickHandler = generateOutsideCheck(
             componentNode,
             instance,
@@ -179,9 +193,12 @@
             this.props.stopPropagation || false
           );
 
-          var pos = registeredComponents.length;
-          registeredComponents.push(this);
-          handlers[pos] = fn;
+          if (!this.__pos) {
+            this.__pos = registeredComponents.length;
+            registeredComponents.push(this);
+          }
+
+          handlers[this.__pos] = fn;
 
           // If there is a truthy disableOnClickOutside property for this
           // component, don't immediately start listening for outside events.
@@ -190,14 +207,17 @@
           }
         },
 
-        /**
-        * Track for disableOnClickOutside props changes and enable/disable click outside
-        */
-        componentWillReceiveProps: function(nextProps) {
-          if (this.props.disableOnClickOutside && !nextProps.disableOnClickOutside) {
-            this.enableOnClickOutside();
-          } else if (!this.props.disableOnClickOutside && nextProps.disableOnClickOutside) {
+        componentDidMount: function() {
+          this.__setOutsideClickHandler();
+        },
+
+        componentDidUpdate: function(prevProps) {
+          this.__setOutsideClickHandler();
+
+          if (this.props.disableOnClickOutside && !prevProps.disableOnClickOutside) {
             this.disableOnClickOutside();
+          } else if (!this.props.disableOnClickOutside && prevProps.disableOnClickOutside) {
+            this.enableOnClickOutside();
           }
         },
 
