@@ -245,6 +245,15 @@ Technically this HOC lets you pass in `preventDefault={true/false}` and `stopPro
 
 Each component adds new event listeners to the document, which may or may not cause as many event triggers as there are event listening bindings. In the test file found in `./test/browser/index.html`, the coded uses `stopPropagation={true}` but sibling events still make it to "parents".
 
+## Handling passive events
+
+Passive event listeners does not block on touch and wheel events because they will not wait to see if `preventDefault()` is called. It allows to have better performance on scrolling ([more details here](https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md) and [here](https://developers.google.com/web/updates/2016/06/passive-event-listeners)).
+To explicitely make the created event listeners not passive, allowing us to call `preventDefault` on them, add `{passiveListener: false}` as an option to the HOC.
+
+```js
+export default onClickOutside(Component, { passiveListener: false });
+```
+
 ## Marking elements as "skip over this one" during the event loop
 
 If you want the HOC to ignore certain elements, you can tell the HOC which CSS class name it should use for this purposes. If you want explicit control over the class name, use `outsideClickIgnoreClass={some string}` as component property, or if you don't, the default string used is `ignore-react-onclickoutside`.
