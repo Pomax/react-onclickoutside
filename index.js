@@ -114,7 +114,8 @@
 
         getDefaultProps: function() {
           return {
-            excludeScrollbar: config && config.excludeScrollbar
+            excludeScrollbar: config && config.excludeScrollbar,
+            passiveListener: (config && config.passiveListener === false) ? false : true
           };
         },
 
@@ -226,8 +227,9 @@
             if (!events.forEach) {
               events = [events];
             }
+            var options = isPassiveListenerSupported() ? { passive: this.props.passiveListener } : false;
             events.forEach(function (eventName) {
-              document.addEventListener(eventName, fn);
+              document.addEventListener(eventName, fn, options);
             });
           }
         },
@@ -302,6 +304,26 @@
       root.onClickOutside = factory(root, React, ReactDOM, createReactClass);
     }
   }
+
+  /**
+   * Test via a getter in the options object to see if the passive property is accessed
+   * https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
+   */
+  function isPassiveListenerSupported() {
+    var supportsPassive = false;
+    try {
+      var opts = Object.defineProperty({}, 'passive', {
+        get: function() {
+          supportsPassive = true;
+        }
+      });
+      window.addEventListener('test', null, opts);
+    } catch (e) {
+      return false;
+    }
+    return supportsPassive;
+  }
+
 
   // Make it all happen
   setupBinding(root, setupHOC);
