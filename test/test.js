@@ -1,28 +1,27 @@
-var React = require('react');
-var createReactClass = require('create-react-class');
-var TestUtils = require('react-addons-test-utils');
-var wrapComponent = require('../index');
+import React from 'react';
+import TestUtils from 'react-dom/test-utils';
+import wrapComponent from '../';
 
 describe('onclickoutside hoc', function() {
-
-  var Component = createReactClass({
-    getInitialState: function() {
-      return {
+  class Component extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
         clickOutsideHandled: false,
         timesHandlerCalled: 0
       };
-    },
+    }
 
-    toggleEnableClickOutside: function(on) {
+    toggleEnableClickOutside(on) {
       if(on) {
         this.props.enableOnClickOutside();
       }
       else {
         this.props.disableOnClickOutside();
       }
-    },
+    }
 
-    handleClickOutside: function(event) {
+    handleClickOutside(event) {
       if (event === undefined) {
         throw new Error('event cannot be undefined');
       }
@@ -31,12 +30,12 @@ describe('onclickoutside hoc', function() {
         clickOutsideHandled: true,
         timesHandlerCalled: this.state.timesHandlerCalled + 1
       });
-    },
+    }
 
-    render: function() {
+    render() {
       return React.createElement('div');
     }
-  });
+  }
 
   var WrappedComponent = wrapComponent(Component);
 
@@ -54,11 +53,11 @@ describe('onclickoutside hoc', function() {
 
 
   it('should throw an error when a component without handleClickOutside(evt) is wrapped', function() {
-    var BadComponent = createReactClass({
-      render: function() {
+    class BadComponent extends React.Component {
+      render() {
         return React.createElement('div');
       }
-    });
+    }
 
     try {
       wrapComponent(BadComponent);
@@ -79,7 +78,7 @@ describe('onclickoutside hoc', function() {
           };
         }
 
-        handleClickOutside (event) {
+        handleClickOutside(event) {
           if (event === undefined) {
             throw new Error('event cannot be undefined');
           }
@@ -107,14 +106,15 @@ describe('onclickoutside hoc', function() {
 
 
     it('and createClass method, should call the specified handler when clicking the document', function() {
-      var Component = createReactClass({
-        getInitialState: function() {
-          return {
+      class Component extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
             clickOutsideHandled: false
           };
-        },
+        }
 
-        handleClickOutside: function(event) {
+        handleClickOutside(event) {
           if (event === undefined) {
             throw new Error('event cannot be undefined');
           }
@@ -122,12 +122,12 @@ describe('onclickoutside hoc', function() {
           this.setState({
             clickOutsideHandled: true
           });
-        },
+        }
 
-        render: function() {
+        render() {
           return React.createElement('div');
         }
-      });
+      }
 
       var WrappedWithCustomHandler = wrapComponent(Component);
 
@@ -171,11 +171,11 @@ describe('onclickoutside hoc', function() {
 
 
     it('and createClass method, should call the specified handler when clicking the document', function() {
-      var Component = createReactClass({
-        render: function() {
+      class Component extends React.Component {
+        render() {
           return React.createElement('div');
         }
-      });
+      }
 
       var clickOutsideHandled = false;
       var handleClickOutside = function(event) {
@@ -224,11 +224,11 @@ describe('onclickoutside hoc', function() {
 
 
   it('should throw an error when a custom handler is specified, but the component does not implement it', function() {
-    var BadComponent = createReactClass({
-      render: function() {
+    class BadComponent extends React.Component {
+      render() {
         return React.createElement('div');
       }
-    });
+    }
 
     try {
       wrapComponent(BadComponent, {
@@ -267,11 +267,7 @@ describe('onclickoutside hoc', function() {
 
 
   it('should fallback to call component.props.handleClickOutside when no component.handleClickOutside is defined', function() {
-    var StatelessComponent = createReactClass({
-      render: function() {
-        return React.createElement('div');
-      }
-    });
+    var StatelessComponent = () => React.createElement('div');
     var clickOutsideHandled = false;
     var WrappedStatelessComponent = wrapComponent(StatelessComponent);
     var element = React.createElement(
@@ -296,11 +292,7 @@ describe('onclickoutside hoc', function() {
   });
 
   describe('with child rendering as null', function() {
-    var StatelessComponent = createReactClass({
-      render: function() {
-        return null;
-      }
-    });
+    var StatelessComponent = () => null;
 
     it('should throw an error when wrapped component renders as null', function() {
       try {

@@ -1,20 +1,18 @@
 var assert = require('assert');
 var React = require('react');
-var createReactClass = require('create-react-class');
 var renderer = require('react-test-renderer');
 var requireHijack = require('require-hijack');
 
 describe('onclickoutside hoc with no DOM', function() {
 
-  var Component = createReactClass({
+  class Component extends React.Component {
 
-    handleClickOutside: function() {
-    },
+    handleClickOutside() {}
 
-    render: function() {
+    render() {
       return React.createElement('div');
     }
-  });
+  }
 
   // tests
 
@@ -25,7 +23,7 @@ describe('onclickoutside hoc with no DOM', function() {
     });
 
     // Must import this after we mock out ReactDOM to prevent the inject error.
-    var wrapComponent = require('../index');
+    var wrapComponent = require('../').default;
     var WrappedComponent = wrapComponent(Component);
 
     var element = React.createElement(WrappedComponent);
