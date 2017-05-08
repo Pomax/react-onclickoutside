@@ -106,7 +106,7 @@
          * Access the wrapped Component's instance.
          */
         getInstance: function() {
-          return Component.prototype.isReactComponent ? this.refs.instance : this;
+          return Component.prototype.isReactComponent ? this.instance : this;
         },
 
         // this is given meaning in componentDidMount
@@ -261,7 +261,7 @@
             }
           });
           if (Component.prototype.isReactComponent) {
-            props.ref = 'instance';
+            props.ref = function (ref) { this.instance = ref; }.bind(this);
           }
           props.disableOnClickOutside = this.disableOnClickOutside;
           props.enableOnClickOutside = this.enableOnClickOutside;
