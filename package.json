@@ -8,7 +8,8 @@
   ],
   "homepage": "https://github.com/Pomax/react-onclickoutside",
   "authors": [
-    "Pomax <pomax@nihongoresources.com>"
+    "Pomax <pomax@nihongoresources.com>",
+    "Andarist <mateuszburzynski@gmail.com>"
   ],
   "keywords": [
     "react",
@@ -26,9 +27,11 @@
   },
   "scripts": {
     "build": "rollup -c -i src/index.js -o ./index.js",
-    "test": "npm run lint && npm run build && karma start test/karma.conf.js --single-run && npm run test:nodom",
-    "test:nodom": "mocha test/no-dom-test.js",
     "lint": "eslint src/*.js ./test",
+    "test": "run-s test:**",
+    "test:basic": "run-s lint build",
+    "test:karma": "karma start test/karma.conf.js --single-run",
+    "test:nodom": "mocha test/no-dom-test.js",
     "precommit": "npm run test"
   },
   "devDependencies": {
@@ -46,6 +49,7 @@
     "karma-spec-reporter": "0.0.26",
     "karma-webpack": "^2.0.2",
     "mocha": "^3.2.0",
+    "npm-run-all": "^4.0.2",
     "phantomjs-prebuilt": "^2.1.7",
     "react": "^15.5.x",
     "react-dom": "^15.5.x",
@@ -56,5 +60,10 @@
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "webpack": "^1.15.0"
+  },
+  "babel": {
+    "plugins": [
+      "transform-class-properties"
+    ]
   }
 }

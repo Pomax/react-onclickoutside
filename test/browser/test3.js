@@ -1,4 +1,11 @@
-(function() {
+(function test3(onClickOutside) {
+
+  if (typeof onClickOutside === "undefined") {
+    return setTimeout(() => test3(onClickOutside), 250);
+  }
+
+  onClickOutside = onClickOutside.default;
+
   class Test3Class extends React.Component {
     constructor(props) {
       super(props);
@@ -11,7 +18,7 @@
     }
   }
 
-  const Test = onClickOutside(Test3Class); /* global onClickOutside */
+  const Test = onClickOutside(Test3Class);
 
   class App extends React.Component {
     constructor(props) {
@@ -37,4 +44,4 @@
 
   ReactDOM.render(React.createElement(App), document.getElementById('app3'));
 
-}());
+}(onClickOutside));

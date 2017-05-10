@@ -34,8 +34,6 @@
 
       hr {
         margin: 2em 0;
-        border: none;
-        border-bottom: 5px dotted black;
       }
     </style>
   </head>
@@ -44,23 +42,20 @@
     <script src="../../node_modules/react-dom/dist/react-dom.js"></script>
     <script src="../../index.js"></script>
 
-
-    <button onclick="console.log('test')">test</button>
-
-    <hr>
-
+    <p>This test presents three concentric circles. Clicking inside a circle marks it as lit, clicking outside of it unmarks it.</p>
     <div id="app1"></div>
     <script src="test1.js"></script>
 
     <hr>
 
+    <p>This test presents a text, revealed with a button press. Clicking the text should preserve it, while clicking anywhere else should hide it.</p>
     <div id="app2"></div>
     <link ref="stylesheet" href="style2.css">
     <script src="test2.js"></script>
 
     <hr>
 
-    <p>Test 3 should have generated a large error and warning text in the console.</p>
+    <p>This test should have generated a large error and warning text in the console, due to intentional use of bad code.</p>
     <div id="app3"></div>
     <script src="test3.js"></script>
 

@@ -1,4 +1,10 @@
-(function() {
+(function test2(onClickOutside) {
+
+  if (typeof onClickOutside === "undefined") {
+    return setTimeout(() => test2(onClickOutside), 250);
+  }
+
+  onClickOutside = onClickOutside.default;
 
   class BasePopup extends React.Component {
     constructor(props) {
@@ -12,7 +18,7 @@
     }
   }
 
-  const Popup = onClickOutside(BasePopup); /* global onClickOutside */
+  const Popup = onClickOutside(BasePopup);
 
   class App extends React.Component {
     constructor(props) {
@@ -46,4 +52,4 @@
 
   ReactDOM.render(React.createElement(App), document.getElementById('app2'));
 
-}());
+}(onClickOutside));

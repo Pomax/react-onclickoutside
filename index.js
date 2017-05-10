@@ -57,7 +57,7 @@ function clickedScrollbar(evt) {
  * Generate the event handler that checks whether a clicked DOM node
  * is inside of, or lives outside of, our Component's node tree.
  */
-function generateOutsideCheck(componentNode, componentInstance, eventHandler, ignoreClass, excludeScrollbar, preventDefault, stopPropagation) {
+function generateOutsideCheck(componentNode, eventHandler, ignoreClass, excludeScrollbar, preventDefault, stopPropagation) {
   return function (evt) {
     if (preventDefault) {
       evt.preventDefault();
@@ -118,7 +118,11 @@ function onClickOutsideHOC(WrappedComponent, config) {
      * Access the WrappedComponent's instance.
      */
     getInstance() {
-      return WrappedComponent.prototype.isReactComponent ? this.instanceRef : this;
+      if (!WrappedComponent.prototype.isReactComponent) {
+        return this;
+      }
+      const ref = this.instanceRef;
+      return ref.getInstance ? ref.getInstance() : ref;
     }
 
     // this is given meaning in componentDidMount
@@ -137,7 +141,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
       }
 
       const instance = this.getInstance();
-      let clickOutsideHandler;
+      var clickOutsideHandler;
 
       if (config && typeof config.handleClickOutside === 'function') {
         clickOutsideHandler = config.handleClickOutside(instance);
@@ -163,7 +167,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
         console.warn(['This is typically caused by having a component that starts life with a render function that', 'returns `null` (due to a state or props value), so that the component \'exist\' in the React', 'chain of components, but not in the DOM.\n\nInstead, you need to refactor your code so that the', 'decision of whether or not to show your component is handled by the parent, in their render()', 'function.\n\nIn code, rather than:\n\n  A{render(){return check? <.../> : null;}\n  B{render(){<A check=... />}\n\nmake sure that you', 'use:\n\n  A{render(){return <.../>}\n  B{render(){return <...>{ check ? <A/> : null }<...>}}\n\nThat is:', 'the parent is always responsible for deciding whether or not to render any of its children.', 'It is not the child\'s responsibility to decide whether a render instruction from above should', 'get ignored or not by returning `null`.\n\nWhen any component gets its render() function called,', 'that is the signal that it should be rendering its part of the UI. It may in turn decide not to', 'render all of *its* children, but it should never return `null` for itself. It is not responsible', 'for that decision.'].join(' '));
       }
 
-      const fn = this.__outsideClickHandler = generateOutsideCheck(componentNode, instance, clickOutsideHandler, this.props.outsideClickIgnoreClass, this.props.excludeScrollbar, this.props.preventDefault, this.props.stopPropagation);
+      const fn = this.__outsideClickHandler = generateOutsideCheck(componentNode, clickOutsideHandler, this.props.outsideClickIgnoreClass, this.props.excludeScrollbar, this.props.preventDefault, this.props.stopPropagation);
 
       const pos = registeredComponents.length;
       registeredComponents.push(this);
@@ -188,7 +192,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
     }
 
     /**
-     * Remove the document's event listeners
+     * Remove all document's event listeners for this component
      */
     componentWillUnmount() {
       this.disableOnClickOutside();
