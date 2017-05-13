@@ -5,7 +5,7 @@
   /**
    * Human-triggered for now, this should become a normal phantom test instead
    */
-  class Nested extends React.Component {
+  class BaseComponent extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -33,10 +33,9 @@
     }
   }
 
+  const Nested = onClickOutside(BaseComponent);
 
-  Nested = onClickOutside(Nested);
-
-  const App = function(props) {
+  const App = function() {
     return React.createElement(Nested, {
       id: 1,
       stopPropagation: true,
@@ -53,4 +52,4 @@
   };
 
   ReactDOM.render(React.createElement(App), document.getElementById('app1'));
-}(onClickOutside));
+}(onClickOutside)); /* global onClickOutside */

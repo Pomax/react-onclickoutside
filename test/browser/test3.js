@@ -40,4 +40,4 @@
 
   ReactDOM.render(React.createElement(App), document.getElementById('app3'));
 
-}(onClickOutside));
+}(onClickOutside)); /* global onClickOutside */
