@@ -5,9 +5,10 @@ var config = {
   format: 'umd',
   moduleName: 'onClickOutside',
   exports: 'named',
-  external: ['react'],
+  external: ['react', 'react-dom'],
   globals: {
-    react: 'React'
+    react: 'React',
+    'react-dom': 'ReactDOM'
   },
   plugins: [
     nodeResolve({

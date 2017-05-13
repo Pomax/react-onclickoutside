@@ -1,9 +1,5 @@
 (function test3(onClickOutside) {
 
-  if (typeof onClickOutside === "undefined") {
-    return setTimeout(() => test3(onClickOutside), 250);
-  }
-
   onClickOutside = onClickOutside.default;
 
   class Test3Class extends React.Component {
@@ -33,11 +29,11 @@
       );
     }
     show() {
-      console.log('show');
+      console.log('test3 - show');
       this.setState({ hideToolbox: false });
     }
     hide() {
-      console.log('hide');
+      console.log('test3 - hide');
       this.setState({ hideToolbox: true });
     }
   }

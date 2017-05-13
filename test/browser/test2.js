@@ -1,9 +1,5 @@
 (function test2(onClickOutside) {
 
-  if (typeof onClickOutside === "undefined") {
-    return setTimeout(() => test2(onClickOutside), 250);
-  }
-
   onClickOutside = onClickOutside.default;
 
   class BasePopup extends React.Component {
@@ -11,7 +7,7 @@
       super(props);
     }
     render() {
-      return React.createElement('div', { children: 'click this text' });
+      return React.createElement('span', { children: 'click this text' });
     }
     handleClickOutside() {
       this.props.hide();
@@ -32,7 +28,7 @@
         React.createElement('div', {
           children: [
             React.createElement('button', {
-              onClick: e => this.show(e),
+              onClick: e => this.state.hideToolbox && this.show(e),
               children: 'show text'
             }),
             this.state.hideToolbox ? null : React.createElement(Popup, {hide: e => this.hide(e)})
@@ -41,11 +37,11 @@
       );
     }
     show() {
-      console.log('show');
+      console.log('test2 - show');
       this.setState({ hideToolbox: false });
     }
     hide() {
-      console.log('hide');
+      console.log('test2 - hide');
       this.setState({ hideToolbox: true });
     }
   }

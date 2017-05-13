@@ -1,4 +1,5 @@
 import { createElement, Component } from 'react';
+import { findDOMNode } from 'react-dom';
 import generateOutsideCheck from './generateOutsideCheck';
 
 /**
@@ -75,7 +76,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       }
 
       // TODO: try to get rid of this, could be done with function ref, might be problematic for SFC though, they do not expose refs
-      const componentNode = this.instanceRef;
+      const componentNode = findDOMNode(this.instanceRef);
       if (componentNode === null) {
         console.warn('Antipattern warning: there was no DOM node associated with the component that is being wrapped by outsideClick.');
         console.warn([

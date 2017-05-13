@@ -1,9 +1,5 @@
 (function test1(onClickOutside) {
 
-  if (typeof onClickOutside === "undefined") {
-    return setTimeout(() => test1(onClickOutside), 250);
-  }
-
   onClickOutside = onClickOutside.default;
 
   /**
@@ -18,11 +14,12 @@
     }
 
     handleClickOutside() {
+      console.log('remove highlight', this.props.id);
       this.setState({ highlight: false });
     }
 
     highlight() {
-      console.log(this.props.id);
+      console.log('highlight', this.props.id);
       this.setState({ highlight: true });
     }
 

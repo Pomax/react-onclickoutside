@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'react'], factory) :
-	(factory((global.onClickOutside = global.onClickOutside || {}),global.React));
-}(this, (function (exports,react) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react'), require('react-dom')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'react', 'react-dom'], factory) :
+	(factory((global.onClickOutside = global.onClickOutside || {}),global.React,global.ReactDOM));
+}(this, (function (exports,react,reactDom) { 'use strict';
 
 /**
  * Check whether some DOM node is our Component's node.
@@ -161,7 +161,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
       }
 
       // TODO: try to get rid of this, could be done with function ref, might be problematic for SFC though, they do not expose refs
-      const componentNode = this.instanceRef;
+      const componentNode = reactDom.findDOMNode(this.instanceRef);
       if (componentNode === null) {
         console.warn('Antipattern warning: there was no DOM node associated with the component that is being wrapped by outsideClick.');
         console.warn(['This is typically caused by having a component that starts life with a render function that', 'returns `null` (due to a state or props value), so that the component \'exist\' in the React', 'chain of components, but not in the DOM.\n\nInstead, you need to refactor your code so that the', 'decision of whether or not to show your component is handled by the parent, in their render()', 'function.\n\nIn code, rather than:\n\n  A{render(){return check? <.../> : null;}\n  B{render(){<A check=... />}\n\nmake sure that you', 'use:\n\n  A{render(){return <.../>}\n  B{render(){return <...>{ check ? <A/> : null }<...>}}\n\nThat is:', 'the parent is always responsible for deciding whether or not to render any of its children.', 'It is not the child\'s responsibility to decide whether a render instruction from above should', 'get ignored or not by returning `null`.\n\nWhen any component gets its render() function called,', 'that is the signal that it should be rendering its part of the UI. It may in turn decide not to', 'render all of *its* children, but it should never return `null` for itself. It is not responsible', 'for that decision.'].join(' '));

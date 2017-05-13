@@ -61,6 +61,10 @@
     "rollup-plugin-node-resolve": "^3.0.0",
     "webpack": "^1.15.0"
   },
+  "peerDependencies": {
+    "react": "^15.5.x",
+    "react-dom": "^15.5.x"
+  },
   "babel": {
     "plugins": [
       "transform-class-properties"
