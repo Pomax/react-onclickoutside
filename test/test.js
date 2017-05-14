@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import TestUtils from 'react-dom/test-utils';
 import wrapComponent from '../';
 
@@ -292,16 +293,67 @@ describe('onclickoutside hoc', function() {
   });
 
   describe('with child rendering as null', function() {
-    var StatelessComponent = () => null;
-
-    it('should throw an error when wrapped component renders as null', function() {
+    it('shouldn\'t throw an error when wrapped SFC renders as null', function() {
+      var StatelessComponent = () => null;
       try {
         wrapComponent(StatelessComponent);
-        assert(false, 'component was wrapped despite having no DOM node on mount');
-      } catch(e) {
-        assert(true, 'an error was thrown');
+        assert(true, 'component was wrapped despite having no DOM node on mount');
+      } catch (err) {
+        assert(false, 'an error was thrown');
       }
     });
-  });
 
+    var counter;
+    class ClassComponent extends React.Component {
+      handleClickOutside() {
+        counter++;
+      }
+      componentDidUpdate() {
+        this.props.callDisableOnClickOutside && this.props.disableOnClickOutside();
+        this.props.callEnableOnClickOutside && this.props.enableOnClickOutside();
+      }
+      render() {
+        return this.props.renderNull ? null : React.createElement('div');
+      }
+    }
+
+    var container = document.createElement('div');
+    var WrappedComponent = wrapComponent(ClassComponent);
+
+    const rerender = function (props) {
+      return ReactDOM.render(React.createElement(WrappedComponent, props), container);
+    };
+
+    it('should render fine when wrapped component renders as null', function() {
+      counter = 0;
+      var component = rerender({ renderNull: true });
+      assert(component, 'component was wrapped despite having no DOM node on mount');
+      document.dispatchEvent(new Event('mousedown'));
+      assert(counter === 0, 'should not fire handleClickOutside when having no DOM node');
+    });
+
+    it('should attach and deattach event listener on updates', function() {
+      counter = 0;
+
+      rerender({ renderNull: false });
+      document.dispatchEvent(new Event('mousedown'));
+      assert(counter === 1, 'should fire handleClickOutside when DOM node gets created after rerender');
+
+      rerender({ renderNull: true });
+      document.dispatchEvent(new Event('mousedown'));
+      assert(counter === 1, 'should stop firing handleClickOutside when DOM node gets removed');
+    });
+
+    it('should handle disabling and enabling onClickOutside listener when having no DOM node', function() {
+      counter = 0;
+
+      rerender({ renderNull: true, callEnableOnClickOutside: true });
+      document.dispatchEvent(new Event('mousedown'));
+      assert(counter === 0, 'should not call handleClickOutside when onClickOutside gets enabled when having no DOM node');
+
+      rerender({ renderNull: true, callDisableOnClickOutside: true });
+      document.dispatchEvent(new Event('mousedown'));
+      assert(counter === 0, 'should not call handleClickOutside when onClickOutside gets disabled when having no DOM node');
+    });
+  });
 });
