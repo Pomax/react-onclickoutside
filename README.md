@@ -4,7 +4,7 @@ This is a React **H**igher **O**rder **C**omponent that you can use with your ow
 
 Note that this HOC relies on the `.classList` property, which is supported by all modern browsers, but not by no longer supported browsers like IE9 or older. If your code relies on classList in any way, you want to use a polyfill like [dom4](https://github.com/WebReflection/dom4)
 
-This HOC supports stateless components as of v5.7.0
+This HOC supports stateless components as of v5.7.0, and uses pure class notation rather than `createClass` as of v6.
 
 ## Installation
 
@@ -296,7 +296,9 @@ If you use **React 0.14**, use **v2.5 through v4.9**, as these specifically use 
 
 If you use **React 15**, you can use **v4.x, which offers both a mixin and HOC, or use v5.x, which is HOC-only**.
 
-If you use **React 15.5** (or higher), you can use **v5.11.x, which works with the externalised `create-react-class` rather than `React.createClass`.
+If you use **React 15.5**, you can use **v5.11.x**, which relies on `createClass` as supplied by `create-react-class` rather than `React.createClass`.
+
+If you use **React 16** or 15.5 in preparation of 16, use v6.x, which uses pure class notation.
 
 ### Support-wise, only the latest version will receive updates and bug fixes.
 

@@ -2,13 +2,14 @@
   "name": "react-onclickoutside",
   "version": "5.11.1",
   "description": "An onClickOutside wrapper for React components",
-  "main": "index.js",
+  "main": "./index.js",
   "files": [
     "index.js"
   ],
   "homepage": "https://github.com/Pomax/react-onclickoutside",
   "authors": [
-    "Pomax <pomax@nihongoresources.com>"
+    "Pomax <pomax@nihongoresources.com>",
+    "Andarist <mateuszburzynski@gmail.com>"
   ],
   "keywords": [
     "react",
@@ -25,32 +26,48 @@
     "url": "https://github.com/Pomax/react-onclickoutside/issues"
   },
   "scripts": {
-    "test": "npm run lint && karma start test/karma.conf.js --single-run && npm run test:nodom",
+    "build": "rollup -c -i src/index.js -o ./index.js",
+    "lint": "eslint src/*.js ./test",
+    "test": "run-s test:**",
+    "test:basic": "run-s lint build",
+    "test:karma": "karma start test/karma.conf.js --single-run",
     "test:nodom": "mocha test/no-dom-test.js",
-    "lint": "eslint index.js ./test",
-    "precommit": "npm run lint"
-  },
-  "dependencies": {
-    "create-react-class": "^15.5.x"
+    "postinstall": "node test/setup-pre-commit-hook"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.14.0",
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^6.x",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
     "chai": "^3.5.0",
     "eslint": "^3.4.0",
     "karma": "^1.4.0",
-    "karma-babel-preprocessor": "^6.0.1",
     "karma-chai": "^0.1.0",
     "karma-mocha": "^1.3.0",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-spec-reporter": "0.0.26",
     "karma-webpack": "^2.0.2",
     "mocha": "^3.2.0",
+    "npm-run-all": "^4.0.2",
     "phantomjs-prebuilt": "^2.1.7",
     "react": "^15.5.x",
-    "react-addons-test-utils": "^15.5.x",
     "react-dom": "^15.5.x",
     "react-test-renderer": "^15.5.x",
     "require-hijack": "^1.2.1",
-    "webpack": "^1.12.14"
+    "rimraf": "^2.6.1",
+    "rollup": "^0.41.6",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "webpack": "^1.15.0"
+  },
+  "peerDependencies": {
+    "react": "^15.5.x",
+    "react-dom": "^15.5.x"
+  },
+  "babel": {
+    "plugins": [
+      "transform-class-properties"
+    ]
   }
 }

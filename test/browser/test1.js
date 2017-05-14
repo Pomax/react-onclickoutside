@@ -1,35 +1,41 @@
-/**
- * Human-triggered for now, this should become a normal phantom test instead
- */
-var Nested = React.createClass({
-  getInitialState: function() {
-    return { highlight: false };
-  },
+(function test1(onClickOutside) {
 
-  handleClickOutside: function() {
-    this.setState({ highlight: false });
-  },
+  onClickOutside = onClickOutside.default;
 
-  highlight: function() {
-    console.log(this.props.id);
-    this.setState({ highlight: true });
-  },
+  /**
+   * Human-triggered for now, this should become a normal phantom test instead
+   */
+  class BaseComponent extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        highlight: false
+      };
+    }
 
-  render: function() {
-    var className = 'concentric' + (this.state.highlight? ' highlight' : '');
-    return React.createElement('div', {
-      className: className,
-      children: this.props.children,
-      onClick: this.highlight
-    });
+    handleClickOutside() {
+      console.log('remove highlight', this.props.id);
+      this.setState({ highlight: false });
+    }
+
+    highlight() {
+      console.log('highlight', this.props.id);
+      this.setState({ highlight: true });
+    }
+
+    render() {
+      var className = 'concentric' + (this.state.highlight? ' highlight' : '');
+      return React.createElement('div', {
+        className: className,
+        children: this.props.children,
+        onClick: e => this.highlight(e)
+      });
+    }
   }
-});
 
+  const Nested = onClickOutside(BaseComponent);
 
-Nested = onClickOutside(Nested); /* global onClickOutside */
-
-var App = React.createClass({
-  render: function() {
+  const App = function() {
     return React.createElement(Nested, {
       id: 1,
       stopPropagation: true,
@@ -43,7 +49,7 @@ var App = React.createClass({
         })
       })
     });
-  }
-});
+  };
 
-ReactDOM.render(React.createElement(App), document.getElementById('app1'));
+  ReactDOM.render(React.createElement(App), document.getElementById('app1'));
+}(onClickOutside)); /* global onClickOutside */

@@ -1,4 +1,7 @@
-(function() {
+(function test3(onClickOutside) {
+
+  onClickOutside = onClickOutside.default;
+
   class Test3Class extends React.Component {
     constructor(props) {
       super(props);
@@ -11,7 +14,7 @@
     }
   }
 
-  const Test = onClickOutside(Test3Class); /* global onClickOutside */
+  const Test = onClickOutside(Test3Class);
 
   class App extends React.Component {
     constructor(props) {
@@ -26,15 +29,15 @@
       );
     }
     show() {
-      console.log('show');
+      console.log('test3 - show');
       this.setState({ hideToolbox: false });
     }
     hide() {
-      console.log('hide');
+      console.log('test3 - hide');
       this.setState({ hideToolbox: true });
     }
   }
 
   ReactDOM.render(React.createElement(App), document.getElementById('app3'));
 
-}());
+}(onClickOutside)); /* global onClickOutside */
