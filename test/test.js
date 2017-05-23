@@ -293,6 +293,12 @@ describe('onclickoutside hoc', function() {
   });
 
   describe('with child rendering as null', function() {
+    var counter;
+
+    beforeEach(function () {
+      counter = 0;
+    });
+
     it('shouldn\'t throw an error when wrapped SFC renders as null', function() {
       var StatelessComponent = () => null;
       try {
@@ -303,7 +309,6 @@ describe('onclickoutside hoc', function() {
       }
     });
 
-    var counter;
     class ClassComponent extends React.Component {
       handleClickOutside() {
         counter++;
@@ -325,7 +330,6 @@ describe('onclickoutside hoc', function() {
     };
 
     it('should render fine when wrapped component renders as null', function() {
-      counter = 0;
       var component = rerender({ renderNull: true });
       assert(component, 'component was wrapped despite having no DOM node on mount');
       document.dispatchEvent(new Event('mousedown'));
@@ -333,8 +337,6 @@ describe('onclickoutside hoc', function() {
     });
 
     it('should attach and deattach event listener on updates', function() {
-      counter = 0;
-
       rerender({ renderNull: false });
       document.dispatchEvent(new Event('mousedown'));
       assert(counter === 1, 'should fire handleClickOutside when DOM node gets created after rerender');
@@ -345,8 +347,6 @@ describe('onclickoutside hoc', function() {
     });
 
     it('should handle disabling and enabling onClickOutside listener when having no DOM node', function() {
-      counter = 0;
-
       rerender({ renderNull: true, callEnableOnClickOutside: true });
       document.dispatchEvent(new Event('mousedown'));
       assert(counter === 0, 'should not call handleClickOutside when onClickOutside gets enabled when having no DOM node');
