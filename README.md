@@ -2,7 +2,7 @@
 
 This is a React **H**igher **O**rder **C**omponent that you can use with your own React components if you want to have them listen for clicks that occur somewhere in the document, outside of the element itself (for instance, if you need to hide a menu when people click anywhere else on your page).
 
-Note that this HOC relies on the `.classList` property, which is supported by all modern browsers, but not by no longer supported browsers like IE9 or older. If your code relies on classList in any way, you want to use a polyfill like [dom4](https://github.com/WebReflection/dom4)
+Note that this HOC relies on the `.classList` property, which is supported by all modern browsers, but not by deprecated and obsolite browsers like IE (noting that Microsoft Edge is not Microsoft Internet Explorer. Edge does not have any problems with the `classList` property for SVG elements). If your code relies on classList in any way, you want to use a polyfill like [dom4](https://github.com/WebReflection/dom4).
 
 This HOC supports stateless components as of v5.7.0, and uses pure class notation rather than `createClass` as of v6.
 
