@@ -11,6 +11,10 @@ function isNodeFound(current, componentNode, ignoreClass) {
   if (current === componentNode) {
     return true;
   }
+
+  if (typeof ignoreClass === 'undefined') {
+    return false;
+  }
   // SVG <use/> elements do not technically reside in the rendered DOM, so
   // they do not have classList directly, but they offer a link to their
   // corresponding element, which can have classList. This extra check is for
@@ -266,7 +270,6 @@ function onClickOutsideHOC(WrappedComponent, config) {
   }, _class.displayName = `OnClickOutside(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`, _class.defaultProps = {
     eventTypes: ['mousedown', 'touchstart'],
     excludeScrollbar: config && config.excludeScrollbar || false,
-    outsideClickIgnoreClass: 'ignore-react-onclickoutside',
     preventDefault: false,
     stopPropagation: false
   }, _class.getClass = () => WrappedComponent.getClass ? WrappedComponent.getClass() : WrappedComponent, _temp2;

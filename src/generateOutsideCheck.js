@@ -5,6 +5,10 @@ function isNodeFound(current, componentNode, ignoreClass) {
   if (current === componentNode) {
     return true;
   }
+
+  if (typeof ignoreClass === 'undefined') {
+    return false;
+  }
   // SVG <use/> elements do not technically reside in the rendered DOM, so
   // they do not have classList directly, but they offer a link to their
   // corresponding element, which can have classList. This extra check is for
