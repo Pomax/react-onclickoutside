@@ -1,5 +1,4 @@
 (function test1(onClickOutside) {
-
   onClickOutside = onClickOutside.default;
 
   /**
@@ -9,7 +8,7 @@
     constructor(props) {
       super(props);
       this.state = {
-        highlight: false
+        highlight: false,
       };
     }
 
@@ -24,11 +23,11 @@
     }
 
     render() {
-      var className = 'concentric' + (this.state.highlight? ' highlight' : '');
+      var className = 'concentric' + (this.state.highlight ? ' highlight' : '');
       return React.createElement('div', {
         className: className,
         children: this.props.children,
-        onClick: e => this.highlight(e)
+        onClick: e => this.highlight(e),
       });
     }
   }
@@ -45,11 +44,11 @@
         children: React.createElement(Nested, {
           id: 3,
           stopPropagation: true,
-          children: React.createElement('div', { className: 'label', children: ['test'] })
-        })
-      })
+          children: React.createElement('div', { className: 'label', children: ['test'] }),
+        }),
+      }),
     });
   };
 
   ReactDOM.render(React.createElement(App), document.getElementById('app1'));
-}(onClickOutside)); /* global onClickOutside */
+})(onClickOutside); /* global onClickOutside */

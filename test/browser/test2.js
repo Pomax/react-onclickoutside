@@ -1,5 +1,4 @@
 (function test2(onClickOutside) {
-
   onClickOutside = onClickOutside.default;
 
   class BasePopup extends React.Component {
@@ -20,21 +19,19 @@
     constructor(props) {
       super(props);
       this.state = {
-        hideToolbox: true
+        hideToolbox: true,
       };
     }
     render() {
-      return (
-        React.createElement('div', {
-          children: [
-            React.createElement('button', {
-              onClick: e => this.state.hideToolbox && this.show(e),
-              children: 'show text'
-            }),
-            this.state.hideToolbox ? null : React.createElement(Popup, {hide: e => this.hide(e)})
-          ]
-        })
-      );
+      return React.createElement('div', {
+        children: [
+          React.createElement('button', {
+            onClick: e => this.state.hideToolbox && this.show(e),
+            children: 'show text',
+          }),
+          this.state.hideToolbox ? null : React.createElement(Popup, { hide: e => this.hide(e) }),
+        ],
+      });
     }
     show() {
       console.log('test2 - show');
@@ -47,5 +44,4 @@
   }
 
   ReactDOM.render(React.createElement(App), document.getElementById('app2'));
-
-}(onClickOutside)); /* global onClickOutside */
+})(onClickOutside); /* global onClickOutside */

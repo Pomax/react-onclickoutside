@@ -1,14 +1,11 @@
 module.exports = function(config) {
   config.set({
-
-    files: [
-      'test.js'
-    ],
+    files: ['test.js'],
 
     frameworks: ['mocha', 'chai'],
 
     preprocessors: {
-      'test.js': ['webpack']
+      'test.js': ['webpack'],
     },
 
     reporters: ['spec'],
@@ -16,20 +13,22 @@ module.exports = function(config) {
     webpack: {
       devtool: 'inline-source-map',
       module: {
-        loaders: [{
-          test: /.js$/,
-          loader: 'babel',
-          query: {
-            presets: [['es2015', { 'loose': true }]],
-            plugins: ['transform-class-properties']
-          }
-        }]
-      }
+        loaders: [
+          {
+            test: /.js$/,
+            loader: 'babel',
+            query: {
+              presets: [['es2015', { loose: true }]],
+              plugins: ['transform-class-properties'],
+            },
+          },
+        ],
+      },
     },
 
     webpackMiddleware: {
       noInfo: true,
-      stats: { errorDetails: true }
+      stats: { errorDetails: true },
     },
 
     plugins: [
@@ -40,7 +39,6 @@ module.exports = function(config) {
       require('karma-spec-reporter'),
     ],
 
-    browsers: ['PhantomJS']
-
+    browsers: ['PhantomJS'],
   });
 };

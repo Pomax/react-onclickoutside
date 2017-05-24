@@ -17,7 +17,7 @@ const handlers = [];
  */
 export default function onClickOutsideHOC(WrappedComponent, config) {
   return class onClickOutside extends Component {
-    static displayName = `OnClickOutside(${ WrappedComponent.displayName || WrappedComponent.name || 'Component' })`
+    static displayName = `OnClickOutside(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
     static defaultProps = {
       eventTypes: ['mousedown', 'touchstart'],
@@ -25,9 +25,9 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       outsideClickIgnoreClass: 'ignore-react-onclickoutside',
       preventDefault: false,
       stopPropagation: false,
-    }
+    };
 
-    static getClass = () => WrappedComponent.getClass ? WrappedComponent.getClass() : WrappedComponent
+    static getClass = () => (WrappedComponent.getClass ? WrappedComponent.getClass() : WrappedComponent);
 
     /**
      * Access the WrappedComponent's instance.
@@ -41,7 +41,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
     }
 
     // this is given meaning in componentDidMount/componentDidUpdate
-    __outsideClickHandler = null
+    __outsideClickHandler = null;
 
     /**
      * Add click listeners to the current document,
@@ -51,27 +51,31 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       // If we are in an environment without a DOM such
       // as shallow rendering or snapshots then we exit
       // early to prevent any unhandled errors being thrown.
-      if (typeof document === 'undefined' || !document.createElement){
+      if (typeof document === 'undefined' || !document.createElement) {
         return;
       }
 
       const instance = this.getInstance();
 
-      if(config && typeof config.handleClickOutside === 'function') {
+      if (config && typeof config.handleClickOutside === 'function') {
         this.__clickOutsideHandlerProp = config.handleClickOutside(instance);
-        if(typeof this.__clickOutsideHandlerProp !== 'function') {
-          throw new Error('WrappedComponent lacks a function for processing outside click events specified by the handleClickOutside config option.');
+        if (typeof this.__clickOutsideHandlerProp !== 'function') {
+          throw new Error(
+            'WrappedComponent lacks a function for processing outside click events specified by the handleClickOutside config option.',
+          );
         }
-      } else if(typeof instance.handleClickOutside === 'function') {
+      } else if (typeof instance.handleClickOutside === 'function') {
         if (Component.prototype.isPrototypeOf(instance)) {
           this.__clickOutsideHandlerProp = instance.handleClickOutside.bind(instance);
         } else {
           this.__clickOutsideHandlerProp = instance.handleClickOutside;
         }
-      } else if(typeof instance.props.handleClickOutside === 'function') {
+      } else if (typeof instance.props.handleClickOutside === 'function') {
         this.__clickOutsideHandlerProp = instance.props.handleClickOutside;
       } else {
-        throw new Error('WrappedComponent lacks a handleClickOutside(event) function for processing outside click events.');
+        throw new Error(
+          'WrappedComponent lacks a handleClickOutside(event) function for processing outside click events.',
+        );
       }
 
       // TODO: try to get rid of this, could be done with function ref, might be problematic for SFC though, they do not expose refs
@@ -132,7 +136,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
           document.addEventListener(eventName, fn, handlerOptions);
         });
       }
-    }
+    };
 
     /**
      * Can be called to explicitly disable event listening
@@ -147,17 +151,17 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         }
         events.forEach(eventName => document.removeEventListener(eventName, fn));
       }
-    }
+    };
 
     addOutsideClickHandler() {
-      const fn = this.__outsideClickHandler = generateOutsideCheck(
+      const fn = (this.__outsideClickHandler = generateOutsideCheck(
         findDOMNode(this.getInstance()),
         this.__clickOutsideHandlerProp,
         this.props.outsideClickIgnoreClass,
         this.props.excludeScrollbar,
         this.props.preventDefault,
-        this.props.stopPropagation
-      );
+        this.props.stopPropagation,
+      ));
 
       const pos = registeredComponents.length;
       registeredComponents.push(this);
@@ -178,23 +182,23 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
 
       if (pos > -1) {
         // clean up so we don't leak memory
-        if (handlers[pos]) { handlers.splice(pos, 1); }
+        if (handlers[pos]) {
+          handlers.splice(pos, 1);
+        }
         registeredComponents.splice(pos, 1);
       }
     }
 
-    getRef = ref => this.instanceRef = ref
+    getRef = ref => (this.instanceRef = ref);
 
     /**
      * Pass-through render
      */
     render() {
-      var props = Object.keys(this.props)
-        .filter(prop => prop !== 'excludeScrollbar')
-        .reduce((props, prop) => {
-          props[prop] = this.props[prop];
-          return props;
-        }, {});
+      var props = Object.keys(this.props).filter(prop => prop !== 'excludeScrollbar').reduce((props, prop) => {
+        props[prop] = this.props[prop];
+        return props;
+      }, {});
 
       if (WrappedComponent.prototype.isReactComponent) {
         props.ref = this.getRef;
