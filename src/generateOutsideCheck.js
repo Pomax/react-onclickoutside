@@ -31,7 +31,7 @@ function findHighest(current, componentNode, ignoreClass) {
   // a layered approach, too, but that requires going back to
   // thinking in terms of Dom node nesting, running counter
   // to React's 'you shouldn't care about the DOM' philosophy.
-  while(current.parentNode) {
+  while (current.parentNode) {
     if (isNodeFound(current, componentNode, ignoreClass)) {
       return true;
     }
@@ -51,7 +51,14 @@ function clickedScrollbar(evt) {
  * Generate the event handler that checks whether a clicked DOM node
  * is inside of, or lives outside of, our Component's node tree.
  */
-export default function generateOutsideCheck(componentNode, eventHandler, ignoreClass, excludeScrollbar, preventDefault, stopPropagation) {
+export default function generateOutsideCheck(
+  componentNode,
+  eventHandler,
+  ignoreClass,
+  excludeScrollbar,
+  preventDefault,
+  stopPropagation,
+) {
   return function(evt) {
     if (preventDefault) {
       evt.preventDefault();
@@ -60,7 +67,7 @@ export default function generateOutsideCheck(componentNode, eventHandler, ignore
       evt.stopPropagation();
     }
     const current = evt.target;
-    if((excludeScrollbar && clickedScrollbar(evt)) || (findHighest(current, componentNode, ignoreClass) !== document)) {
+    if ((excludeScrollbar && clickedScrollbar(evt)) || findHighest(current, componentNode, ignoreClass) !== document) {
       return;
     }
     eventHandler(evt);
