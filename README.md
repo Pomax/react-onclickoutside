@@ -6,6 +6,8 @@ Note that this HOC relies on the `.classList` property, which is supported by al
 
 This HOC supports stateless components as of v5.7.0, and uses pure class notation rather than `createClass` as of v6.
 
+This HOC is a pure ES6 implementation as of v6.x - if you need ES5 code you can either use 5.x or below, or set up your build to perform ES5 conversion for you.
+
 ## Installation
 
 Use `npm`:
