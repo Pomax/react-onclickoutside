@@ -3,6 +3,7 @@
   "version": "6.0.0",
   "description": "An onClickOutside wrapper for React components",
   "main": "./index.js",
+  "jsnext:main": "./index.js",
   "files": [
     "index.js"
   ],
