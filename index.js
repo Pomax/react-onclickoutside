@@ -7,43 +7,25 @@
 /**
  * Check whether some DOM node is our Component's node.
  */
-function isNodeFound(current, componentNode, ignoreClass) {
-  if (current === componentNode) {
-    return true;
-  }
+function hasClass(className, node) {
   // SVG <use/> elements do not technically reside in the rendered DOM, so
   // they do not have classList directly, but they offer a link to their
   // corresponding element, which can have classList. This extra check is for
   // that case.
   // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
   // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
-  if (current.correspondingElement) {
-    return current.correspondingElement.classList.contains(ignoreClass);
-  }
-  return current.classList.contains(ignoreClass);
+  return (node.correspondingElement || node).classList.contains(className);
 }
 
-/**
- * Try to find our node in a hierarchy of nodes, returning the document
- * node as highest node if our node is not found in the path up.
- */
-function findHighest(current, componentNode, ignoreClass) {
-  if (current === componentNode) {
-    return true;
-  }
-
-  // If source=local then this event came from 'somewhere'
-  // inside and should be ignored. We could handle this with
-  // a layered approach, too, but that requires going back to
-  // thinking in terms of Dom node nesting, running counter
-  // to React's 'you shouldn't care about the DOM' philosophy.
-  while (current.parentNode) {
-    if (isNodeFound(current, componentNode, ignoreClass)) {
+function containedInClassName(className, node) {
+  do {
+    if (hasClass(className, node)) {
       return true;
     }
-    current = current.parentNode;
-  }
-  return current;
+    node = node.parentNode;
+  } while (node);
+
+  return false;
 }
 
 /**
@@ -66,7 +48,7 @@ function generateOutsideCheck(componentNode, eventHandler, ignoreClass, excludeS
       evt.stopPropagation();
     }
     const current = evt.target;
-    if (excludeScrollbar && clickedScrollbar(evt) || findHighest(current, componentNode, ignoreClass) !== document) {
+    if (current !== document && (excludeScrollbar && clickedScrollbar(evt) || componentNode.contains(current) || containedInClassName(ignoreClass, current))) {
       return;
     }
     eventHandler(evt);
