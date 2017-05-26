@@ -1,6 +1,6 @@
 # An onClickOutside wrapper for React components
 
-This is a React **H**igher **O**rder **C**omponent that you can use with your own React components if you want to have them listen for clicks that occur somewhere in the document, outside of the element itself (for instance, if you need to hide a menu when people click anywhere else on your page).
+This is a React Higher Order Component (HOC) that you can use with your own React components if you want to have them listen for clicks that occur somewhere in the document, outside of the element itself (for instance, if you need to hide a menu when people click anywhere else on your page).
 
 Note that this HOC relies on the `.classList` property, which is supported by all modern browsers, but not by deprecated and obsolete browsers like IE (noting that Microsoft Edge is not Microsoft Internet Explorer. Edge does not have any problems with the `classList` property for SVG elements). If your code relies on classList in any way, you want to use a polyfill like [dom4](https://github.com/WebReflection/dom4).
 
