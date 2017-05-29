@@ -1,3 +1,4 @@
+import toClassList from './toClassList';
 /**
  * Check whether some DOM node is our Component's node.
  */
@@ -12,9 +13,9 @@ function isNodeFound(current, componentNode, ignoreClass) {
   // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
   // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
   if (current.correspondingElement) {
-    return current.correspondingElement.classList.contains(ignoreClass);
+    return toClassList(current.correspondingElement).contains(ignoreClass);
   }
-  return current.classList.contains(ignoreClass);
+  return toClassList(current).contains(ignoreClass);
 }
 
 /**

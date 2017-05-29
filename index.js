@@ -4,6 +4,19 @@
 	(factory((global.onClickOutside = global.onClickOutside || {}),global.React,global.ReactDOM));
 }(this, (function (exports,react,reactDom) { 'use strict';
 
+function toClassList(element) {
+  if (typeof element.classList !== 'undefined') {
+    return element.classList;
+  }
+
+  // assume it's SVG in IE which doesn't support .classList
+  return {
+    contains(className) {
+      return element.className.baseVal.split(' ').indexOf(className) !== -1;
+    }
+  };
+}
+
 /**
  * Check whether some DOM node is our Component's node.
  */
@@ -18,9 +31,9 @@ function isNodeFound(current, componentNode, ignoreClass) {
   // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
   // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
   if (current.correspondingElement) {
-    return current.correspondingElement.classList.contains(ignoreClass);
+    return toClassList(current.correspondingElement).contains(ignoreClass);
   }
-  return current.classList.contains(ignoreClass);
+  return toClassList(current).contains(ignoreClass);
 }
 
 /**
