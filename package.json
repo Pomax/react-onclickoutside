@@ -7,8 +7,7 @@
   "jsnext:main": "es/index.js",
   "files": [
     "es",
-    "lib",
-    "dist"
+    "lib"
   ],
   "homepage": "https://github.com/Pomax/react-onclickoutside",
   "authors": [
