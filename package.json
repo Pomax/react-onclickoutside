@@ -2,11 +2,12 @@
   "name": "react-onclickoutside",
   "version": "6.0.0",
   "description": "An onClickOutside wrapper for React components",
-  "main": "./index.js",
-  "module": "./index.js",
-  "jsnext:main": "./index.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
   "files": [
-    "index.js"
+    "es",
+    "lib"
   ],
   "homepage": "https://github.com/Pomax/react-onclickoutside",
   "authors": [
@@ -28,7 +29,9 @@
     "url": "https://github.com/Pomax/react-onclickoutside/issues"
   },
   "scripts": {
-    "build": "rollup -c -i src/index.js -o ./index.js",
+    "build": "npm run build:es && npm run build:commonjs",
+    "build:es": "cross-env BABEL_ENV=es babel src -d es",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib",
     "lint": "eslint src/*.js ./test",
     "test": "run-s test:**",
     "test:basic": "run-s lint build",
@@ -40,9 +43,10 @@
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^6.x",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-env": "^1.5.1",
+    "babel-preset-stage-0": "^6.24.1",
     "chai": "^3.5.0",
+    "cross-env": "^5.0.0",
     "eslint": "^3.4.0",
     "husky": "^0.13.3",
     "karma": "^1.4.0",
@@ -69,11 +73,6 @@
   "peerDependencies": {
     "react": "^15.5.x",
     "react-dom": "^15.5.x"
-  },
-  "babel": {
-    "plugins": [
-      "transform-class-properties"
-    ]
   },
   "lint-staged": {
     "{src,test}/**/*.js": [

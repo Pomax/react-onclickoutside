@@ -18,8 +18,7 @@ module.exports = function(config) {
             test: /.js$/,
             loader: 'babel',
             query: {
-              presets: [['es2015', { loose: true }]],
-              plugins: ['transform-class-properties'],
+              presets: ['env', 'stage-0'],
             },
           },
         ],

@@ -1,0 +1,18 @@
+{
+    "env": {
+        "commonjs": {
+            "presets": [ "env", "stage-0" ]
+        },
+        "es": {
+            "presets": [
+                [
+                    "env",
+                    {
+                        "modules": false
+                    }
+                ],
+                "stage-0"
+            ]
+        }
+    }
+}
