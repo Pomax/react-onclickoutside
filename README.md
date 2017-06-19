@@ -8,6 +8,8 @@ This HOC supports stateless components as of v5.7.0, and uses pure class notatio
 
 This HOC is a **pure ES6 implementation** as of v6.x - if you need ES5 code you can either use 5.x or below, or set up your build system so that it does ES5 conversion for you, at whatever is the most logical point in your build chain.
 
+## Sections covered in this README
+
 - [Installation](#installation)
 - [Regulate which events to listen for](#regulate-which-events-to-listen-for)
 - [Regulate whether or not to listen for outside clicks](#regulate-whether-or-not-to-listen-for-outside-clicks)
@@ -19,6 +21,7 @@ This HOC is a **pure ES6 implementation** as of v6.x - if you need ES5 code you 
 - [Which version do I need for which version of React?](#which-version-do-i-need-for-which-version-of-react)
   * [Support-wise, only the latest version will receive updates and bug fixes.](#support-wise-only-the-latest-version-will-receive-updates-and-bug-fixes)
 - [IE does not support classList for SVG elements!](#ie-does-not-support-classlist-for-svg-elements)
+- [I can't find what I need in the README](#i-cant-find-what-i-need-in-the-readme)
 
 ## Installation
 
@@ -232,3 +235,7 @@ This is true, but also an edge-case problem that only exists for older versions 
 If you need this to work, you can add a shim for `classList` to your page(s), loaded before you load your React code, and you'll have instantly fixed *every* library that you might remotely rely on that makes use of the `classList` property. You can find several shims quite easily, a good one to start with is the [dom4](https://github.com/WebReflection/dom4) shim, which adds all manner of good DOM4 properties to "not quite at DOM4 yet" browser implementations.
 
 Eventually this problem will stop being one, but in the mean time *you* are responsible for making *your* site work by shimming everything that needs shimming for IE.  As such, **if you file a PR to fix classList-and-SVG issues specifically for this library, your PR will be closed and I will politely point you to this README.md section**. I will not accept PRs to fix this issue. You already have the power to fix it, and I expect you to take responsibility as a fellow developer to shim what you need instead of getting obsolete quirks supported by libraries whose job isn't to support obsolete quirks.
+
+## I can't find what I need in the README
+
+If you've read the whole thing and you still can't find what you were looking for, then the README is missing important information that should be added in. Please [file an issue](issues) with a request for additional documentation, describing what you were hoping to find in enough detail that it can be used to write up the information you needed.
