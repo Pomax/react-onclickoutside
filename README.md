@@ -8,6 +8,18 @@ This HOC supports stateless components as of v5.7.0, and uses pure class notatio
 
 This HOC is a **pure ES6 implementation** as of v6.x - if you need ES5 code you can either use 5.x or below, or set up your build system so that it does ES5 conversion for you, at whatever is the most logical point in your build chain.
 
+- [Installation](#installation)
+- [Regulate which events to listen for](#regulate-which-events-to-listen-for)
+- [Regulate whether or not to listen for outside clicks](#regulate-whether-or-not-to-listen-for-outside-clicks)
+- [Regulate whether or not to listen to scrollbar clicks](#regulate-whether-or-not-to-listen-to-scrollbar-clicks)
+- [Regulating `evt.preventDefault()` and `evt.stopPropagation()`](#regulating-evtpreventdefault-and-evtstoppropagation)
+- [Marking elements as "skip over this one" during the event loop](#marking-elements-as-skip-over-this-one-during-the-event-loop)
+- [Older React code: "What happened to the Mixin??"](#older-react-code-what-happened-to-the-mixin)
+  * [But how can I access my component? It has an API that I rely on!](#but-how-can-i-access-my-component-it-has-an-api-that-i-rely-on)
+- [Which version do I need for which version of React?](#which-version-do-i-need-for-which-version-of-react)
+  * [Support-wise, only the latest version will receive updates and bug fixes.](#support-wise-only-the-latest-version-will-receive-updates-and-bug-fixes)
+- [IE does not support classList for SVG elements!](#ie-does-not-support-classlist-for-svg-elements)
+
 ## Installation
 
 Use `npm`:
