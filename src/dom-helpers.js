@@ -1,7 +1,7 @@
 /**
  * Check whether some DOM node is our Component's node.
  */
-function isNodeFound(current, componentNode, ignoreClass) {
+export function isNodeFound(current, componentNode, ignoreClass) {
   if (current === componentNode) {
     return true;
   }
@@ -21,7 +21,7 @@ function isNodeFound(current, componentNode, ignoreClass) {
  * Try to find our node in a hierarchy of nodes, returning the document
  * node as highest node if our node is not found in the path up.
  */
-function findHighest(current, componentNode, ignoreClass) {
+export function findHighest(current, componentNode, ignoreClass) {
   if (current === componentNode) {
     return true;
   }
@@ -43,33 +43,6 @@ function findHighest(current, componentNode, ignoreClass) {
 /**
  * Check if the browser scrollbar was clicked
  */
-function clickedScrollbar(evt) {
+export function clickedScrollbar(evt) {
   return document.documentElement.clientWidth <= evt.clientX || document.documentElement.clientHeight <= evt.clientY;
-}
-
-/**
- * Generate the event handler that checks whether a clicked DOM node
- * is inside of, or lives outside of, our Component's node tree.
- */
-export default function generateOutsideCheck(
-  componentNode,
-  eventHandler,
-  ignoreClass,
-  excludeScrollbar,
-  preventDefault,
-  stopPropagation,
-) {
-  return function(evt) {
-    if (preventDefault) {
-      evt.preventDefault();
-    }
-    if (stopPropagation) {
-      evt.stopPropagation();
-    }
-    const current = evt.target;
-    if ((excludeScrollbar && clickedScrollbar(evt)) || findHighest(current, componentNode, ignoreClass) !== document) {
-      return;
-    }
-    eventHandler(evt);
-  };
 }
