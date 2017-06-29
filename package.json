@@ -34,7 +34,7 @@
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib",
     "lint": "eslint src/*.js ./test",
     "test": "run-s test:**",
-    "test:basic": "run-s lint build",
+    "test:basic": "run-s lint build:commonjs",
     "test:karma": "karma start test/karma.conf.js --single-run",
     "test:nodom": "mocha test/no-dom-test.js",
     "precommit": "npm test && lint-staged",
