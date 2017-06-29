@@ -1,3 +1,4 @@
+'use strict';
 var assert = require('assert');
 var React = require('react');
 var renderer = require('react-test-renderer');
