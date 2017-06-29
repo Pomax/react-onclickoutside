@@ -1,13 +1,14 @@
 {
     "env": {
         "commonjs": {
-            "presets": [ "env", "stage-0" ]
+            "presets": [ ["env", { "loose": true }], "stage-0" ]
         },
         "es": {
             "presets": [
                 [
                     "env",
                     {
+                        "loose": true,
                         "modules": false
                     }
                 ],
