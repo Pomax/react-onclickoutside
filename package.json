@@ -29,12 +29,12 @@
     "url": "https://github.com/Pomax/react-onclickoutside/issues"
   },
   "scripts": {
-    "build": "npm run build:es && npm run build:commonjs",
+    "build": "run-p build:*",
     "build:es": "cross-env BABEL_ENV=es babel src -d es",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib",
     "lint": "eslint src/*.js ./test",
     "test": "run-s test:**",
-    "test:basic": "run-s lint build",
+    "test:basic": "run-s lint build:commonjs",
     "test:karma": "karma start test/karma.conf.js --single-run",
     "test:nodom": "mocha test/no-dom-test.js",
     "precommit": "npm test && lint-staged",
