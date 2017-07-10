@@ -8,6 +8,9 @@ import generateOutsideCheck from './generateOutsideCheck';
 const registeredComponents = [];
 const handlers = [];
 
+const touchEvents = ['touchstart', 'touchmove'];
+export const IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
+
 /**
  * This function generates the HOC function that you'll use
  * in order to impart onOutsideClick listening to an
@@ -22,7 +25,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
     static defaultProps = {
       eventTypes: ['mousedown', 'touchstart'],
       excludeScrollbar: (config && config.excludeScrollbar) || false,
-      outsideClickIgnoreClass: 'ignore-react-onclickoutside',
+      outsideClickIgnoreClass: IGNORE_CLASS_NAME,
       preventDefault: false,
       stopPropagation: false,
     };
@@ -129,10 +132,12 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         if (!events.forEach) {
           events = [events];
         }
+
         events.forEach(eventName => {
-          const handlerOptions = !this.props.preventDefault && ['touchstart', 'touchmove'].indexOf(eventName) !== -1
-            ? { passive: true }
-            : null;
+          let handlerOptions = null;
+          if (!this.props.preventDefault && touchEvents.indexOf(eventName) !== -1) {
+            handlerOptions = { passive: true };
+          }
           document.addEventListener(eventName, fn, handlerOptions);
         });
       }
