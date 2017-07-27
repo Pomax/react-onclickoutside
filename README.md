@@ -38,25 +38,7 @@ $> npm install react-onclickoutside --save
 (or `--save-dev` depending on your needs). You then use it in your components as:
 
 ```js
-// load the HOC:
-var onClickOutside = require('react-onclickoutside');
-var createReactClass = require('create-react-class');
-
-// create a new component, wrapped by this onclickoutside HOC:
-var MyComponent = onClickOutside(createReactClass({
-  ...,
-  handleClickOutside: function(evt) {
-    // ...handling code goes here...
-  },
-  ...
-}));
-
-```
-
-or:
-
-```js
-// ES6 Class Syntax
+// ES6 Class and Module Syntax
 import React, { Component } from 'react'
 import onClickOutside from 'react-onclickoutside'
 
@@ -69,27 +51,46 @@ class MyComponent extends Component {
 export default onClickOutside(MyComponent)
 ```
 
-Note that if you try to wrap a React component class without a `handleClickOutside(evt)` handler like this, the HOC will throw an error. In order to use a custom event handler, you can specify the function to be used by the HOC as second parameter
-(this can be useful in environments like TypeScript, where the fact that the wrapped component does not implement the handler can be flagged at compile-time):
+or:
 
 ```js
-// load the HOC:
-var onClickOutside = require('react-onclickoutside');
+// good old node.js/CommonJS require
+// .default is needed because library is bundled as ES6 module
+var onClickOutside = require('react-onclickoutside').default;
 var createReactClass = require('create-react-class');
 
 // create a new component, wrapped by this onclickoutside HOC:
 var MyComponent = onClickOutside(createReactClass({
   ...,
-  myClickOutsideHandler: function(evt) {
+  handleClickOutside: function(evt) {
     // ...handling code goes here...
   },
   ...
-}), {
+}));
+```
+
+Note that if you try to wrap a React component class without a `handleClickOutside(evt)` handler like this, the HOC will throw an error. In order to use a custom event handler, you can specify the function to be used by the HOC as second parameter
+(this can be useful in environments like TypeScript, where the fact that the wrapped component does not implement the handler can be flagged at compile-time):
+
+```js
+// load the HOC:
+import React, { Component } from 'react'
+import onClickOutside from 'react-onclickoutside'
+
+// create a new component, wrapped below by onClickOutside HOC:
+class MyComponent extends Component {
+  ...
+  myClickOutsideHandler(evt) {
+    // ...handling code goes here...
+  }
+  ...
+}
+var clickOutsideConfig = {
   handleClickOutside: function(instance) {
     return instance.myClickOutsideHandler;
   }
-});
-
+}
+var EnhancedComponent = onClickOutside(MyComponent, clickOutsideConfig);
 ```
 
 Note that if you try to wrap a React component with a custom handler that the component does not implement, the HOC will throw an error at run-time.
@@ -118,22 +119,23 @@ Wrapped components have two functions that can be used to explicitly listen for,
 In addition, you can create a component that uses this HOC such that it has the code set up and ready to go, but not listening for outside click events until you explicitly issue its `enableOnClickOutside()`, by passing in a properly called `disableOnClickOutside`:
 
 ```js
-var onClickOutside = require('react-onclickoutside');
-var createReactClass = require('create-react-class');
+import React, { Component } from 'react'
+import onClickOutside from 'react-onclickoutside'
 
-var MyComponent = onClickOutside(createReactClass({
-  ...,
-  handleClickOutside: function(evt) {
-    // ...
-  },
+class MyComponent extends Component {
   ...
-}));
-
-var Container = createReactClass({
-  render: function(evt) {
-    return <MyComponent disableOnClickOutside={true} />
+  handleClickOutside(evt) {
+    // ...
   }
-});
+  ...
+}
+var EnhancedComponent = onClickOutside(MyComponent);
+
+class Container extends Component {
+  render(evt) {
+    return <EnhancedComponent disableOnClickOutside={true} />
+  }
+}
 ```
 
 Using `disableOnClickOutside()` or `enableOnClickOutside()` within `componentDidMount` or `componentWillMount` is considered an anti-pattern, and does not have consistent behaviour when using the mixin and HOC/ES7 Decorator. Favour setting the `disableOnClickOutside` property on the component.
@@ -143,28 +145,34 @@ Using `disableOnClickOutside()` or `enableOnClickOutside()` within `componentDid
 By default this HOC will listen for "clicks inside the document", which may include clicks that occur on the scrollbar. Quite often clicking on the scrollbar *should* close whatever is open but in case your project invalidates that assumption you can use the `excludeScrollbar` property to explicitly tell the HOC that clicks on the scrollbar should be ignored:
 
 ```js
-var onClickOutside = require('react-onclickoutside');
-var createReactClass = require('create-react-class');
+import React, { Component } from 'react'
+import onClickOutside from 'react-onclickoutside'
 
-var MyComponent = onClickOutside(createReactClass({
+class MyComponent extends Component {
   ...
-}));
+}
+var EnhancedComponent = onClickOutside(MyComponent);
 
-var Container = createReactClass({
-  render: function(evt) {
-    return <MyComponent excludeScrollbar={true} />
+class Container extends Component {
+  render(evt) {
+    return <EnhancedComponent excludeScrollbar={true} />
   }
-});
+}
 ```
 
 Alternatively, you can specify this behavior as default for all instances of your component passing a configuration object as second parameter:
 
 ```js
-var MyComponent = onClickOutside(createReactClass({
+import React, { Component } from 'react'
+import onClickOutside from 'react-onclickoutside'
+
+class MyComponent extends Component {
   ...
-}), {
+}
+var clickOutsideConfig = {
   excludeScrollbar: true
-});
+}
+var EnhancedComponent = onClickOutside(MyComponent, clickOutsideConfig);
 ```
 
 ## Regulating `evt.preventDefault()` and `evt.stopPropagation()`
@@ -188,30 +196,40 @@ If you *absolutely* need a mixin... you really don't.
 No, I get that. I constantly have that problem myself, so while there is no universal agreement on how to do that, this HOC offers a `getInstance()` function that you can call for a reference to the component you wrapped, so that you can call its API without headaches:
 
 ```js
-var onClickOutside = require('react-onclickoutside');
-var createReactClass = require('create-react-class');
+import React, { Component } from 'react'
+import onClickOutside from 'react-onclickoutside'
 
-var MyComponent = onClickOutside(createReactClass({
-  ...,
-  handleClickOutside: function(evt) {
-    // ...
-  },
+class MyComponent extends Component {
   ...
-}));
+  handleClickOutside(evt) {
+    // ...
+  }
+  ...
+}
+var EnhancedComponent = onClickOutside(MyComponent);
 
-var Container = createReactClass({
-  someFunction: function() {
-    var ref = this.refs.mycomp;
+class Container extends Component {
+  constructor(props) {
+    super(props);
+    this.getMyComponentRef = this.getMyComponentRef.bind(this);
+  }
+
+  someFunction() {
+    var ref = this.myComponentRef;
     // 1) Get the wrapped component instance:
     var superTrueMyComponent = ref.getInstance();
     // and call instance functions defined for it:
     superTrueMyComponent.customFunction();
-  },
-
-  render: function(evt) {
-    return <MyComponent disableOnClickOutside={true} ref="mycomp"/>
   }
-});
+
+  getMyComponentRef(ref) {
+    this.myComponentRef = ref;
+  }
+
+  render(evt) {
+    return <EnhancedComponent disableOnClickOutside={true} ref={this.getMyComponentRef}/>
+  }
+}
 ```
 
 Note that there is also a `getClass()` function, to get the original Class that was passed into the HOC wrapper, but if you find yourself needing this you're probably doing something wrong: you really want to define your classes as real, require'able etc. units, and then write wrapped components separately, so that you can always access the original class's `statics` etc. properties without needing to extract them out of a HOC.
