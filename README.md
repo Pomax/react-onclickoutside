@@ -1,3 +1,7 @@
+[![npm version](https://img.shields.io/npm/v/react-onclickoutside.svg)](https://www.npmjs.com/package/react-onclickoutside)
+[![Build Status](https://travis-ci.org/Pomax/react-onclickoutside.svg?branch=master)](https://travis-ci.org/Pomax/react-onclickoutside)
+[![npm](https://img.shields.io/npm/dm/react-onclickoutside.svg)](https://www.npmjs.com/package/react-onclickoutside)
+
 # An onClickOutside wrapper for React components
 
 This is a React Higher Order Component (HOC) that you can use with your own React components if you want to have them listen for clicks that occur somewhere in the document, outside of the element itself (for instance, if you need to hide a menu when people click anywhere else on your page).
