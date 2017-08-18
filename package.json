@@ -75,6 +75,10 @@
     "react": "^15.5.x || ^16.x",
     "react-dom": "^15.5.x || ^16.x"
   },
+  "engines": {
+    "node" : ">=7.3",
+    "npm" : ">=4"
+  },
   "lint-staged": {
     "{src,test}/**/*.js": [
       "prettier --print-width=120 --single-quote --trailing-comma=all --write",
