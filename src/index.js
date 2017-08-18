@@ -135,9 +135,12 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
 
         events.forEach(eventName => {
           let handlerOptions = null;
-          if (!this.props.preventDefault && touchEvents.indexOf(eventName) !== -1) {
-            handlerOptions = { passive: true };
+          const isTouchEvent = touchEvents.indexOf(eventName) !== -1;
+
+          if (isTouchEvent) {
+            handlerOptions = { passive: !this.props.preventDefault };
           }
+
           document.addEventListener(eventName, fn, handlerOptions);
         });
       }
