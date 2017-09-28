@@ -16,7 +16,8 @@
   "globals": {
     "React": true,
     "ReactDOM": true,
-    "assert": true
+    "assert": true,
+    "process": true
   },
   "rules": {
     "indent": [

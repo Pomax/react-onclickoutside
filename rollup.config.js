@@ -2,49 +2,37 @@ import babel from 'rollup-plugin-babel';
 import { list as babelHelpersList } from 'babel-helpers';
 import uglify from 'rollup-plugin-uglify';
 
-const globals = {
-  react: 'React',
-  'react-dom': 'ReactDOM'
+var config = {
+  output: {
+    format: 'umd',
+    name: 'onClickOutside',
+    exports: 'named',
+  },
+  external: ['react', 'react-dom'],
+  globals: {
+    react: 'React',
+    'react-dom': 'ReactDOM'
+  },
+  plugins: [
+    babel({
+      exclude: 'node_modules/**',
+      plugins: ['external-helpers'],
+      externalHelpersWhitelist: babelHelpersList.filter(helperName => helperName !== 'asyncGenerator'),
+    }),
+  ],
 };
 
-const external = ['react', 'react-dom'];
-
-const babelOptions = {
-  exclude: 'node_modules/**',
-  plugins: ['external-helpers'],
-  externalHelpersWhitelist: babelHelpersList.filter(helperName => helperName !== 'asyncGenerator')
-};
-
-const config = [
-  {
-    input: 'src/index.js',
-    output: {
-      name: 'onClickOutside',
-      file: 'dist/react-onclickoutside.js',
-      format: 'umd',
-      exports: 'named'
-    },
-    external: external,
-    globals: globals,
-    plugins: [
-      babel(babelOptions)
-    ]
-  },
-  {
-    input: 'src/index.js',
-    output: {
-      name: 'onClickOutside',
-      file: 'dist/react-onclickoutside.min.js',
-      format: 'umd',
-      exports: 'named'
-    },
-    external: external,
-    globals: globals,
-    plugins: [
-      babel(babelOptions), uglify()
-    ]
-  },
-
-];
+if (process.env.NODE_ENV === 'production') {
+  config.plugins.push(
+    uglify({
+      compress: {
+        pure_getters: true,
+        unsafe: true,
+        unsafe_comps: true,
+        warnings: false,
+      },
+    })
+  );
+}
 
 export default config;
