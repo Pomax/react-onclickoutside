@@ -43,7 +43,11 @@
     "test:nodom": "mocha test/no-dom-test.js",
     "precommit": "npm test && lint-staged",
     "prepublish": "test $(npm -v | tr . '\\n' | head -n 1) -ge '4' || exit 1",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "prerelease": "npm run test",
+    "release:patch": "npm run prerelease && npm version patch && npm publish && git push --follow-tags",
+    "release:minor": "npm run prerelease && npm version minor && npm publish && git push --follow-tags",
+    "release:major": "npm run prerelease && npm version major && npm publish && git push --follow-tags"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
