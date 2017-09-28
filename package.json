@@ -1,6 +1,6 @@
 {
   "name": "react-onclickoutside",
-  "version": "6.5.0",
+  "version": "6.6.0",
   "description": "An onClickOutside wrapper for React components",
   "main": "lib/index.js",
   "module": "es/index.js",
