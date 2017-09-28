@@ -53,25 +53,15 @@ function clickedScrollbar(evt) {
   return document.documentElement.clientWidth <= evt.clientX || document.documentElement.clientHeight <= evt.clientY;
 }
 
-/**
- * Generate the event handler that checks whether a clicked DOM node
- * is inside of, or lives outside of, our Component's node tree.
- */
-function generateOutsideCheck(componentNode, eventHandler, ignoreClass, excludeScrollbar, preventDefault, stopPropagation) {
-  return function (evt) {
-    if (preventDefault) {
-      evt.preventDefault();
-    }
-    if (stopPropagation) {
-      evt.stopPropagation();
-    }
-    var current = evt.target;
-    if (excludeScrollbar && clickedScrollbar(evt) || findHighest(current, componentNode, ignoreClass) !== document) {
-      return;
-    }
-    eventHandler(evt);
+function autoInc() {
+  var seed = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+  return function () {
+    return ++seed;
   };
 }
+
+var uid = autoInc();
 
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -123,11 +113,7 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-/**
- * A higher-order-component for handling onClickOutside for React components.
- */
-var registeredComponents = [];
-var handlers = [];
+var handlersMap = {};
 
 var touchEvents = ['touchstart', 'touchmove'];
 var IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
@@ -154,27 +140,68 @@ function onClickOutsideHOC(WrappedComponent, config) {
         args[_key] = arguments[_key];
       }
 
-      return _ret = (_temp = (_this = possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.__outsideClickHandler = null, _this.enableOnClickOutside = function () {
-        var fn = _this.__outsideClickHandler;
-        if (fn && typeof document !== 'undefined') {
-          var events = _this.props.eventTypes;
-          if (!events.forEach) {
-            events = [events];
+      return _ret = (_temp = (_this = possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.__outsideClickHandler = function (event) {
+        if (typeof _this.__clickOutsideHandlerProp === 'function') {
+          _this.__clickOutsideHandlerProp(event);
+          return;
+        }
+
+        var instance = _this.getInstance();
+
+        if (typeof instance.props.handleClickOutside === 'function') {
+          instance.props.handleClickOutside(event);
+          return;
+        }
+
+        if (typeof instance.handleClickOutside === 'function') {
+          instance.handleClickOutside(event);
+          return;
+        }
+
+        throw new Error('WrappedComponent lacks a handleClickOutside(event) function for processing outside click events.');
+      }, _this.enableOnClickOutside = function () {
+        if (typeof document === 'undefined') return;
+
+        var events = _this.props.eventTypes;
+        if (!events.forEach) {
+          events = [events];
+        }
+
+        handlersMap[_this._uid] = function (event) {
+          if (_this.props.disableOnClickOutside) return;
+          if (_this.componentNode === null) return;
+
+          if (_this.props.preventDefault) {
+            event.preventDefault();
           }
 
-          events.forEach(function (eventName) {
-            var handlerOptions = null;
-            var isTouchEvent = touchEvents.indexOf(eventName) !== -1;
+          if (_this.props.stopPropagation) {
+            event.stopPropagation();
+          }
 
-            if (isTouchEvent) {
-              handlerOptions = { passive: !_this.props.preventDefault };
-            }
+          if (_this.props.excludeScrollbar && clickedScrollbar(event)) return;
 
-            document.addEventListener(eventName, fn, handlerOptions);
-          });
-        }
+          var current = event.target;
+
+          if (findHighest(current, _this.componentNode, _this.props.outsideClickIgnoreClass) !== document) {
+            return;
+          }
+
+          _this.__outsideClickHandler(event);
+        };
+
+        events.forEach(function (eventName) {
+          var handlerOptions = null;
+          var isTouchEvent = touchEvents.indexOf(eventName) !== -1;
+
+          if (isTouchEvent) {
+            handlerOptions = { passive: !_this.props.preventDefault };
+          }
+
+          document.addEventListener(eventName, handlersMap[_this._uid], handlerOptions);
+        });
       }, _this.disableOnClickOutside = function () {
-        var fn = _this.__outsideClickHandler;
+        var fn = handlersMap[_this._uid];
         if (fn && typeof document !== 'undefined') {
           var events = _this.props.eventTypes;
           if (!events.forEach) {
@@ -183,6 +210,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
           events.forEach(function (eventName) {
             return document.removeEventListener(eventName, fn);
           });
+          delete handlersMap[_this._uid];
         }
       }, _this.getRef = function (ref) {
         return _this.instanceRef = ref;
@@ -200,14 +228,12 @@ function onClickOutsideHOC(WrappedComponent, config) {
       return ref.getInstance ? ref.getInstance() : ref;
     };
 
-    // this is given meaning in componentDidMount/componentDidUpdate
-
-
     /**
      * Add click listeners to the current document,
      * linked to this component's state.
      */
     onClickOutside.prototype.componentDidMount = function componentDidMount() {
+      this._uid = uid();
       // If we are in an environment without a DOM such
       // as shallow rendering or snapshots then we exit
       // early to prevent any unhandled errors being thrown.
@@ -222,51 +248,14 @@ function onClickOutsideHOC(WrappedComponent, config) {
         if (typeof this.__clickOutsideHandlerProp !== 'function') {
           throw new Error('WrappedComponent lacks a function for processing outside click events specified by the handleClickOutside config option.');
         }
-      } else if (typeof instance.handleClickOutside === 'function') {
-        if (react.Component.prototype.isPrototypeOf(instance)) {
-          this.__clickOutsideHandlerProp = instance.handleClickOutside.bind(instance);
-        } else {
-          this.__clickOutsideHandlerProp = instance.handleClickOutside;
-        }
-      } else if (typeof instance.props.handleClickOutside === 'function') {
-        this.__clickOutsideHandlerProp = instance.props.handleClickOutside;
-      } else {
-        throw new Error('WrappedComponent lacks a handleClickOutside(event) function for processing outside click events.');
       }
 
-      // TODO: try to get rid of this, could be done with function ref, might be problematic for SFC though, they do not expose refs
-      if (reactDom.findDOMNode(instance) === null) {
-        return;
-      }
-
-      this.addOutsideClickHandler();
-    };
-
-    /**
-    * Track for disableOnClickOutside props changes and enable/disable click outside
-    */
-
-
-    onClickOutside.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-      if (this.props.disableOnClickOutside && !nextProps.disableOnClickOutside) {
-        this.enableOnClickOutside();
-      } else if (!this.props.disableOnClickOutside && nextProps.disableOnClickOutside) {
-        this.disableOnClickOutside();
-      }
+      this.componentNode = reactDom.findDOMNode(this.getInstance());
+      this.enableOnClickOutside();
     };
 
     onClickOutside.prototype.componentDidUpdate = function componentDidUpdate() {
-      var componentNode = reactDom.findDOMNode(this.getInstance());
-
-      if (componentNode === null && this.__outsideClickHandler) {
-        this.removeOutsideClickHandler();
-        return;
-      }
-
-      if (componentNode !== null && !this.__outsideClickHandler) {
-        this.addOutsideClickHandler();
-        return;
-      }
+      this.componentNode = reactDom.findDOMNode(this.getInstance());
     };
 
     /**
@@ -275,7 +264,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
 
     onClickOutside.prototype.componentWillUnmount = function componentWillUnmount() {
-      this.removeOutsideClickHandler();
+      this.disableOnClickOutside();
     };
 
     /**
@@ -289,35 +278,6 @@ function onClickOutsideHOC(WrappedComponent, config) {
      * for clicks and touches outside of this element.
      */
 
-
-    onClickOutside.prototype.addOutsideClickHandler = function addOutsideClickHandler() {
-      var fn = this.__outsideClickHandler = generateOutsideCheck(reactDom.findDOMNode(this.getInstance()), this.__clickOutsideHandlerProp, this.props.outsideClickIgnoreClass, this.props.excludeScrollbar, this.props.preventDefault, this.props.stopPropagation);
-
-      var pos = registeredComponents.length;
-      registeredComponents.push(this);
-      handlers[pos] = fn;
-
-      // If there is a truthy disableOnClickOutside property for this
-      // component, don't immediately start listening for outside events.
-      if (!this.props.disableOnClickOutside) {
-        this.enableOnClickOutside();
-      }
-    };
-
-    onClickOutside.prototype.removeOutsideClickHandler = function removeOutsideClickHandler() {
-      this.disableOnClickOutside();
-      this.__outsideClickHandler = false;
-
-      var pos = registeredComponents.indexOf(this);
-
-      if (pos > -1) {
-        // clean up so we don't leak memory
-        if (handlers[pos]) {
-          handlers.splice(pos, 1);
-        }
-        registeredComponents.splice(pos, 1);
-      }
-    };
 
     /**
      * Pass-through render
