@@ -258,6 +258,22 @@ If you need this to work, you can add a shim for `classList` to your page(s), lo
 
 Eventually this problem will stop being one, but in the mean time *you* are responsible for making *your* site work by shimming everything that needs shimming for IE.  As such, **if you file a PR to fix classList-and-SVG issues specifically for this library, your PR will be closed and I will politely point you to this README.md section**. I will not accept PRs to fix this issue. You already have the power to fix it, and I expect you to take responsibility as a fellow developer to shim what you need instead of getting obsolete quirks supported by libraries whose job isn't to support obsolete quirks.
 
+To work around the issue you can use this simple shim:
+
+```js
+if (!('classList' in SVGElement.prototype)) {
+  Object.defineProperty(SVGElement.prototype, 'classList', {
+    get() {
+      return {
+        contains: className => {
+          return this.className.baseVal.split(' ').indexOf(className) !== -1
+        },
+      }
+    },
+  })
+}
+```
+
 ## I can't find what I need in the README
 
 If you've read the whole thing and you still can't find what you were looking for, then the README is missing important information that should be added in. Please [file an issue](issues) with a request for additional documentation, describing what you were hoping to find in enough detail that it can be used to write up the information you needed.
