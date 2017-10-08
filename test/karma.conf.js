@@ -34,10 +34,10 @@ module.exports = function(config) {
       require('karma-webpack'),
       require('karma-mocha'),
       require('karma-chai'),
-      require('karma-phantomjs-launcher'),
+      require('karma-firefox-launcher'),
       require('karma-spec-reporter'),
     ],
 
-    browsers: ['PhantomJS'],
+    browsers: ['Firefox'],
   });
 };
