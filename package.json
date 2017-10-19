@@ -31,6 +31,8 @@
     "url": "https://github.com/Pomax/react-onclickoutside/issues"
   },
   "scripts": {
+    "clean": "rimraf es lib dist",
+    "prebuild": "npm run clean",
     "build": "run-p build:*",
     "build:es": "cross-env BABEL_ENV=es babel src -d es",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib",
@@ -74,7 +76,7 @@
     "react-dom": "^15.5.x",
     "react-test-renderer": "^15.5.x",
     "require-hijack": "^1.2.1",
-    "rimraf": "^2.6.1",
+    "rimraf": "^2.6.2",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-uglify": "^2.0.1",
