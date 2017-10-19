@@ -33,7 +33,7 @@
   "scripts": {
     "clean": "rimraf es lib dist",
     "prebuild": "npm run clean",
-    "build": "run-p build:*",
+    "build": "run-p build:**",
     "build:es": "cross-env BABEL_ENV=es babel src -d es",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib",
     "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/react-onclickoutside.js",

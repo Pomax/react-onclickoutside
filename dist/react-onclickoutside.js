@@ -114,6 +114,7 @@ var possibleConstructorReturn = function (self, call) {
 };
 
 var handlersMap = {};
+var enabledInstances = {};
 
 var touchEvents = ['touchstart', 'touchmove'];
 var IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
@@ -160,7 +161,8 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
         throw new Error('WrappedComponent lacks a handleClickOutside(event) function for processing outside click events.');
       }, _this.enableOnClickOutside = function () {
-        if (typeof document === 'undefined') return;
+        if (typeof document === 'undefined' || enabledInstances[_this._uid]) return;
+        enabledInstances[_this._uid] = true;
 
         var events = _this.props.eventTypes;
         if (!events.forEach) {
@@ -201,7 +203,9 @@ function onClickOutsideHOC(WrappedComponent, config) {
           document.addEventListener(eventName, handlersMap[_this._uid], handlerOptions);
         });
       }, _this.disableOnClickOutside = function () {
+        delete enabledInstances[_this._uid];
         var fn = handlersMap[_this._uid];
+
         if (fn && typeof document !== 'undefined') {
           var events = _this.props.eventTypes;
           if (!events.forEach) {
