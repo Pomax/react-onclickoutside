@@ -278,6 +278,28 @@ describe('onclickoutside hoc', function() {
     assert(clickOutsideHandled, 'clickOutsideHandled got flipped');
   });
 
+  it('should register only one click outside listener per instance', function() {
+    var i = 0;
+
+    var Component = wrapComponent(class extends React.Component {
+      componentDidMount() {
+        this.props.enableOnClickOutside();
+      }
+
+      handleClickOutside() {
+        ++i;
+      }
+
+      render() {
+        return React.createElement('div');
+      }
+    });
+
+    TestUtils.renderIntoDocument(React.createElement(Component));
+    document.dispatchEvent(new Event('mousedown'));
+    assert(i === 1, 'listener called only once');
+  });
+
   describe('with child rendering as null', function() {
     var counter;
 
