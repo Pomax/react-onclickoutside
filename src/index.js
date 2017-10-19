@@ -4,6 +4,7 @@ import * as DOMHelpers from './dom-helpers';
 import uid from './uid';
 
 const handlersMap = {};
+const enabledInstances = {};
 
 const touchEvents = ['touchstart', 'touchmove'];
 export const IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
@@ -107,7 +108,8 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
      * for clicks and touches outside of this element.
      */
     enableOnClickOutside = () => {
-      if (typeof document === 'undefined') return;
+      if (typeof document === 'undefined' || enabledInstances[this._uid]) return;
+      enabledInstances[this._uid] = true;
 
       let events = this.props.eventTypes;
       if (!events.forEach) {
@@ -154,7 +156,9 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
      * for clicks and touches outside of this element.
      */
     disableOnClickOutside = () => {
+      delete enabledInstances[this._uid];
       const fn = handlersMap[this._uid];
+
       if (fn && typeof document !== 'undefined') {
         let events = this.props.eventTypes;
         if (!events.forEach) {
@@ -171,10 +175,12 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
      * Pass-through render
      */
     render() {
-      var props = Object.keys(this.props).filter(prop => prop !== 'excludeScrollbar').reduce((props, prop) => {
-        props[prop] = this.props[prop];
-        return props;
-      }, {});
+      var props = Object.keys(this.props)
+        .filter(prop => prop !== 'excludeScrollbar')
+        .reduce((props, prop) => {
+          props[prop] = this.props[prop];
+          return props;
+        }, {});
 
       if (WrappedComponent.prototype.isReactComponent) {
         props.ref = this.getRef;
