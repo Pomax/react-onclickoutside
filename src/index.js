@@ -30,6 +30,11 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
 
     static getClass = () => (WrappedComponent.getClass ? WrappedComponent.getClass() : WrappedComponent);
 
+    constructor(props) {
+      super(props);
+      this._uid = uid();
+    }
+
     /**
      * Access the WrappedComponent's instance.
      */
@@ -69,7 +74,6 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
      * linked to this component's state.
      */
     componentDidMount() {
-      this._uid = uid();
       // If we are in an environment without a DOM such
       // as shallow rendering or snapshots then we exit
       // early to prevent any unhandled errors being thrown.

@@ -127,21 +127,17 @@ var IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
  * onClickOutsideHOC function defined inside setupHOC().
  */
 function onClickOutsideHOC(WrappedComponent, config) {
-  var _class, _temp2;
+  var _class, _temp;
 
-  return _temp2 = _class = function (_Component) {
+  return _temp = _class = function (_Component) {
     inherits(onClickOutside, _Component);
 
-    function onClickOutside() {
-      var _temp, _this, _ret;
-
+    function onClickOutside(props) {
       classCallCheck(this, onClickOutside);
 
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
+      var _this = possibleConstructorReturn(this, _Component.call(this, props));
 
-      return _ret = (_temp = (_this = possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.__outsideClickHandler = function (event) {
+      _this.__outsideClickHandler = function (event) {
         if (typeof _this.__clickOutsideHandlerProp === 'function') {
           _this.__clickOutsideHandlerProp(event);
           return;
@@ -160,7 +156,9 @@ function onClickOutsideHOC(WrappedComponent, config) {
         }
 
         throw new Error('WrappedComponent lacks a handleClickOutside(event) function for processing outside click events.');
-      }, _this.enableOnClickOutside = function () {
+      };
+
+      _this.enableOnClickOutside = function () {
         if (typeof document === 'undefined' || enabledInstances[_this._uid]) return;
         enabledInstances[_this._uid] = true;
 
@@ -202,7 +200,9 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
           document.addEventListener(eventName, handlersMap[_this._uid], handlerOptions);
         });
-      }, _this.disableOnClickOutside = function () {
+      };
+
+      _this.disableOnClickOutside = function () {
         delete enabledInstances[_this._uid];
         var fn = handlersMap[_this._uid];
 
@@ -216,14 +216,21 @@ function onClickOutsideHOC(WrappedComponent, config) {
           });
           delete handlersMap[_this._uid];
         }
-      }, _this.getRef = function (ref) {
+      };
+
+      _this.getRef = function (ref) {
         return _this.instanceRef = ref;
-      }, _temp), possibleConstructorReturn(_this, _ret);
+      };
+
+      _this._uid = uid();
+      return _this;
     }
 
     /**
      * Access the WrappedComponent's instance.
      */
+
+
     onClickOutside.prototype.getInstance = function getInstance() {
       if (!WrappedComponent.prototype.isReactComponent) {
         return this;
@@ -237,7 +244,6 @@ function onClickOutsideHOC(WrappedComponent, config) {
      * linked to this component's state.
      */
     onClickOutside.prototype.componentDidMount = function componentDidMount() {
-      this._uid = uid();
       // If we are in an environment without a DOM such
       // as shallow rendering or snapshots then we exit
       // early to prevent any unhandled errors being thrown.
@@ -317,7 +323,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
     stopPropagation: false
   }, _class.getClass = function () {
     return WrappedComponent.getClass ? WrappedComponent.getClass() : WrappedComponent;
-  }, _temp2;
+  }, _temp;
 }
 
 exports.IGNORE_CLASS_NAME = IGNORE_CLASS_NAME;
