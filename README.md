@@ -8,9 +8,7 @@ This is a React Higher Order Component (HOC) that you can use with your own Reac
 
 Note that this HOC relies on the `.classList` property, which is supported by all modern browsers, but not by deprecated and obsolete browsers like IE (noting that Microsoft Edge is not Microsoft Internet Explorer. Edge does not have any problems with the `classList` property for SVG elements). If your code relies on classList in any way, you want to use a polyfill like [dom4](https://github.com/WebReflection/dom4).
 
-This HOC supports stateless components as of v5.7.0, and uses pure class notation rather than `createClass` as of v6.
-
-This HOC is a **pure ES6 implementation** as of v6.x - if you need ES5 code you can either use 5.x or below, or set up your build system so that it does ES5 conversion for you, at whatever is the most logical point in your build chain.
+This HOC supports stateless components as of v5.7.0, and switched to using transpiled es6 classes rather than `createClass` as of v6.
 
 ## Sections covered in this README
 
