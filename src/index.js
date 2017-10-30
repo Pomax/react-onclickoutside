@@ -1,7 +1,10 @@
 import { createElement, Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import * as DOMHelpers from './dom-helpers';
+import { testPassiveEventSupport } from './detect-passive-events';
 import uid from './uid';
+
+let passiveEventSupport;
 
 const handlersMap = {};
 const enabledInstances = {};
@@ -112,7 +115,14 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
      * for clicks and touches outside of this element.
      */
     enableOnClickOutside = () => {
-      if (typeof document === 'undefined' || enabledInstances[this._uid]) return;
+      if (typeof document === 'undefined' || enabledInstances[this._uid]) {
+        return;
+      }
+
+      if (typeof passiveEventSupport === 'undefined') {
+        passiveEventSupport = testPassiveEventSupport();
+      }
+
       enabledInstances[this._uid] = true;
 
       let events = this.props.eventTypes;
@@ -147,7 +157,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         let handlerOptions = null;
         const isTouchEvent = touchEvents.indexOf(eventName) !== -1;
 
-        if (isTouchEvent) {
+        if (isTouchEvent && passiveEventSupport) {
           handlerOptions = { passive: !this.props.preventDefault };
         }
 

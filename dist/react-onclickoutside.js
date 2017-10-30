@@ -53,6 +53,29 @@ function clickedScrollbar(evt) {
   return document.documentElement.clientWidth <= evt.clientX || document.documentElement.clientHeight <= evt.clientY;
 }
 
+// ideally will get replaced with external dep
+// when rafrex/detect-passive-events#4 and rafrex/detect-passive-events#5 get merged in
+var testPassiveEventSupport = function testPassiveEventSupport() {
+  if (typeof window === 'undefined' || typeof window.addEventListener !== 'function') {
+    return;
+  }
+
+  var passive = false;
+
+  var options = Object.defineProperty({}, 'passive', {
+    get: function get() {
+      passive = true;
+    }
+  });
+
+  var noop = function noop() {};
+
+  window.addEventListener('testPassiveEventSupport', noop, options);
+  window.removeEventListener('testPassiveEventSupport', noop, options);
+
+  return passive;
+};
+
 function autoInc() {
   var seed = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
 
@@ -113,6 +136,8 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
+var passiveEventSupport = void 0;
+
 var handlersMap = {};
 var enabledInstances = {};
 
@@ -159,7 +184,14 @@ function onClickOutsideHOC(WrappedComponent, config) {
       };
 
       _this.enableOnClickOutside = function () {
-        if (typeof document === 'undefined' || enabledInstances[_this._uid]) return;
+        if (typeof document === 'undefined' || enabledInstances[_this._uid]) {
+          return;
+        }
+
+        if (typeof passiveEventSupport === 'undefined') {
+          passiveEventSupport = testPassiveEventSupport();
+        }
+
         enabledInstances[_this._uid] = true;
 
         var events = _this.props.eventTypes;
@@ -194,7 +226,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
           var handlerOptions = null;
           var isTouchEvent = touchEvents.indexOf(eventName) !== -1;
 
-          if (isTouchEvent) {
+          if (isTouchEvent && passiveEventSupport) {
             handlerOptions = { passive: !_this.props.preventDefault };
           }
 
