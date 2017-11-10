@@ -13,13 +13,10 @@ module.exports = function(config) {
     webpack: {
       devtool: 'inline-source-map',
       module: {
-        loaders: [
+        rules: [
           {
             test: /.js$/,
-            loader: 'babel',
-            query: {
-              presets: ['env', 'stage-0'],
-            },
+            loader: 'babel-loader',
           },
         ],
       },

@@ -189,12 +189,8 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
      * Pass-through render
      */
     render() {
-      var props = Object.keys(this.props)
-        .filter(prop => prop !== 'excludeScrollbar')
-        .reduce((props, prop) => {
-          props[prop] = this.props[prop];
-          return props;
-        }, {});
+      // eslint-disable-next-line no-unused-vars
+      let { excludeScrollbar, ...props } = this.props;
 
       if (WrappedComponent.prototype.isReactComponent) {
         props.ref = this.getRef;
