@@ -66,11 +66,10 @@ const clickedOnContainerScrollbar = evt => {
  * Check if a scrollbar was clicked.
  */
 export function clickedScrollbar(evt) {
-  // Check if it was the browser scrollbar.
+  // Check if it was the browser scrollbar or a container scrollbar.
   return (
     document.documentElement.clientWidth <= evt.clientX ||
     document.documentElement.clientHeight <= evt.clientY ||
-    // Or a container scrollbar.
     clickedOnContainerScrollbar(evt)
   );
 }
