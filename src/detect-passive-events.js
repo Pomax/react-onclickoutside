@@ -6,17 +6,20 @@ export const testPassiveEventSupport = () => {
   }
 
   let passive = false;
-
-  const options = Object.defineProperty({}, 'passive', {
-    get() {
-      passive = true;
-    },
-  });
-
   const noop = () => {};
 
-  window.addEventListener('testPassiveEventSupport', noop, options);
-  window.removeEventListener('testPassiveEventSupport', noop, options);
+  try {
+    const options = Object.defineProperty({}, 'passive', {
+      get() {
+        passive = true;
+      },
+    });
+
+    window.addEventListener('testPassiveEventSupport', noop, options);
+    window.removeEventListener('testPassiveEventSupport', noop, options);
+  } catch (e) {
+    // skip
+  }
 
   return passive;
 };
