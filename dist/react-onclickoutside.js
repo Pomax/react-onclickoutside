@@ -128,12 +128,29 @@ var enabledInstances = {};
 var touchEvents = ['touchstart', 'touchmove'];
 var IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
 /**
+ * Options for addEventHandler and removeEventHandler
+ */
+
+function getEventHandlerOptions(instance, eventName) {
+  var handlerOptions = null;
+  var isTouchEvent = touchEvents.indexOf(eventName) !== -1;
+
+  if (isTouchEvent && passiveEventSupport) {
+    handlerOptions = {
+      passive: !instance.props.preventDefault
+    };
+  }
+
+  return handlerOptions;
+}
+/**
  * This function generates the HOC function that you'll use
  * in order to impart onOutsideClick listening to an
  * arbitrary component. It gets called at the end of the
  * bootstrapping code to yield an instance of the
  * onClickOutsideHOC function defined inside setupHOC().
  */
+
 
 function onClickOutsideHOC(WrappedComponent, config) {
   var _class, _temp;
@@ -209,16 +226,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
         };
 
         events.forEach(function (eventName) {
-          var handlerOptions = null;
-          var isTouchEvent = touchEvents.indexOf(eventName) !== -1;
-
-          if (isTouchEvent && passiveEventSupport) {
-            handlerOptions = {
-              passive: !_this.props.preventDefault
-            };
-          }
-
-          document.addEventListener(eventName, handlersMap[_this._uid], handlerOptions);
+          document.addEventListener(eventName, handlersMap[_this._uid], getEventHandlerOptions(_this, eventName));
         });
       };
 
@@ -234,7 +242,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
           }
 
           events.forEach(function (eventName) {
-            return document.removeEventListener(eventName, fn);
+            return document.removeEventListener(eventName, fn, getEventHandlerOptions(_this, eventName));
           });
           delete handlersMap[_this._uid];
         }
