@@ -77,6 +77,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
      * linked to this component's state.
      */
     componentDidMount() {
+      const document = config && config.getDocument ? config.getDocument(this.getInstance()) : global.document;
       // If we are in an environment without a DOM such
       // as shallow rendering or snapshots then we exit
       // early to prevent any unhandled errors being thrown.
@@ -115,6 +116,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
      * for clicks and touches outside of this element.
      */
     enableOnClickOutside = () => {
+      const document = config && config.getDocument ? config.getDocument(this.getInstance()) : global.document;
       if (typeof document === 'undefined' || enabledInstances[this._uid]) {
         return;
       }
@@ -142,7 +144,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
           event.stopPropagation();
         }
 
-        if (this.props.excludeScrollbar && DOMHelpers.clickedScrollbar(event)) return;
+        if (this.props.excludeScrollbar && DOMHelpers.clickedScrollbar(event, document)) return;
 
         const current = event.target;
 
@@ -172,7 +174,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
     disableOnClickOutside = () => {
       delete enabledInstances[this._uid];
       const fn = handlersMap[this._uid];
-
+      const document = config && config.getDocument ? config.getDocument(this.getInstance()) : global.document;
       if (fn && typeof document !== 'undefined') {
         let events = this.props.eventTypes;
         if (!events.forEach) {
