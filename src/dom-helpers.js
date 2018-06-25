@@ -5,16 +5,20 @@ export function isNodeFound(current, componentNode, ignoreClass) {
   if (current === componentNode) {
     return true;
   }
+
   // SVG <use/> elements do not technically reside in the rendered DOM, so
   // they do not have classList directly, but they offer a link to their
   // corresponding element, which can have classList. This extra check is for
   // that case.
   // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
   // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
-  if (current.correspondingElement) {
+  if (current.correspondingElement && current.correspondingElement.classList) {
     return current.correspondingElement.classList.contains(ignoreClass);
+  } else if (current.classList) {
+    return current.classList.contains(ignoreClass);
   }
-  return current.classList.contains(ignoreClass);
+
+  return false;
 }
 
 /**
