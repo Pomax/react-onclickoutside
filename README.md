@@ -354,6 +354,6 @@ if (!("classList" in SVGElement.prototype)) {
 
 If you've read the whole thing and you still can't find what you were looking
 for, then the README is missing important information that should be added in.
-Please [file an issue](issues) with a request for additional documentation,
+Please [file an issue](https://github.com/Pomax/react-onclickoutside/issues) with a request for additional documentation,
 describing what you were hoping to find in enough detail that it can be used to
 write up the information you needed.
