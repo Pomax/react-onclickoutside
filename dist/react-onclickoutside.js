@@ -174,6 +174,10 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
         var instance = _this.getInstance();
 
+        if (!instance) {
+          return;
+        }
+
         if (typeof instance.props.handleClickOutside === 'function') {
           instance.props.handleClickOutside(event);
           return;
@@ -268,7 +272,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
       }
 
       var ref = this.instanceRef;
-      return ref.getInstance ? ref.getInstance() : ref;
+      return ref && ref.getInstance ? ref.getInstance() : ref;
     };
 
     /**
@@ -285,6 +289,10 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
       var instance = this.getInstance();
 
+      if (!instance) {
+        return;
+      }
+
       if (config && typeof config.handleClickOutside === 'function') {
         this.__clickOutsideHandlerProp = config.handleClickOutside(instance);
 
@@ -298,7 +306,13 @@ function onClickOutsideHOC(WrappedComponent, config) {
     };
 
     _proto.componentDidUpdate = function componentDidUpdate() {
-      this.componentNode = reactDom.findDOMNode(this.getInstance());
+      var instance = this.getInstance();
+
+      if (!instance) {
+        return;
+      }
+
+      this.componentNode = reactDom.findDOMNode(instance);
     };
     /**
      * Remove all document's event listeners for this component

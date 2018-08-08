@@ -59,7 +59,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         return this;
       }
       const ref = this.instanceRef;
-      return ref.getInstance ? ref.getInstance() : ref;
+      return ref && ref.getInstance ? ref.getInstance() : ref;
     }
 
     __outsideClickHandler = event => {
@@ -69,6 +69,9 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       }
 
       const instance = this.getInstance();
+      if (!instance) {
+        return;
+      }
 
       if (typeof instance.props.handleClickOutside === 'function') {
         instance.props.handleClickOutside(event);
@@ -99,6 +102,10 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
 
       const instance = this.getInstance();
 
+      if (!instance) {
+        return;
+      }
+
       if (config && typeof config.handleClickOutside === 'function') {
         this.__clickOutsideHandlerProp = config.handleClickOutside(instance);
         if (typeof this.__clickOutsideHandlerProp !== 'function') {
@@ -113,7 +120,13 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
     }
 
     componentDidUpdate() {
-      this.componentNode = findDOMNode(this.getInstance());
+      const instance = this.getInstance();
+
+      if (!instance) {
+        return;
+      }
+
+      this.componentNode = findDOMNode(instance);
     }
 
     /**
