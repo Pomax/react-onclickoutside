@@ -27,6 +27,7 @@ transpiled es6 classes rather than `createClass` as of v6.
 - [Regulate whether or not to listen to scrollbar clicks](#regulate-whether-or-not-to-listen-to-scrollbar-clicks)
 - [Regulating `evt.preventDefault()` and `evt.stopPropagation()`](#regulating-evtpreventdefault-and-evtstoppropagation)
 - [Marking elements as "skip over this one" during the event loop](#marking-elements-as-skip-over-this-one-during-the-event-loop)
+- [Error handling](#error-handling)
 - [Older React code: "What happened to the Mixin??"](#older-react-code-what-happened-to-the-mixin)
   - [But how can I access my component? It has an API that I rely on!](#but-how-can-i-access-my-component-it-has-an-api-that-i-rely-on)
 - [Which version do I need for which version of React?](#which-version-do-i-need-for-which-version-of-react)
