@@ -174,10 +174,6 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
         var instance = _this.getInstance();
 
-        if (!instance) {
-          return;
-        }
-
         if (typeof instance.props.handleClickOutside === 'function') {
           instance.props.handleClickOutside(event);
           return;
@@ -275,6 +271,14 @@ function onClickOutsideHOC(WrappedComponent, config) {
       return ref && ref.getInstance ? ref.getInstance() : ref;
     };
 
+    _proto.handleNoRefError = function handleNoRefError() {
+      console.warn('onClickOutsideHOC could not determine a valid wrapped component to monitor. No outside click monitoring will be performed.');
+
+      if (config && typeof config.onError === 'function') {
+        config.onError(new Error('No instance ref available for onClickOutsideHOC to monitor'));
+      }
+    };
+
     /**
      * Add click listeners to the current document,
      * linked to this component's state.
@@ -290,6 +294,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
       var instance = this.getInstance();
 
       if (!instance) {
+        this.handleNoRefError();
         return;
       }
 
@@ -309,6 +314,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
       var instance = this.getInstance();
 
       if (!instance) {
+        this.handleNoRefError();
         return;
       }
 

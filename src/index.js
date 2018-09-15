@@ -62,6 +62,15 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       return ref && ref.getInstance ? ref.getInstance() : ref;
     }
 
+    handleNoRefError() {
+      console.warn(
+        'onClickOutsideHOC could not determine a valid wrapped component to monitor. No outside click monitoring will be performed.',
+      );
+      if (config && typeof config.onError === 'function') {
+        config.onError(new Error('No instance ref available for onClickOutsideHOC to monitor'));
+      }
+    }
+
     __outsideClickHandler = event => {
       if (typeof this.__clickOutsideHandlerProp === 'function') {
         this.__clickOutsideHandlerProp(event);
@@ -69,9 +78,6 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       }
 
       const instance = this.getInstance();
-      if (!instance) {
-        return;
-      }
 
       if (typeof instance.props.handleClickOutside === 'function') {
         instance.props.handleClickOutside(event);
@@ -103,6 +109,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       const instance = this.getInstance();
 
       if (!instance) {
+        this.handleNoRefError();
         return;
       }
 
@@ -123,6 +130,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       const instance = this.getInstance();
 
       if (!instance) {
+        this.handleNoRefError();
         return;
       }
 
