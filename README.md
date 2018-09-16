@@ -21,19 +21,19 @@ transpiled es6 classes rather than `createClass` as of v6.
 
 ## Sections covered in this README
 
-- [Installation](#installation)
-- [Regulate which events to listen for](#regulate-which-events-to-listen-for)
-- [Regulate whether or not to listen for outside clicks](#regulate-whether-or-not-to-listen-for-outside-clicks)
-- [Regulate whether or not to listen to scrollbar clicks](#regulate-whether-or-not-to-listen-to-scrollbar-clicks)
-- [Regulating `evt.preventDefault()` and `evt.stopPropagation()`](#regulating-evtpreventdefault-and-evtstoppropagation)
-- [Marking elements as "skip over this one" during the event loop](#marking-elements-as-skip-over-this-one-during-the-event-loop)
-- [Error handling](#error-handling)
-- [Older React code: "What happened to the Mixin??"](#older-react-code-what-happened-to-the-mixin)
-  - [But how can I access my component? It has an API that I rely on!](#but-how-can-i-access-my-component-it-has-an-api-that-i-rely-on)
-- [Which version do I need for which version of React?](#which-version-do-i-need-for-which-version-of-react)
-  - [Support-wise, only the latest version will receive updates and bug fixes.](#support-wise-only-the-latest-version-will-receive-updates-and-bug-fixes)
-- [IE does not support classList for SVG elements!](#ie-does-not-support-classlist-for-svg-elements)
-- [I can't find what I need in the README](#i-cant-find-what-i-need-in-the-readme)
+* [Installation](#installation)
+* [Regulate which events to listen for](#regulate-which-events-to-listen-for)
+* [Regulate whether or not to listen for outside clicks](#regulate-whether-or-not-to-listen-for-outside-clicks)
+* [Regulate whether or not to listen to scrollbar clicks](#regulate-whether-or-not-to-listen-to-scrollbar-clicks)
+* [Regulating `evt.preventDefault()` and `evt.stopPropagation()`](#regulating-evtpreventdefault-and-evtstoppropagation)
+* [Marking elements as "skip over this one" during the event loop](#marking-elements-as-skip-over-this-one-during-the-event-loop)
+* [Error handling](#error-handling)
+* [Older React code: "What happened to the Mixin??"](#older-react-code-what-happened-to-the-mixin)
+  * [But how can I access my component? It has an API that I rely on!](#but-how-can-i-access-my-component-it-has-an-api-that-i-rely-on)
+* [Which version do I need for which version of React?](#which-version-do-i-need-for-which-version-of-react)
+  * [Support-wise, only the latest version will receive updates and bug fixes.](#support-wise-only-the-latest-version-will-receive-updates-and-bug-fixes)
+* [IE does not support classList for SVG elements!](#ie-does-not-support-classlist-for-svg-elements)
+* [I can't find what I need in the README](#i-cant-find-what-i-need-in-the-readme)
 
 ## Installation
 
@@ -135,9 +135,9 @@ for:
 Wrapped components have two functions that can be used to explicitly listen for,
 or do nothing with, outside clicks
 
-- `enableOnClickOutside()` - Enables outside click listening by setting up the
+* `enableOnClickOutside()` - Enables outside click listening by setting up the
   event listening bindings.
-- `disableOnClickOutside()` - Disables outside click listening by explicitly
+* `disableOnClickOutside()` - Disables outside click listening by explicitly
   removing the event listening bindings.
 
 In addition, you can create a component that uses this HOC such that it has the
