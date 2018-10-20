@@ -109,6 +109,8 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       }
 
       this.componentNode = findDOMNode(this.getInstance());
+      // return early so we dont initiate onClickOutside
+      if (this.props.disableOnClickOutside) return;
       this.enableOnClickOutside();
     }
 
@@ -144,7 +146,6 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       }
 
       handlersMap[this._uid] = event => {
-        if (this.props.disableOnClickOutside) return;
         if (this.componentNode === null) return;
 
         if (this.props.preventDefault) {
