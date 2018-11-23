@@ -293,12 +293,12 @@ function onClickOutsideHOC(WrappedComponent, config) {
         }
       }
 
-      this.componentNode = reactDom.findDOMNode(this.getInstance());
+    //  this.componentNode = reactDom.findDOMNode(this.getInstance());
       this.enableOnClickOutside();
     };
 
     _proto.componentDidUpdate = function componentDidUpdate() {
-      this.componentNode = reactDom.findDOMNode(this.getInstance());
+    // this.componentNode = reactDom.findDOMNode(this.getInstance());
     };
     /**
      * Remove all document's event listeners for this component
