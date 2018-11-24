@@ -1,4 +1,4 @@
-import { createElement, Component } from 'react';
+import { createElement, Component, forwardRef } from 'react';
 import { findDOMNode } from 'react-dom';
 import * as DOMHelpers from './dom-helpers';
 import { testPassiveEventSupport } from './detect-passive-events';
@@ -33,7 +33,7 @@ function getEventHandlerOptions(instance, eventName) {
  * onClickOutsideHOC function defined inside setupHOC().
  */
 export default function onClickOutsideHOC(WrappedComponent, config) {
-  return class onClickOutside extends Component {
+  class OnClickOutside extends Component {
     static displayName = `OnClickOutside(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
     static defaultProps = {
@@ -191,7 +191,22 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       }
     };
 
-    getRef = ref => (this.instanceRef = ref);
+    getRef = ref => {
+      this.instanceRef = ref;
+
+      const {innerRef} = this.props;
+
+      if (!innerRef) {
+        return;
+      }
+
+      if (typeof innerRef === 'function') {
+        innerRef(ref);
+        return;
+      }
+
+      innerRef.current = ref;
+    };
 
     /**
      * Pass-through render
@@ -200,16 +215,16 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       // eslint-disable-next-line no-unused-vars
       let { excludeScrollbar, ...props } = this.props;
 
-      if (WrappedComponent.prototype.isReactComponent) {
-        props.ref = this.getRef;
-      } else {
-        props.wrappedRef = this.getRef;
-      }
-
+      props.ref = this.getRef;
       props.disableOnClickOutside = this.disableOnClickOutside;
       props.enableOnClickOutside = this.enableOnClickOutside;
 
       return createElement(WrappedComponent, props);
     }
-  };
+  }
+
+  return forwardRef((props, ref) => {
+    const finalProps = ref ? { ...props, innerRef: ref } : props;
+    return createElement(OnClickOutside, finalProps);
+  });
 }

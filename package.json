@@ -66,8 +66,8 @@
     "mocha": "^4.0.1",
     "npm-run-all": "^4.0.2",
     "prettier": "^1.8.2",
-    "react": "^15.5.x",
-    "react-dom": "^15.5.x",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
     "react-test-renderer": "^15.5.x",
     "require-hijack": "^1.2.1",
     "rimraf": "^2.6.2",
@@ -77,8 +77,8 @@
     "webpack": "^3.8.1"
   },
   "peerDependencies": {
-    "react": "^15.5.x || ^16.x",
-    "react-dom": "^15.5.x || ^16.x"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "lint-staged": {
     "{src,test}/**/*.js": [
