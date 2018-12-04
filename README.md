@@ -313,10 +313,10 @@ what to do, and it's not "keep using that old version of React".
 
 ## IE does not support classList for SVG elements!
 
-This is true, but also an edge-case problem that only exists for older versions
-of IE (including IE11), and should be addressed by you, rather than by thousands
-of individual libraries that assume browsers have proper HTML API
-implementations (IE Edge has proper `classList` support even for SVG).
+This is true, but also an edge-case problem that only exists for IE11 (as all
+versions prior to 11 [no longer exist](https://support.microsoft.com/en-us/help/17454/lifecycle-faq-internet-explorer)), and should be addressed by you, rather
+than by thousands of individual libraries that assume browsers have proper
+HTML API  implementations (IE Edge has proper `classList` support even for SVG).
 
 If you need this to work, you can add a shim for `classList` to your page(s),
 loaded before you load your React code, and you'll have instantly fixed _every_
