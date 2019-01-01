@@ -132,7 +132,7 @@ var IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
  */
 
 function getEventHandlerOptions(instance, eventName) {
-  var handlerOptions = null;
+  var handlerOptions = undefined;
   var isTouchEvent = touchEvents.indexOf(eventName) !== -1;
 
   if (isTouchEvent && passiveEventSupport) {

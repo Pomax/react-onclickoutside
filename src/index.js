@@ -16,7 +16,7 @@ export const IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
  * Options for addEventHandler and removeEventHandler
  */
 function getEventHandlerOptions(instance, eventName) {
-  let handlerOptions = null;
+  let handlerOptions = undefined;
   const isTouchEvent = touchEvents.indexOf(eventName) !== -1;
 
   if (isTouchEvent && passiveEventSupport) {
