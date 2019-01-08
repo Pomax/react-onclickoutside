@@ -33,8 +33,9 @@ function getEventHandlerOptions(instance, eventName) {
  * onClickOutsideHOC function defined inside setupHOC().
  */
 export default function onClickOutsideHOC(WrappedComponent, config) {
+  const componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
   return class onClickOutside extends Component {
-    static displayName = `OnClickOutside(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+    static displayName = `OnClickOutside(${componentName})`;
 
     static defaultProps = {
       eventTypes: ['mousedown', 'touchstart'],
@@ -81,7 +82,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       }
 
       throw new Error(
-        'WrappedComponent lacks a handleClickOutside(event) function for processing outside click events.',
+        `WrappedComponent: ${componentName} lacks a handleClickOutside(event) function for processing outside click events.`,
       );
     };
 
@@ -103,7 +104,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         this.__clickOutsideHandlerProp = config.handleClickOutside(instance);
         if (typeof this.__clickOutsideHandlerProp !== 'function') {
           throw new Error(
-            'WrappedComponent lacks a function for processing outside click events specified by the handleClickOutside config option.',
+            `WrappedComponent: ${componentName} lacks a function for processing outside click events specified by the handleClickOutside config option.`,
           );
         }
       }
