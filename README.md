@@ -22,7 +22,11 @@ transpiled es6 classes rather than `createClass` as of v6.
 ## Sections covered in this README
 
 * [Installation](#installation)
-* [Usage](#usage)
+* [Usage:](#usage)
+  * [ES6 Class Component](#es6-class-component)
+  * [Functional Component with UseState Hook](#functional-component-with-usestate-hook)
+  * [CommonJS Require](#commonjs-require)
+* [Ensuring there's a click handler](#ensuring-there-is-a-click-handler)
 * [Regulate which events to listen for](#regulate-which-events-to-listen-for)
 * [Regulate whether or not to listen for outside clicks](#regulate-whether-or-not-to-listen-for-outside-clicks)
 * [Regulate whether or not to listen to scrollbar clicks](#regulate-whether-or-not-to-listen-to-scrollbar-clicks)
@@ -108,7 +112,7 @@ var MyComponent = onClickOutside(
 );
 ```
 
----
+### Ensuring there is a click handler
 
 Note that if you try to wrap a React component class without a
 `handleClickOutside(evt)` handler like this, the HOC will throw an error. In
