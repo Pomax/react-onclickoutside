@@ -22,6 +22,11 @@ transpiled es6 classes rather than `createClass` as of v6.
 ## Sections covered in this README
 
 * [Installation](#installation)
+* [Usage:](#usage)
+  * [ES6 Class Component](#es6-class-component)
+  * [Functional Component with UseState Hook](#functional-component-with-usestate-hook)
+  * [CommonJS Require](#commonjs-require)
+* [Ensuring there's a click handler](#ensuring-there-is-a-click-handler)
 * [Regulate which events to listen for](#regulate-which-events-to-listen-for)
 * [Regulate whether or not to listen for outside clicks](#regulate-whether-or-not-to-listen-for-outside-clicks)
 * [Regulate whether or not to listen to scrollbar clicks](#regulate-whether-or-not-to-listen-to-scrollbar-clicks)
@@ -45,8 +50,12 @@ $> npm install react-onclickoutside --save
 (or `--save-dev` depending on your needs). You then use it in your components
 as:
 
+
+## Usage
+
+### ES6 Class Component
+
 ```js
-// ES6 Class and Module Syntax
 import React, { Component } from "react";
 import onClickOutside from "react-onclickoutside";
 
@@ -59,10 +68,34 @@ class MyComponent extends Component {
 export default onClickOutside(MyComponent);
 ```
 
-or:
+### Functional Component with UseState Hook
 
 ```js
-// good old node.js/CommonJS require
+React, { useState } from "react";
+import onClickOutside from "react-onclickoutside";
+
+const Menu = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
+  Menu.handleClickOutside = () => setIsOpen(false);
+  return (
+      //...
+  )
+};
+
+const clickOutsideConfig = {
+  handleClickOutside: () => Menu.handleClickOutside
+};
+
+export default onClickOutside(Menu, clickOutsideConfig);
+```
+
+Example: https://codesandbox.io/s/vn66kq7mml
+
+
+### CommonJS Require
+
+```js
 // .default is needed because library is bundled as ES6 module
 var onClickOutside = require("react-onclickoutside").default;
 var createReactClass = require("create-react-class");
@@ -78,6 +111,8 @@ var MyComponent = onClickOutside(
   })
 );
 ```
+
+### Ensuring there is a click handler
 
 Note that if you try to wrap a React component class without a
 `handleClickOutside(evt)` handler like this, the HOC will throw an error. In
