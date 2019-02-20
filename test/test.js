@@ -372,6 +372,7 @@ describe('onclickoutside hoc', function() {
       );
     });
   });
+  
   describe('with advanced settings disableOnclickOutside', function() {
     class Component extends React.Component {
       constructor(...args) {
@@ -402,6 +403,7 @@ describe('onclickoutside hoc', function() {
       var instance = component.getInstance();
       assert(instance.state.clickOutsideHandled === false, 'clickOutsideHandled should not get flipped');
     });
+    
     it('disableOnclickOutside as true should not call handleClickOutside until enableOnClickOutside is called', function() {
       var component = TestUtils.renderIntoDocument(
         React.createElement(wrapComponent(Component), { disableOnClickOutside: true }),
