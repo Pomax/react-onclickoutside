@@ -155,6 +155,7 @@ function getEventHandlerOptions(instance, eventName) {
 function onClickOutsideHOC(WrappedComponent, config) {
   var _class, _temp;
 
+  var componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
   return _temp = _class =
   /*#__PURE__*/
   function (_Component) {
@@ -184,7 +185,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
           return;
         }
 
-        throw new Error('WrappedComponent lacks a handleClickOutside(event) function for processing outside click events.');
+        throw new Error("WrappedComponent: " + componentName + " lacks a handleClickOutside(event) function for processing outside click events.");
       };
 
       _this.enableOnClickOutside = function () {
@@ -288,7 +289,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
         this.__clickOutsideHandlerProp = config.handleClickOutside(instance);
 
         if (typeof this.__clickOutsideHandlerProp !== 'function') {
-          throw new Error('WrappedComponent lacks a function for processing outside click events specified by the handleClickOutside config option.');
+          throw new Error("WrappedComponent: " + componentName + " lacks a function for processing outside click events specified by the handleClickOutside config option.");
         }
       }
 
@@ -336,7 +337,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
     };
 
     return onClickOutside;
-  }(react.Component), _class.displayName = "OnClickOutside(" + (WrappedComponent.displayName || WrappedComponent.name || 'Component') + ")", _class.defaultProps = {
+  }(react.Component), _class.displayName = "OnClickOutside(" + componentName + ")", _class.defaultProps = {
     eventTypes: ['mousedown', 'touchstart'],
     excludeScrollbar: config && config.excludeScrollbar || false,
     outsideClickIgnoreClass: IGNORE_CLASS_NAME,
