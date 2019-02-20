@@ -281,19 +281,21 @@ describe('onclickoutside hoc', function() {
   it('should register only one click outside listener per instance', function() {
     var i = 0;
 
-    var Component = wrapComponent(class extends React.Component {
-      componentDidMount() {
-        this.props.enableOnClickOutside();
-      }
+    var Component = wrapComponent(
+      class extends React.Component {
+        componentDidMount() {
+          this.props.enableOnClickOutside();
+        }
 
-      handleClickOutside() {
-        ++i;
-      }
+        handleClickOutside() {
+          ++i;
+        }
 
-      render() {
-        return React.createElement('div');
-      }
-    });
+        render() {
+          return React.createElement('div');
+        }
+      },
+    );
 
     TestUtils.renderIntoDocument(React.createElement(Component));
     document.dispatchEvent(new Event('mousedown'));
@@ -303,7 +305,7 @@ describe('onclickoutside hoc', function() {
   describe('with child rendering as null', function() {
     var counter;
 
-    beforeEach(function () {
+    beforeEach(function() {
       counter = 0;
     });
 
@@ -368,6 +370,51 @@ describe('onclickoutside hoc', function() {
         counter === 0,
         'should not call handleClickOutside when onClickOutside gets disabled when having no DOM node',
       );
+    });
+  });
+  
+  describe('with advanced settings disableOnclickOutside', function() {
+    class Component extends React.Component {
+      constructor(...args) {
+        super(...args);
+        this.state = {
+          clickOutsideHandled: false,
+        };
+      }
+      handleClickOutside(event) {
+        if (event === undefined) {
+          throw new Error('event cannot be undefined');
+        }
+        this.setState({
+          clickOutsideHandled: true,
+        });
+      }
+
+      render() {
+        return React.createElement('div');
+      }
+    }
+
+    it('disableOnclickOutside as true should not call handleClickOutside', function() {
+      var component = TestUtils.renderIntoDocument(
+        React.createElement(wrapComponent(Component), { disableOnClickOutside: true }),
+      );
+      document.dispatchEvent(new Event('mousedown'));
+      var instance = component.getInstance();
+      assert(instance.state.clickOutsideHandled === false, 'clickOutsideHandled should not get flipped');
+    });
+    
+    it('disableOnclickOutside as true should not call handleClickOutside until enableOnClickOutside is called', function() {
+      var component = TestUtils.renderIntoDocument(
+        React.createElement(wrapComponent(Component), { disableOnClickOutside: true }),
+      );
+      var instance = component.getInstance();
+      document.dispatchEvent(new Event('mousedown'));
+      assert(instance.state.clickOutsideHandled === false, 'clickOutsideHandled should not get flipped');
+
+      instance.props.enableOnClickOutside();
+      document.dispatchEvent(new Event('mousedown'));
+      assert(instance.state.clickOutsideHandled === true, 'clickOutsideHandled should not get flipped');
     });
   });
 });

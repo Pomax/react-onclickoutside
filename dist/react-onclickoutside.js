@@ -204,7 +204,6 @@ function onClickOutsideHOC(WrappedComponent, config) {
         }
 
         handlersMap[_this._uid] = function (event) {
-          if (_this.props.disableOnClickOutside) return;
           if (_this.componentNode === null) return;
 
           if (_this.props.preventDefault) {
@@ -293,7 +292,9 @@ function onClickOutsideHOC(WrappedComponent, config) {
         }
       }
 
-      this.componentNode = reactDom.findDOMNode(this.getInstance());
+      this.componentNode = reactDom.findDOMNode(this.getInstance()); // return early so we dont initiate onClickOutside
+
+      if (this.props.disableOnClickOutside) return;
       this.enableOnClickOutside();
     };
 
