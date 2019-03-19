@@ -71,7 +71,7 @@ export default onClickOutside(MyComponent);
 ### Functional Component with UseState Hook
 
 ```js
-React, { useState } from "react";
+import React, { useState } from "react";
 import onClickOutside from "react-onclickoutside";
 
 const Menu = () => {
