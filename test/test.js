@@ -372,7 +372,7 @@ describe('onclickoutside hoc', function() {
       );
     });
   });
-  
+
   describe('with advanced settings disableOnclickOutside', function() {
     class Component extends React.Component {
       constructor(...args) {
@@ -403,7 +403,7 @@ describe('onclickoutside hoc', function() {
       var instance = component.getInstance();
       assert(instance.state.clickOutsideHandled === false, 'clickOutsideHandled should not get flipped');
     });
-    
+
     it('disableOnclickOutside as true should not call handleClickOutside until enableOnClickOutside is called', function() {
       var component = TestUtils.renderIntoDocument(
         React.createElement(wrapComponent(Component), { disableOnClickOutside: true }),
@@ -415,6 +415,63 @@ describe('onclickoutside hoc', function() {
       instance.props.enableOnClickOutside();
       document.dispatchEvent(new Event('mousedown'));
       assert(instance.state.clickOutsideHandled === true, 'clickOutsideHandled should not get flipped');
+    });
+  });
+
+  describe('with setClickOutsideRef configured instead of findDOMNode', function() {
+    class Component extends React.Component {
+      callbackCalled = false;
+      clickOutsideRef = null;
+
+      handleClickOutside() {}
+
+      setClickOutsideRef() {
+        this.callbackCalled = true;
+        return this.clickOutsideRef;
+      }
+
+      render() {
+        return React.createElement('div', {
+          ref: c => {
+            this.clickOutsideRef = c;
+          },
+        });
+      }
+    }
+
+    it('uses the DOM node defined by setClickOutsideRef in a class', function() {
+      var component = TestUtils.renderIntoDocument(React.createElement(wrapComponent(Component)));
+      document.dispatchEvent(new Event('mousedown'));
+      var instance = component.getInstance();
+      assert(instance.callbackCalled === true, 'setClickOutsideRef was called in class component');
+    });
+
+    let callbackCalled = false;
+    let ref = null;
+    function FuncComponent() {
+      FuncComponent.setClickOutsideRef = () => {
+        callbackCalled = true;
+        return ref;
+      };
+      return React.createElement('div', {
+        ref: c => {
+          ref = c;
+        },
+      });
+    }
+
+    it('uses the DOM node defined by setClickOutsideRef in a function', function() {
+      TestUtils.renderIntoDocument(
+        React.createElement(
+          wrapComponent(FuncComponent, {
+            setClickOutsideRef: () => FuncComponent.setClickOutsideRef,
+            handleClickOutside: () => () => {},
+          }),
+        ),
+      );
+      document.dispatchEvent(new Event('mousedown'));
+
+      assert(callbackCalled === true, 'setClickOutsideRef was called in function component');
     });
   });
 });

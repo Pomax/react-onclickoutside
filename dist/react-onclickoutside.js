@@ -188,6 +188,20 @@ function onClickOutsideHOC(WrappedComponent, config) {
         throw new Error("WrappedComponent: " + componentName + " lacks a handleClickOutside(event) function for processing outside click events.");
       };
 
+      _this.__getComponentNode = function () {
+        var instance = _this.getInstance();
+
+        if (config && typeof config.setClickOutsideRef === 'function') {
+          return config.setClickOutsideRef()(instance);
+        }
+
+        if (typeof instance.setClickOutsideRef === 'function') {
+          return instance.setClickOutsideRef();
+        }
+
+        return reactDom.findDOMNode(instance);
+      };
+
       _this.enableOnClickOutside = function () {
         if (typeof document === 'undefined' || enabledInstances[_this._uid]) {
           return;
@@ -293,14 +307,14 @@ function onClickOutsideHOC(WrappedComponent, config) {
         }
       }
 
-      this.componentNode = reactDom.findDOMNode(this.getInstance()); // return early so we dont initiate onClickOutside
+      this.componentNode = this.__getComponentNode(); // return early so we dont initiate onClickOutside
 
       if (this.props.disableOnClickOutside) return;
       this.enableOnClickOutside();
     };
 
     _proto.componentDidUpdate = function componentDidUpdate() {
-      this.componentNode = reactDom.findDOMNode(this.getInstance());
+      this.componentNode = this.__getComponentNode();
     };
     /**
      * Remove all document's event listeners for this component
