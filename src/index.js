@@ -173,7 +173,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
 
         if (this.props.excludeScrollbar && DOMHelpers.clickedScrollbar(event)) return;
 
-        const current = event.target;
+        const current = (event.composed && event.composedPath && event.composedPath().shift()) || event.target;
 
         if (DOMHelpers.findHighest(current, this.componentNode, this.props.outsideClickIgnoreClass) !== document) {
           return;

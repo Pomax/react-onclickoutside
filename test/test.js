@@ -474,4 +474,46 @@ describe('onclickoutside hoc', function() {
       assert(callbackCalled === true, 'setClickOutsideRef was called in function component');
     });
   });
+
+  describe('using onclickoutside when react app is rendered inside shadow DOM', function() {
+    it('should call the specified handler when clicking the document', function() {
+      class Component extends React.Component {
+        constructor(...args) {
+          super(...args);
+          this.state = {
+            clickOutsideHandled: false,
+          };
+        }
+
+        handleClickOutside(event) {
+          if (event === undefined) {
+            throw new Error('event cannot be undefined');
+          }
+
+          this.setState({
+            clickOutsideHandled: true,
+          });
+        }
+
+        render() {
+          return React.createElement('div');
+        }
+      }
+
+      var WrappedWithCustomHandler = wrapComponent(Component);
+
+      var element = React.createElement(WrappedWithCustomHandler);
+      assert(element, 'element can be created');
+
+      var container = document.createElement('div');
+      container.attachShadow({ mode: 'open' });
+
+      var component = ReactDOM.render(element, container.shadowRoot);
+      assert(component, 'component renders correctly');
+
+      document.dispatchEvent(new Event('mousedown'));
+      var instance = component.getInstance();
+      assert(instance.state.clickOutsideHandled, 'clickOutsideHandled got flipped');
+    });
+  });
 });
