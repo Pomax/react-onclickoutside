@@ -17,7 +17,8 @@
     "React": true,
     "ReactDOM": true,
     "assert": true,
-    "process": true
+    "process": true,
+    "Symbol": true
   },
   "rules": {
     "indent": [

@@ -417,4 +417,26 @@ describe('onclickoutside hoc', function() {
       assert(instance.state.clickOutsideHandled === true, 'clickOutsideHandled should not get flipped');
     });
   });
+
+  describe('with forwardRef over useImperativeHandle hook', function() {
+    const hookedComponent = (props, ref) => {
+      const [clickOutsideHandled, setClickOutsideHandled] = React.useState(false);
+      React.useImperativeHandle(ref, () => ({
+        handleClickOutside: () => {
+          setClickOutsideHandled(true);
+        },
+        clickOutsideHandled,
+      }));
+      return React.createElement('div');
+    };
+    it('should call handleClickOutside when clicking the document', function() {
+      var element = React.createElement(wrapComponent(React.forwardRef(hookedComponent)));
+      assert(element, 'element can be created');
+      var component = TestUtils.renderIntoDocument(element);
+      assert(component, 'component renders correctly');
+      document.dispatchEvent(new Event('mousedown'));
+      var instance = component.getInstance();
+      assert(instance.clickOutsideHandled, 'clickOutsideHandled got flipped');
+    });
+  });
 });

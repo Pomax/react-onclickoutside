@@ -25,6 +25,20 @@ function getEventHandlerOptions(instance, eventName) {
   return handlerOptions;
 }
 
+// borrowed from react-is
+const hasSymbol = typeof Symbol === 'function' && Symbol.for;
+const REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+
+/**
+ * Check if component is either a forwardRef or a class component
+ */
+function acceptsRef(WrappedComponent) {
+  return (
+    (WrappedComponent.$$typeof && WrappedComponent.$$typeof === REACT_FORWARD_REF_TYPE) ||
+    (WrappedComponent.prototype && WrappedComponent.prototype.isReactComponent)
+  );
+}
+
 /**
  * This function generates the HOC function that you'll use
  * in order to impart onOutsideClick listening to an
@@ -56,7 +70,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
      * Access the WrappedComponent's instance.
      */
     getInstance() {
-      if (!WrappedComponent.prototype.isReactComponent) {
+      if (!acceptsRef(WrappedComponent)) {
         return this;
       }
       const ref = this.instanceRef;
@@ -71,7 +85,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
 
       const instance = this.getInstance();
 
-      if (typeof instance.props.handleClickOutside === 'function') {
+      if (instance.props && typeof instance.props.handleClickOutside === 'function') {
         instance.props.handleClickOutside(event);
         return;
       }
@@ -109,14 +123,14 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         }
       }
 
-      this.componentNode = findDOMNode(this.getInstance());
+      this.componentNode = findDOMNode(this);
       // return early so we dont initiate onClickOutside
       if (this.props.disableOnClickOutside) return;
       this.enableOnClickOutside();
     }
 
     componentDidUpdate() {
-      this.componentNode = findDOMNode(this.getInstance());
+      this.componentNode = findDOMNode(this);
     }
 
     /**
@@ -202,7 +216,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       // eslint-disable-next-line no-unused-vars
       let { excludeScrollbar, ...props } = this.props;
 
-      if (WrappedComponent.prototype.isReactComponent) {
+      if (acceptsRef(WrappedComponent)) {
         props.ref = this.getRef;
       } else {
         props.wrappedRef = this.getRef;

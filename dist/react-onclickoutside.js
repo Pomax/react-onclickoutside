@@ -139,6 +139,17 @@ function getEventHandlerOptions(instance, eventName) {
   }
 
   return handlerOptions;
+} // borrowed from react-is
+
+
+var hasSymbol = typeof Symbol === 'function' && Symbol["for"];
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol["for"]('react.forward_ref') : 0xead0;
+/**
+ * Check if component is either a forwardRef or a class component
+ */
+
+function acceptsRef(WrappedComponent) {
+  return WrappedComponent.$$typeof && WrappedComponent.$$typeof === REACT_FORWARD_REF_TYPE || WrappedComponent.prototype && WrappedComponent.prototype.isReactComponent;
 }
 /**
  * This function generates the HOC function that you'll use
@@ -172,7 +183,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
         var instance = _this.getInstance();
 
-        if (typeof instance.props.handleClickOutside === 'function') {
+        if (instance.props && typeof instance.props.handleClickOutside === 'function') {
           instance.props.handleClickOutside(event);
           return;
         }
@@ -260,7 +271,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
     var _proto = onClickOutside.prototype;
 
     _proto.getInstance = function getInstance() {
-      if (!WrappedComponent.prototype.isReactComponent) {
+      if (!acceptsRef(WrappedComponent)) {
         return this;
       }
 
@@ -290,14 +301,14 @@ function onClickOutsideHOC(WrappedComponent, config) {
         }
       }
 
-      this.componentNode = reactDom.findDOMNode(this.getInstance()); // return early so we dont initiate onClickOutside
+      this.componentNode = reactDom.findDOMNode(this); // return early so we dont initiate onClickOutside
 
       if (this.props.disableOnClickOutside) return;
       this.enableOnClickOutside();
     };
 
     _proto.componentDidUpdate = function componentDidUpdate() {
-      this.componentNode = reactDom.findDOMNode(this.getInstance());
+      this.componentNode = reactDom.findDOMNode(this);
     }
     /**
      * Remove all document's event listeners for this component
@@ -322,7 +333,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
           excludeScrollbar = _this$props.excludeScrollbar,
           props = _objectWithoutPropertiesLoose(_this$props, ["excludeScrollbar"]);
 
-      if (WrappedComponent.prototype.isReactComponent) {
+      if (acceptsRef(WrappedComponent)) {
         props.ref = this.getRef;
       } else {
         props.wrappedRef = this.getRef;
