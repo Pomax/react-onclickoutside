@@ -10,7 +10,7 @@ function _inheritsLoose(subClass, superClass) {
   subClass.__proto__ = superClass;
 }
 
-function _objectWithoutProperties(source, excluded) {
+function _objectWithoutPropertiesLoose(source, excluded) {
   if (source == null) return {};
   var target = {};
   var sourceKeys = Object.keys(source);
@@ -22,18 +22,15 @@ function _objectWithoutProperties(source, excluded) {
     target[key] = source[key];
   }
 
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+  return target;
+}
 
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
   }
 
-  return target;
+  return self;
 }
 
 /**
@@ -226,7 +223,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
         };
 
         events.forEach(function (eventName) {
-          document.addEventListener(eventName, handlersMap[_this._uid], getEventHandlerOptions(_this, eventName));
+          document.addEventListener(eventName, handlersMap[_this._uid], getEventHandlerOptions(_assertThisInitialized(_this), eventName));
         });
       };
 
@@ -242,7 +239,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
           }
 
           events.forEach(function (eventName) {
-            return document.removeEventListener(eventName, fn, getEventHandlerOptions(_this, eventName));
+            return document.removeEventListener(eventName, fn, getEventHandlerOptions(_assertThisInitialized(_this), eventName));
           });
           delete handlersMap[_this._uid];
         }
@@ -301,29 +298,29 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
     _proto.componentDidUpdate = function componentDidUpdate() {
       this.componentNode = reactDom.findDOMNode(this.getInstance());
-    };
+    }
     /**
      * Remove all document's event listeners for this component
      */
-
+    ;
 
     _proto.componentWillUnmount = function componentWillUnmount() {
       this.disableOnClickOutside();
-    };
+    }
     /**
      * Can be called to explicitly enable event listening
      * for clicks and touches outside of this element.
      */
-
+    ;
 
     /**
      * Pass-through render
      */
     _proto.render = function render() {
       // eslint-disable-next-line no-unused-vars
-      var _props = this.props,
-          excludeScrollbar = _props.excludeScrollbar,
-          props = _objectWithoutProperties(_props, ["excludeScrollbar"]);
+      var _this$props = this.props,
+          excludeScrollbar = _this$props.excludeScrollbar,
+          props = _objectWithoutPropertiesLoose(_this$props, ["excludeScrollbar"]);
 
       if (WrappedComponent.prototype.isReactComponent) {
         props.ref = this.getRef;
