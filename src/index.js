@@ -86,6 +86,20 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       );
     };
 
+    __getComponentNode = () => {
+      const instance = this.getInstance();
+
+      if (config && typeof config.setClickOutsideRef === 'function') {
+        return config.setClickOutsideRef()(instance);
+      }
+
+      if (typeof instance.setClickOutsideRef === 'function') {
+        return instance.setClickOutsideRef();
+      }
+
+      return findDOMNode(instance);
+    };
+
     /**
      * Add click listeners to the current document,
      * linked to this component's state.
@@ -109,14 +123,14 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         }
       }
 
-      this.componentNode = findDOMNode(this.getInstance());
+      this.componentNode = this.__getComponentNode();
       // return early so we dont initiate onClickOutside
       if (this.props.disableOnClickOutside) return;
       this.enableOnClickOutside();
     }
 
     componentDidUpdate() {
-      this.componentNode = findDOMNode(this.getInstance());
+      this.componentNode = this.__getComponentNode();
     }
 
     /**
