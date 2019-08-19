@@ -38,7 +38,6 @@
     "test:karma": "karma start test/karma.conf.js --single-run",
     "test:nodom": "mocha test/no-dom-test.js",
     "precommit": "npm test && lint-staged",
-    "prepublish": "test $(npm -v | tr . '\\n' | head -n 1) -ge '4' || exit 1",
     "prepare": "npm run build",
     "prerelease": "npm run test",
     "release:patch": "npm run prerelease && npm version patch && npm publish && git push --follow-tags",
