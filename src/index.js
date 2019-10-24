@@ -33,8 +33,7 @@ function getEventHandlerOptions(instance, eventName) {
  * onClickOutsideHOC function defined inside setupHOC().
  */
 export default function onClickOutsideHOC(WrappedComponent, config) {
-  const componentName =
-    WrappedComponent.displayName || WrappedComponent.name || 'Component';
+  const componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
   return class onClickOutside extends Component {
     static displayName = `OnClickOutside(${componentName})`;
 
@@ -46,10 +45,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       stopPropagation: false,
     };
 
-    static getClass = () =>
-      WrappedComponent.getClass
-        ? WrappedComponent.getClass()
-        : WrappedComponent;
+    static getClass = () => (WrappedComponent.getClass ? WrappedComponent.getClass() : WrappedComponent);
 
     constructor(props) {
       super(props);
@@ -67,7 +63,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       return ref.getInstance ? ref.getInstance() : ref;
     }
 
-    __outsideClickHandler = (event) => {
+    __outsideClickHandler = event => {
       if (typeof this.__clickOutsideHandlerProp === 'function') {
         this.__clickOutsideHandlerProp(event);
         return;
@@ -86,7 +82,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       }
 
       throw new Error(
-        `WrappedComponent: ${componentName} lacks a handleClickOutside(event) function for processing outside click events.`
+        `WrappedComponent: ${componentName} lacks a handleClickOutside(event) function for processing outside click events.`,
       );
     };
 
@@ -122,7 +118,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         this.__clickOutsideHandlerProp = config.handleClickOutside(instance);
         if (typeof this.__clickOutsideHandlerProp !== 'function') {
           throw new Error(
-            `WrappedComponent: ${componentName} lacks a function for processing outside click events specified by the handleClickOutside config option.`
+            `WrappedComponent: ${componentName} lacks a function for processing outside click events specified by the handleClickOutside config option.`,
           );
         }
       }
@@ -133,8 +129,9 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       this.enableOnClickOutside();
     }
 
-    componentDidUpdate({ disableOnClickOutside: prevDisableOnClickOutside }) {
-      const { disableOnClickOutside } = this.props;
+    componentDidUpdate(prevProps) {
+      const prevDisableOnClickOutside = prevProps.disableOnClickOutside;
+      const disableOnClickOutside = this.props.disableOnClickOutside;
 
       this.componentNode = this.__getComponentNode();
       // Enable onClickOutside on prop change to `true`
@@ -174,7 +171,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         events = [events];
       }
 
-      handlersMap[this._uid] = (event) => {
+      handlersMap[this._uid] = event => {
         if (this.componentNode === null) return;
 
         if (this.props.preventDefault) {
@@ -185,30 +182,19 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
           event.stopPropagation();
         }
 
-        if (this.props.excludeScrollbar && DOMHelpers.clickedScrollbar(event))
-          return;
+        if (this.props.excludeScrollbar && DOMHelpers.clickedScrollbar(event)) return;
 
         const current = event.target;
 
-        if (
-          DOMHelpers.findHighest(
-            current,
-            this.componentNode,
-            this.props.outsideClickIgnoreClass
-          ) !== document
-        ) {
+        if (DOMHelpers.findHighest(current, this.componentNode, this.props.outsideClickIgnoreClass) !== document) {
           return;
         }
 
         this.__outsideClickHandler(event);
       };
 
-      events.forEach((eventName) => {
-        document.addEventListener(
-          eventName,
-          handlersMap[this._uid],
-          getEventHandlerOptions(this, eventName)
-        );
+      events.forEach(eventName => {
+        document.addEventListener(eventName, handlersMap[this._uid], getEventHandlerOptions(this, eventName));
       });
     };
 
@@ -225,18 +211,14 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         if (!events.forEach) {
           events = [events];
         }
-        events.forEach((eventName) =>
-          document.removeEventListener(
-            eventName,
-            fn,
-            getEventHandlerOptions(this, eventName)
-          )
+        events.forEach(eventName =>
+          document.removeEventListener(eventName, fn, getEventHandlerOptions(this, eventName)),
         );
         delete handlersMap[this._uid];
       }
     };
 
-    getRef = (ref) => (this.instanceRef = ref);
+    getRef = ref => (this.instanceRef = ref);
 
     /**
      * Pass-through render
