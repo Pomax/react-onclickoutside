@@ -14,6 +14,10 @@
     "Pomax <pomax@nihongoresources.com>",
     "Andarist <mateuszburzynski@gmail.com>"
   ],
+  "funding": {
+    "type" : "individual",
+    "url" : "https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=QPRDLNGDANJSW"
+  },
   "keywords": [
     "react",
     "onclick",
