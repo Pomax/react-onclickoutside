@@ -4,6 +4,15 @@
 
 # An onClickOutside wrapper for React components
 
+:warning:
+This package needs your support to stay maintained. If you work for an organization
+whose website is better off using react-onclickoutside than rolling its own code
+solution, please consider talking to your manager to help
+[fund this project](https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=QPRDLNGDANJSW).
+Open Source is free to use, but certainly not free to develop. If you have the
+means to reward those whose work you rely on, please consider doing so.
+:warning:
+
 This is a React Higher Order Component (HOC) that you can use with your own
 React components if you want to have them listen for clicks that occur somewhere
 in the document, outside of the element itself (for instance, if you need to
