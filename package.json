@@ -1,6 +1,6 @@
 {
   "name": "react-onclickoutside",
-  "version": "6.9.0",
+  "version": "6.9.1",
   "description": "An onClickOutside wrapper for React components",
   "main": "dist/react-onclickoutside.cjs.js",
   "module": "dist/react-onclickoutside.es.js",
@@ -15,8 +15,8 @@
     "Andarist <mateuszburzynski@gmail.com>"
   ],
   "funding": {
-    "type" : "individual",
-    "url" : "https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=QPRDLNGDANJSW"
+    "type": "individual",
+    "url": "https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=QPRDLNGDANJSW"
   },
   "keywords": [
     "react",
