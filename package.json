@@ -80,8 +80,8 @@
     "webpack": "^3.8.1"
   },
   "peerDependencies": {
-    "react": "^15.5.x || ^16.x",
-    "react-dom": "^15.5.x || ^16.x"
+    "react": "^15.5.x || ^16.x || ^17.x",
+    "react-dom": "^15.5.x || ^16.x || ^17.x"
   },
   "lint-staged": {
     "{src,test}/**/*.js": [
