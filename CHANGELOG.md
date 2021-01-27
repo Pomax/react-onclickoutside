@@ -1,3 +1,7 @@
+v6.10.0
+
+- Update react & react-dom peer-dep to support 17.x
+
 v6.9.0
 
 - Added strictMode compatibility.
