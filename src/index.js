@@ -12,49 +12,6 @@ const enabledInstances = {};
 const touchEvents = ['touchstart', 'touchmove'];
 export const IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
 
-function getDocumentNodes(node) {
-
-  let docs = []
-  while (node.parentNode) {
-    node = node.parentNode
-    
-    if (node.host) {
-      docs.push(node)
-      node = node.host
-    }
-
-  }
-  docs.push(document)
-  return docs
-}
-
-/**
- * Try to find our node in a hierarchy of nodes, returning the document
- * node as highest node if our node is not found in the path up.
- */
-function findHighest(current, componentNode, ignoreClass) {
-  if (current === componentNode) {
-    return true;
-  }
-  // If source=local then this event came from 'somewhere'
-  // inside and should be ignored. We could handle this with
-  // a layered approach, too, but that requires going back to
-  // thinking in terms of Dom node nesting, running counter
-  // to React's 'you shouldn't care about the DOM' philosophy.
-
-
-  while (current.parentNode) {
-    if (isNodeFound(current, componentNode, ignoreClass)) {
-      return true;
-    }
-
-    // walk up to the parentNode, or if we are at a shadow root, continue up via the host element
-    current = current.parentNode || current.host
-  }
-
-  return current;
-}
-
 /**
  * Options for addEventHandler and removeEventHandler
  */
@@ -206,9 +163,6 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       handlersMap[this._uid] = event => {
         if (this.componentNode === null) return;
 
-          if (event.PROCESSED) return
-          event.PROCESSED = true
-
         if (this.props.preventDefault) {
           event.preventDefault();
         }
@@ -221,7 +175,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
 
         const current = event.target;
 
-        if (findHighest(current, this.componentNode, this.props.outsideClickIgnoreClass) !== document) {
+        if (DOMHelpers.findHighest(current, this.componentNode, this.props.outsideClickIgnoreClass) !== document) {
           return;
         }
 
@@ -229,7 +183,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       };
 
       events.forEach(eventName => {
-        getDocumentNodes(this.componentNode).forEach(doc=>doc.addEventListener(eventName, handlersMap[this._uid], getEventHandlerOptions(this, eventName)));
+        document.addEventListener(eventName, handlersMap[this._uid], getEventHandlerOptions(this, eventName));
       });
     };
 
@@ -247,7 +201,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
           events = [events];
         }
         events.forEach(eventName =>
-          getDocumentNodes(this.componentNode).forEach(doc=>doc.removeEventListener(eventName, fn, getEventHandlerOptions(this, eventName)),
+          document.removeEventListener(eventName, fn, getEventHandlerOptions(this, eventName)),
         );
         delete handlersMap[this._uid];
       }
