@@ -42,6 +42,7 @@ const prodUmdConfig = mergeAll([
           unsafe: true,
           unsafe_comps: true,
         },
+        warnings: false,
       })
     ),
   },

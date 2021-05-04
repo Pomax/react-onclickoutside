@@ -31,11 +31,13 @@ export function findHighest(current, componentNode, ignoreClass) {
   // a layered approach, too, but that requires going back to
   // thinking in terms of Dom node nesting, running counter
   // to React's 'you shouldn't care about the DOM' philosophy.
-  while (current.parentNode) {
-    if (isNodeFound(current, componentNode, ignoreClass)) {
+  // Also cover shadowRoot node by checking current.host
+  while (current.parentNode || current.host) {
+    // Only check normal node without shadowRoot
+    if (current.parentNode && isNodeFound(current, componentNode, ignoreClass)) {
       return true;
     }
-    current = current.parentNode;
+    current = current.parentNode || current.host;
   }
   return current;
 }
