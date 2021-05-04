@@ -1,31 +1,40 @@
 module.exports = function(config) {
   config.set({
-
-    files: [
-      'test.js'
-    ],
+    files: ['test.js'],
 
     frameworks: ['mocha', 'chai'],
 
     preprocessors: {
-      'test.js': ['webpack']
+      'test.js': ['webpack'],
     },
 
     reporters: ['spec'],
 
+    webpack: {
+      devtool: 'inline-source-map',
+      module: {
+        rules: [
+          {
+            test: /.js$/,
+            loader: 'babel-loader',
+          },
+        ],
+      },
+    },
+
     webpackMiddleware: {
-      noInfo: true
+      noInfo: true,
+      stats: { errorDetails: true },
     },
 
     plugins: [
       require('karma-webpack'),
       require('karma-mocha'),
       require('karma-chai'),
-      require('karma-phantomjs-launcher'),
-      require('karma-spec-reporter')
+      require('karma-firefox-launcher'),
+      require('karma-spec-reporter'),
     ],
 
-    browsers: ['PhantomJS']
-
+    browsers: ['Firefox'],
   });
 };
