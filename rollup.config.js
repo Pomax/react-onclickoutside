@@ -36,11 +36,11 @@ const prodUmdConfig = mergeAll([
   {
     plugins: devUmdConfig.plugins.concat(
       uglify({
+        warnings: false,
         compress: {
           pure_getters: true,
           unsafe: true,
           unsafe_comps: true,
-          warnings: false,
         },
       })
     ),

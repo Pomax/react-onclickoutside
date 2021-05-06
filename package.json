@@ -1,6 +1,6 @@
 {
   "name": "react-onclickoutside",
-  "version": "6.9.0",
+  "version": "6.10.0",
   "description": "An onClickOutside wrapper for React components",
   "main": "dist/react-onclickoutside.cjs.js",
   "module": "dist/react-onclickoutside.es.js",
@@ -14,6 +14,10 @@
     "Pomax <pomax@nihongoresources.com>",
     "Andarist <mateuszburzynski@gmail.com>"
   ],
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/Pomax/react-onclickoutside/blob/master/FUNDING.md"
+  },
   "keywords": [
     "react",
     "onclick",
@@ -76,8 +80,8 @@
     "webpack": "^3.8.1"
   },
   "peerDependencies": {
-    "react": "^15.5.x || ^16.x",
-    "react-dom": "^15.5.x || ^16.x"
+    "react": "^15.5.x || ^16.x || ^17.x",
+    "react-dom": "^15.5.x || ^16.x || ^17.x"
   },
   "lint-staged": {
     "{src,test}/**/*.js": [
