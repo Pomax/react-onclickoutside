@@ -35,7 +35,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "build": "rollup -c rollup.config.js",
+    "build": "rollup -c rollup.config.js --compact",
     "lint": "eslint src/*.js ./test",
     "test": "run-s test:**",
     "test:basic": "run-s lint build",
