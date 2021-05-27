@@ -62,7 +62,7 @@
     "husky": "^0.14.3",
     "karma": "^6.3.2",
     "karma-chai": "^0.1.0",
-    "karma-firefox-launcher": "^1.0.1",
+    "karma-firefox-launcher": "^2.1.0",
     "karma-mocha": "^2.0.1",
     "karma-spec-reporter": "0.0.31",
     "karma-webpack": "^5.0.0",
