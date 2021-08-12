@@ -49,18 +49,18 @@
     "release:major": "npm run prerelease && npm version major && npm publish && git push --follow-tags"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.2",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.14.2",
-    "@babel/preset-env": "^7.14.2",
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.14.7",
+    "@babel/preset-env": "^7.15.0",
     "@babel/preset-stage-0": "^7.8.3",
     "@rollup/plugin-babel": "^5.3.0",
     "babel-eslint": "^8.0.2",
     "babel-loader": "^8.2.2",
-    "chai": "^4.1.2",
+    "chai": "^4.3.4",
     "eslint": "^4.12.0",
     "husky": "^0.14.3",
-    "karma": "^6.3.2",
+    "karma": "^6.3.4",
     "karma-chai": "^0.1.0",
     "karma-firefox-launcher": "^2.1.0",
     "karma-mocha": "^2.0.1",
@@ -75,8 +75,8 @@
     "react-test-renderer": "^15.5.x",
     "require-hijack": "^1.2.1",
     "rimraf": "^2.6.2",
-    "rollup": "^2.50.1",
-    "webpack": "^5.37.1"
+    "rollup": "^2.56.2",
+    "webpack": "^5.50.0"
   },
   "peerDependencies": {
     "react": "^15.5.x || ^16.x || ^17.x",
