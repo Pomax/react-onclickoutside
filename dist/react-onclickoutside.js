@@ -68,14 +68,16 @@ function findHighest(current, componentNode, ignoreClass) {
   // a layered approach, too, but that requires going back to
   // thinking in terms of Dom node nesting, running counter
   // to React's 'you shouldn't care about the DOM' philosophy.
+  // Also cover shadowRoot node by checking current.host
 
 
-  while (current.parentNode) {
-    if (isNodeFound(current, componentNode, ignoreClass)) {
+  while (current.parentNode || current.host) {
+    // Only check normal node without shadowRoot
+    if (current.parentNode && isNodeFound(current, componentNode, ignoreClass)) {
       return true;
     }
 
-    current = current.parentNode;
+    current = current.parentNode || current.host;
   }
 
   return current;
@@ -221,7 +223,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
           }
 
           if (_this.props.excludeScrollbar && clickedScrollbar(event)) return;
-          var current = event.target;
+          var current = event.composed && event.composedPath && event.composedPath().shift() || event.target;
 
           if (findHighest(current, _this.componentNode, _this.props.outsideClickIgnoreClass) !== document) {
             return;
