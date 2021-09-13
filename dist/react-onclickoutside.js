@@ -1,16 +1,20 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react'), require('react-dom')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'react', 'react-dom'], factory) :
-	(factory((global.onClickOutside = {}),global.React,global.ReactDOM));
-}(this, (function (exports,react,reactDom) { 'use strict';
-
-function _inheritsLoose(subClass, superClass) {
+(function(g,f){typeof exports==='object'&&typeof module!=='undefined'?f(exports,require('react'),require('react-dom')):typeof define==='function'&&define.amd?define(['exports','react','react-dom'],f):(g=typeof globalThis!=='undefined'?globalThis:g||self,f(g.onClickOutside={},g.React,g.ReactDOM));}(this,(function(exports, react, reactDom){'use strict';function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
+
+  _setPrototypeOf(subClass, superClass);
 }
 
-function _objectWithoutProperties(source, excluded) {
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function _objectWithoutPropertiesLoose(source, excluded) {
   if (source == null) return {};
   var target = {};
   var sourceKeys = Object.keys(source);
@@ -22,21 +26,16 @@ function _objectWithoutProperties(source, excluded) {
     target[key] = source[key];
   }
 
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
   return target;
 }
 
-/**
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}/**
  * Check whether some DOM node is our Component's node.
  */
 function isNodeFound(current, componentNode, ignoreClass) {
@@ -87,9 +86,7 @@ function findHighest(current, componentNode, ignoreClass) {
 
 function clickedScrollbar(evt) {
   return document.documentElement.clientWidth <= evt.clientX || document.documentElement.clientHeight <= evt.clientY;
-}
-
-// ideally will get replaced with external dep
+}// ideally will get replaced with external dep
 // when rafrex/detect-passive-events#4 and rafrex/detect-passive-events#5 get merged in
 var testPassiveEventSupport = function testPassiveEventSupport() {
   if (typeof window === 'undefined' || typeof window.addEventListener !== 'function') {
@@ -108,9 +105,7 @@ var testPassiveEventSupport = function testPassiveEventSupport() {
   window.addEventListener('testPassiveEventSupport', noop, options);
   window.removeEventListener('testPassiveEventSupport', noop, options);
   return passive;
-};
-
-function autoInc(seed) {
+};function autoInc(seed) {
   if (seed === void 0) {
     seed = 0;
   }
@@ -120,9 +115,7 @@ function autoInc(seed) {
   };
 }
 
-var uid = autoInc();
-
-var passiveEventSupport;
+var uid = autoInc();var passiveEventSupport;
 var handlersMap = {};
 var enabledInstances = {};
 var touchEvents = ['touchstart', 'touchmove'];
@@ -156,9 +149,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
   var _class, _temp;
 
   var componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
-  return _temp = _class =
-  /*#__PURE__*/
-  function (_Component) {
+  return _temp = _class = /*#__PURE__*/function (_Component) {
     _inheritsLoose(onClickOutside, _Component);
 
     function onClickOutside(props) {
@@ -240,7 +231,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
         };
 
         events.forEach(function (eventName) {
-          document.addEventListener(eventName, handlersMap[_this._uid], getEventHandlerOptions(_this, eventName));
+          document.addEventListener(eventName, handlersMap[_this._uid], getEventHandlerOptions(_assertThisInitialized(_this), eventName));
         });
       };
 
@@ -256,7 +247,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
           }
 
           events.forEach(function (eventName) {
-            return document.removeEventListener(eventName, fn, getEventHandlerOptions(_this, eventName));
+            return document.removeEventListener(eventName, fn, getEventHandlerOptions(_assertThisInitialized(_this), eventName));
           });
           delete handlersMap[_this._uid];
         }
@@ -277,7 +268,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
     var _proto = onClickOutside.prototype;
 
     _proto.getInstance = function getInstance() {
-      if (!WrappedComponent.prototype.isReactComponent) {
+      if (WrappedComponent.prototype && !WrappedComponent.prototype.isReactComponent) {
         return this;
       }
 
@@ -315,31 +306,31 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
     _proto.componentDidUpdate = function componentDidUpdate() {
       this.componentNode = this.__getComponentNode();
-    };
+    }
     /**
      * Remove all document's event listeners for this component
      */
-
+    ;
 
     _proto.componentWillUnmount = function componentWillUnmount() {
       this.disableOnClickOutside();
-    };
+    }
     /**
      * Can be called to explicitly enable event listening
      * for clicks and touches outside of this element.
      */
-
+    ;
 
     /**
      * Pass-through render
      */
     _proto.render = function render() {
       // eslint-disable-next-line no-unused-vars
-      var _props = this.props,
-          excludeScrollbar = _props.excludeScrollbar,
-          props = _objectWithoutProperties(_props, ["excludeScrollbar"]);
+      var _this$props = this.props;
+          _this$props.excludeScrollbar;
+          var props = _objectWithoutPropertiesLoose(_this$props, ["excludeScrollbar"]);
 
-      if (WrappedComponent.prototype.isReactComponent) {
+      if (WrappedComponent.prototype && WrappedComponent.prototype.isReactComponent) {
         props.ref = this.getRef;
       } else {
         props.wrappedRef = this.getRef;
@@ -360,11 +351,4 @@ function onClickOutsideHOC(WrappedComponent, config) {
   }, _class.getClass = function () {
     return WrappedComponent.getClass ? WrappedComponent.getClass() : WrappedComponent;
   }, _temp;
-}
-
-exports.IGNORE_CLASS_NAME = IGNORE_CLASS_NAME;
-exports['default'] = onClickOutsideHOC;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
+}exports.IGNORE_CLASS_NAME=IGNORE_CLASS_NAME;exports.default=onClickOutsideHOC;Object.defineProperty(exports,'__esModule',{value:true});})));

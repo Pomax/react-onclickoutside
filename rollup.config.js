@@ -1,5 +1,4 @@
-import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
+import babel from '@rollup/plugin-babel';
 import pkg from './package.json';
 
 const mergeAll = objs => Object.assign({}, ...objs);
@@ -7,6 +6,7 @@ const mergeAll = objs => Object.assign({}, ...objs);
 const commonPlugins = [
   babel({
     exclude: 'node_modules/**',
+    babelHelpers: 'bundled',
   }),
 ];
 
@@ -24,8 +24,8 @@ const devUmdConfig = mergeAll([
       format: 'umd',
       name: 'onClickOutside',
       exports: 'named',
+      globals: { react: 'React', 'react-dom': 'ReactDOM' },
     },
-    globals: { react: 'React', 'react-dom': 'ReactDOM' },
     external: Object.keys(pkg.peerDependencies || {}),
   },
 ]);
@@ -34,17 +34,7 @@ const prodUmdConfig = mergeAll([
   devUmdConfig,
   { output: mergeAll([devUmdConfig.output, { file: pkg.unpkg }]) },
   {
-    plugins: devUmdConfig.plugins.concat(
-      uglify({
-        warnings: false,
-        compress: {
-          pure_getters: true,
-          unsafe: true,
-          unsafe_comps: true,
-        },
-        warnings: false,
-      })
-    ),
+    plugins: devUmdConfig.plugins
   },
 ]);
 
