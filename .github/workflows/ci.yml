@@ -3,11 +3,9 @@
 
 name: Node.js CI
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
+env:
+  DISPLAY: :99.0
 
 jobs:
   build:
@@ -25,5 +23,9 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Setup xvfb
+      run: |
+        sudo apt-get install xvfb
+        Xvfb $DISPLAY -screen 0 1024x768x24 > /dev/null 2>&1 &
     - run: npm install
     - run: npm test
