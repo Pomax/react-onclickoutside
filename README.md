@@ -79,27 +79,55 @@ export default onClickOutside(MyComponent);
 
 ### Functional Component with UseState Hook
 
+This HoC does not support functional components, as it relies on class properties and component instances. However, you almost certainly don't need this HoC in modern (React 16+) functional component code, as a simple function will do the trick just fine. E.g.:
+
 ```js
-import React, { useState } from "react";
-import onClickOutside from "react-onclickoutside";
-
-const Menu = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
-  Menu.handleClickOutside = () => setIsOpen(false);
-  return (
-      //...
-  )
-};
-
-const clickOutsideConfig = {
-  handleClickOutside: () => Menu.handleClickOutside
-};
-
-export default onClickOutside(Menu, clickOutsideConfig);
+function listenForOutsideClicks(listening, setListening, menuRef, setIsOpen) {
+  return () => {
+    if (listening) return;
+    if (!menuRef.current) return;
+    setListening(true);
+    [`click`, `touchstart`].forEach((type) => {
+      document.addEventListener(`click`, (evt) => {
+        if (menuRef.current.contains(evt.target)) return;
+        setIsOpen(false);
+      });
+    });
+  }
+}
 ```
 
-Example: https://codesandbox.io/s/vn66kq7mml
+Used in a functional component as:
+
+```js
+import React, { useEffect, useState, useRef } from "react";
+import listenForOutsideClicks from "./somewhere";
+
+const Menu = () => {
+  const menuRef = useRef(null);
+  const [listening, setListening] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);  
+  const toggle = () => setIsOpen(!isOpen);
+
+  useEffect(listenForOutsideClick(
+    listening,
+    setListening,
+    menuRef,
+    setIsOpen,
+  ));
+
+  return (
+    <div ref={menuRef} className={isOpen ? "open" : "hidden"}>
+      <h1 onClick={toggle}>...</h1>
+      <ul>...</ul>
+    </div>
+  );
+};
+
+export default Menu;
+```
+
+Example: https://codesandbox.io/s/trusting-dubinsky-k3mve
 
 
 ### CommonJS Require
