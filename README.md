@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/Pomax/react-onclickoutside.svg?branch=master)](https://travis-ci.org/Pomax/react-onclickoutside)
 [![npm](https://img.shields.io/npm/dm/react-onclickoutside.svg)](https://www.npmjs.com/package/react-onclickoutside)
 
-# An onClickOutside wrapper for React components
+# Open source is free, but developer time isn't:
 
 :warning:
 **This package needs your support to stay maintained.** If you work for an organization
@@ -12,6 +12,9 @@ solution, please consider talking to your manager to help
 Open Source is free to use, but certainly not free to develop. If you have the
 means to reward those whose work you rely on, please consider doing so.
 :warning:
+
+
+# An onClickOutside wrapper for React components
 
 This is a React Higher Order Component (HOC) that you can use with your own
 React components if you want to have them listen for clicks that occur somewhere
