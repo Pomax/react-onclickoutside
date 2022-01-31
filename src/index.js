@@ -1,4 +1,4 @@
-import { createElement, Component } from 'react';
+import { createElement, Component, createRef } from 'react';
 import { findDOMNode } from 'react-dom';
 import * as DOMHelpers from './dom-helpers';
 import { testPassiveEventSupport } from './detect-passive-events';
@@ -52,6 +52,8 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
       this._uid = uid();
     }
 
+    outsideNodeRef = createRef();
+
     /**
      * Access the WrappedComponent's instance.
      */
@@ -97,7 +99,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
         return instance.setClickOutsideRef();
       }
 
-      return findDOMNode(instance);
+      return this.outsideNodeRef.current || findDOMNode(instance);
     };
 
     /**
@@ -224,7 +226,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
 
       props.disableOnClickOutside = this.disableOnClickOutside;
       props.enableOnClickOutside = this.enableOnClickOutside;
-
+      props.outsideNodeRef = this.outsideNodeRef;
       return createElement(WrappedComponent, props);
     }
   };

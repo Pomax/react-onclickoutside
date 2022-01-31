@@ -158,6 +158,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
       var _this;
 
       _this = _Component.call(this, props) || this;
+      _this.outsideNodeRef = react.createRef();
 
       _this.__outsideClickHandler = function (event) {
         if (typeof _this.__clickOutsideHandlerProp === 'function') {
@@ -192,7 +193,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
           return instance.setClickOutsideRef();
         }
 
-        return reactDom.findDOMNode(instance);
+        return _this.outsideNodeRef.current || reactDom.findDOMNode(instance);
       };
 
       _this.enableOnClickOutside = function () {
@@ -262,13 +263,12 @@ function onClickOutsideHOC(WrappedComponent, config) {
       _this._uid = uid();
       return _this;
     }
-    /**
-     * Access the WrappedComponent's instance.
-     */
-
 
     var _proto = onClickOutside.prototype;
 
+    /**
+     * Access the WrappedComponent's instance.
+     */
     _proto.getInstance = function getInstance() {
       if (WrappedComponent.prototype && !WrappedComponent.prototype.isReactComponent) {
         return this;
@@ -340,6 +340,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
       props.disableOnClickOutside = this.disableOnClickOutside;
       props.enableOnClickOutside = this.enableOnClickOutside;
+      props.outsideNodeRef = this.outsideNodeRef;
       return react.createElement(WrappedComponent, props);
     };
 
