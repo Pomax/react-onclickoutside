@@ -33,7 +33,7 @@ describe('onclickoutside hoc', function() {
     }
 
     render() {
-      return React.createElement('div');
+      return React.createElement('div', { ref: this.props.outsideNodeRef });
     }
   }
 
@@ -87,7 +87,7 @@ describe('onclickoutside hoc', function() {
         }
 
         render() {
-          return React.createElement('div');
+          return React.createElement('div', { ref: this.props.outsideNodeRef });
         }
       }
 
@@ -122,7 +122,7 @@ describe('onclickoutside hoc', function() {
         }
 
         render() {
-          return React.createElement('div');
+          return React.createElement('div', { ref: this.props.outsideNodeRef });
         }
       }
 
@@ -142,7 +142,7 @@ describe('onclickoutside hoc', function() {
     it('and class inheritance, should call the specified handler when clicking the document', function() {
       class Component extends React.Component {
         render() {
-          return React.createElement('div');
+          return React.createElement('div', { ref: this.props.outsideNodeRef });
         }
       }
 
@@ -168,7 +168,7 @@ describe('onclickoutside hoc', function() {
     it('and createClass method, should call the specified handler when clicking the document', function() {
       class Component extends React.Component {
         render() {
-          return React.createElement('div');
+          return React.createElement('div', { ref: this.props.outsideNodeRef });
         }
       }
 
@@ -192,8 +192,8 @@ describe('onclickoutside hoc', function() {
     });
 
     it('and stateless function, should call the specified handler when clicking the document', function() {
-      var Component = function() {
-        return React.createElement('div');
+      var Component = function(props) {
+        return React.createElement('div', { ref: props.outsideNodeRef });
       };
 
       var clickOutsideHandled = false;
@@ -219,7 +219,7 @@ describe('onclickoutside hoc', function() {
   it('should throw an error when a custom handler is specified, but the component does not implement it', function() {
     class BadComponent extends React.Component {
       render() {
-        return React.createElement('div');
+        return React.createElement('div', { ref: this.props.outsideNodeRef });
       }
     }
 
@@ -257,7 +257,7 @@ describe('onclickoutside hoc', function() {
   });
 
   it('should fallback to call component.props.handleClickOutside when no component.handleClickOutside is defined', function() {
-    var StatelessComponent = () => React.createElement('div');
+    var StatelessComponent = props => React.createElement('div', { ref: props.outsideNodeRef });
     var clickOutsideHandled = false;
     var WrappedStatelessComponent = wrapComponent(StatelessComponent);
     var element = React.createElement(WrappedStatelessComponent, {
@@ -292,7 +292,7 @@ describe('onclickoutside hoc', function() {
         }
 
         render() {
-          return React.createElement('div');
+          return React.createElement('div', { ref: this.props.outsideNodeRef });
         }
       },
     );
@@ -328,7 +328,7 @@ describe('onclickoutside hoc', function() {
         this.props.callEnableOnClickOutside && this.props.enableOnClickOutside();
       }
       render() {
-        return this.props.renderNull ? null : React.createElement('div');
+        return this.props.renderNull ? null : React.createElement('div', { ref: this.props.outsideNodeRef });
       }
     }
 
@@ -391,7 +391,7 @@ describe('onclickoutside hoc', function() {
       }
 
       render() {
-        return React.createElement('div');
+        return React.createElement('div', { ref: this.props.outsideNodeRef });
       }
     }
 
@@ -434,6 +434,7 @@ describe('onclickoutside hoc', function() {
         return React.createElement('div', {
           ref: c => {
             this.clickOutsideRef = c;
+            this.props.outsideNodeRef.current = c;
           },
         });
       }
@@ -448,7 +449,7 @@ describe('onclickoutside hoc', function() {
 
     let callbackCalled = false;
     let ref = null;
-    function FuncComponent() {
+    function FuncComponent(props) {
       FuncComponent.setClickOutsideRef = () => {
         callbackCalled = true;
         return ref;
@@ -456,6 +457,7 @@ describe('onclickoutside hoc', function() {
       return React.createElement('div', {
         ref: c => {
           ref = c;
+          props.outsideNodeRef.current = c;
         },
       });
     }
@@ -496,7 +498,7 @@ describe('onclickoutside hoc', function() {
         }
 
         render() {
-          return React.createElement('div');
+          return React.createElement('div', { ref: this.props.outsideNodeRef });
         }
       }
 
