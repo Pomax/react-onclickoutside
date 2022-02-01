@@ -24,6 +24,7 @@
     }
     render() {
       return React.createElement('div', {
+        ref: this.outsideNodeRef,
         children: [
           React.createElement('button', {
             onClick: e => this.state.hideToolbox && this.show(e),
@@ -41,7 +42,8 @@
     }
   }
 
-  customElements.define('test-app-3',
+  customElements.define(
+    'test-app-3',
     class extends HTMLElement {
       constructor() {
         super();
@@ -49,6 +51,6 @@
         let shadowRoot = this.attachShadow({ mode: 'open' });
         ReactDOM.render(React.createElement(App), shadowRoot);
       }
-    });
-
+    },
+  );
 })(onClickOutside); /* global onClickOutside */
