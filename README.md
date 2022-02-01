@@ -205,7 +205,7 @@ or do nothing with, outside clicks
 
 - `enableOnClickOutside()` \* Enables outside click listening by setting up the
   event listening bindings.
-- `disableOnClickOutside()` - Disables outside click listening by explicitly
+- `disableOnClickOutside()` \* Disables outside click listening by explicitly
   removing the event listening bindings.
 
 In addition, you can create a component that uses this HOC such that it has the

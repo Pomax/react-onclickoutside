@@ -25,6 +25,7 @@
     render() {
       var className = 'concentric' + (this.state.highlight ? ' highlight' : '');
       return React.createElement('div', {
+        ref: this.props.outsideNodeRef,
         className: className,
         children: this.props.children,
         onClick: e => this.highlight(e),

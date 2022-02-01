@@ -24,6 +24,7 @@
     }
     render() {
       return React.createElement('div', {
+        ref: this.props.outsideNodeRef,
         children: [
           React.createElement('button', {
             onClick: e => this.state.hideToolbox && this.show(e),
