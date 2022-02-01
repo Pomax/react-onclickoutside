@@ -303,6 +303,11 @@ function onClickOutsideHOC(WrappedComponent, config) {
       this.componentNode = this.__getComponentNode(); // return early so we dont initiate onClickOutside
 
       if (this.props.disableOnClickOutside) return;
+
+      if (!this.componentNode) {
+        throw new Error("WrappedComponent: " + componentName + " lacks the set outsideNodeRef prop for element as ref");
+      }
+
       this.enableOnClickOutside();
     };
 

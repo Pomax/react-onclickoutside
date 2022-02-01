@@ -30,27 +30,28 @@ transpiled es6 classes rather than `createClass` as of v6.
 
 ## Sections covered in this README
 
-- [:warning: Open source is free, but developer time isn't :warning:](#warning-open-source-is-free-but-developer-time-isnt-warning)
-- [An onClickOutside wrapper for React components](#an-onclickoutside-wrapper-for-react-components)
-  - [Sections covered in this README](#sections-covered-in-this-readme)
-  - [Installation](#installation)
-  - [Usage](#usage)
-    - [ES6 Class Component](#es6-class-component)
-    - [Functional Component with UseState Hook](#functional-component-with-usestate-hook)
-    - [CommonJS Require](#commonjs-require)
-    - [Ensuring there is a click handler](#ensuring-there-is-a-click-handler)
-  - [Regulate which events to listen for](#regulate-which-events-to-listen-for)
-  - [Regulate whether or not to listen for outside clicks](#regulate-whether-or-not-to-listen-for-outside-clicks)
-  - [Regulate whether or not to listen to scrollbar clicks](#regulate-whether-or-not-to-listen-to-scrollbar-clicks)
-  - [Regulating `evt.preventDefault()` and `evt.stopPropagation()`](#regulating-evtpreventdefault-and-evtstoppropagation)
-  - [Marking elements as "skip over this one" during the event loop](#marking-elements-as-skip-over-this-one-during-the-event-loop)
-  - [Older React code: "What happened to the Mixin??"](#older-react-code-what-happened-to-the-mixin)
-    - [But how can I access my component? It has an API that I rely on!](#but-how-can-i-access-my-component-it-has-an-api-that-i-rely-on)
-  - [Which version do I need for which version of React?](#which-version-do-i-need-for-which-version-of-react)
-    - [Support-wise, only the latest version will receive updates and bug fixes.](#support-wise-only-the-latest-version-will-receive-updates-and-bug-fixes)
-  - [IE does not support classList for SVG elements!](#ie-does-not-support-classlist-for-svg-elements)
-  - [I can't find what I need in the README](#i-cant-find-what-i-need-in-the-readme)
-  - [In addition](#in-addition)
+* [:warning: Open source is free, but developer time isn't :warning:](#warning-open-source-is-free-but-developer-time-isnt-warning)
+* [An onClickOutside wrapper for React components](#an-onclickoutside-wrapper-for-react-components)
+  * [Sections covered in this README](#sections-covered-in-this-readme)
+  * [Installation](#installation)
+  * [Usage](#usage)
+    * [ES6 Class Component](#es6-class-component)
+    * [Functional Component with UseState Hook](#functional-component-with-usestate-hook)
+    * [CommonJS Require](#commonjs-require)
+    * [Ensuring there is a click handler](#ensuring-there-is-a-click-handler)
+    * [Ensuring there is a ref for wrapped component](#ensuring-there-is-a-ref-for-wrapped-component)
+  * [Regulate which events to listen for](#regulate-which-events-to-listen-for)
+  * [Regulate whether or not to listen for outside clicks](#regulate-whether-or-not-to-listen-for-outside-clicks)
+  * [Regulate whether or not to listen to scrollbar clicks](#regulate-whether-or-not-to-listen-to-scrollbar-clicks)
+  * [Regulating `evt.preventDefault()` and `evt.stopPropagation()`](#regulating-evtpreventdefault-and-evtstoppropagation)
+  * [Marking elements as "skip over this one" during the event loop](#marking-elements-as-skip-over-this-one-during-the-event-loop)
+  * [Older React code: "What happened to the Mixin??"](#older-react-code-what-happened-to-the-mixin)
+    * [But how can I access my component? It has an API that I rely on!](#but-how-can-i-access-my-component-it-has-an-api-that-i-rely-on)
+  * [Which version do I need for which version of React?](#which-version-do-i-need-for-which-version-of-react)
+    * [Support-wise, only the latest version will receive updates and bug fixes.](#support-wise-only-the-latest-version-will-receive-updates-and-bug-fixes)
+  * [IE does not support classList for SVG elements!](#ie-does-not-support-classlist-for-svg-elements)
+  * [I can't find what I need in the README](#i-cant-find-what-i-need-in-the-readme)
+  * [In addition](#in-addition)
 
 ## Installation
 
@@ -90,8 +91,8 @@ function listenForOutsideClicks(listening, setListening, menuRef, setIsOpen) {
     if (listening) return;
     if (!menuRef.current) return;
     setListening(true);
-    [`click`, `touchstart`].forEach(type => {
-      document.addEventListener(`click`, evt => {
+    [`click`, `touchstart`].forEach((type) => {
+      document.addEventListener(`click`, (evt) => {
         if (menuRef.current.contains(evt.target)) return;
         setIsOpen(false);
       });
@@ -179,6 +180,35 @@ var EnhancedComponent = onClickOutside(MyComponent, clickOutsideConfig);
 Note that if you try to wrap a React component with a custom handler that the
 component does not implement, the HOC will throw an error at run-time.
 
+### Ensuring there is a ref for wrapped component
+
+You should use "outsideNodeRef" prop for wrapped component and set it to element you need as ref.
+Note that if you try to wrap a React component class without a outsideNodeRef as ref for element, the HOC will throw an error.
+
+```js
+// load the HOC:
+import React, { Component } from "react";
+import onClickOutside from "react-onclickoutside";
+
+// create a new component, wrapped below by onClickOutside HOC:
+class MyComponent extends Component {
+  // ...
+  myClickOutsideHandler(evt) {
+    // ...handling code goes here...
+  }
+  // ...
+  render() {
+    return <div ref={this.props.outsideNodeRef}>Content</div>;
+  }
+}
+var clickOutsideConfig = {
+  handleClickOutside: function(instance) {
+    return instance.myClickOutsideHandler;
+  }
+};
+var EnhancedComponent = onClickOutside(MyComponent, clickOutsideConfig);
+```
+
 ## Regulate which events to listen for
 
 By default, "outside clicks" are based on both `mousedown` and `touchstart`
@@ -203,9 +233,9 @@ for:
 Wrapped components have two functions that can be used to explicitly listen for,
 or do nothing with, outside clicks
 
-- `enableOnClickOutside()` \* Enables outside click listening by setting up the
+* `enableOnClickOutside()` - Enables outside click listening by setting up the
   event listening bindings.
-- `disableOnClickOutside()` - Disables outside click listening by explicitly
+* `disableOnClickOutside()` - Disables outside click listening by explicitly
   removing the event listening bindings.
 
 In addition, you can create a component that uses this HOC such that it has the
@@ -426,7 +456,3 @@ for, then the README is missing important information that should be added in.
 Please [file an issue](https://github.com/Pomax/react-onclickoutside/issues) with a request for additional documentation,
 describing what you were hoping to find in enough detail that it can be used to
 write up the information you needed.
-
-## In addition
-
-To avoid findDOMNode use "outsideNodeRef" props from a wrapping component and set it to element as ref.

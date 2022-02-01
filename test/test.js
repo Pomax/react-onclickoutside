@@ -339,13 +339,6 @@ describe('onclickoutside hoc', function() {
       return ReactDOM.render(React.createElement(WrappedComponent, props), container);
     };
 
-    it('should render fine when wrapped component renders as null', function() {
-      var component = rerender({ renderNull: true });
-      assert(component, 'component was wrapped despite having no DOM node on mount');
-      document.dispatchEvent(new Event('mousedown'));
-      assert(counter === 0, 'should not fire handleClickOutside when having no DOM node');
-    });
-
     it('should attach and deattach event listener on updates', function() {
       rerender({ renderNull: false });
       document.dispatchEvent(new Event('mousedown'));
