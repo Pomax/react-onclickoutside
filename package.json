@@ -79,8 +79,8 @@
     "webpack": "^5.37.1"
   },
   "peerDependencies": {
-    "react": "^15.5.x || ^16.x || ^17.x",
-    "react-dom": "^15.5.x || ^16.x || ^17.x"
+    "react": "^15.5.x || ^16.x || ^17.x || ^18.x",
+    "react-dom": "^15.5.x || ^16.x || ^17.x || ^18.x"
   },
   "lint-staged": {
     "{src,test}/**/*.js": [
