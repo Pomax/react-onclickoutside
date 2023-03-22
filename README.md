@@ -33,8 +33,8 @@ transpiled es6 classes rather than `createClass` as of v6.
 
 * [Installation](#installation)
 * [Usage:](#usage)
-  * [ES6 Class Component](#es6-class-component)
   * [Functional Component with UseState Hook](#functional-component-with-usestate-hook)
+  * [ES6 Class Component](#es6-class-component)
   * [CommonJS Require](#commonjs-require)
 * [Ensuring there's a click handler](#ensuring-there-is-a-click-handler)
 * [Regulate which events to listen for](#regulate-which-events-to-listen-for)
@@ -62,21 +62,6 @@ as:
 
 
 ## Usage
-
-### ES6 Class Component
-
-```js
-import React, { Component } from "react";
-import onClickOutside from "react-onclickoutside";
-
-class MyComponent extends Component {
-  handleClickOutside = evt => {
-    // ..handling code goes here...
-  };
-}
-
-export default onClickOutside(MyComponent);
-```
 
 ### Functional Component with UseState Hook
 
@@ -130,6 +115,20 @@ export default Menu;
 
 Example: https://codesandbox.io/s/trusting-dubinsky-k3mve
 
+### ES6 Class Component
+
+```js
+import React, { Component } from "react";
+import onClickOutside from "react-onclickoutside";
+
+class MyComponent extends Component {
+  handleClickOutside = evt => {
+    // ..handling code goes here...
+  };
+}
+
+export default onClickOutside(MyComponent);
+```
 
 ### CommonJS Require
 
