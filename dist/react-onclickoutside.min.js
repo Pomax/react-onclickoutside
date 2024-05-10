@@ -211,6 +211,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
 
         handlersMap[_this._uid] = function (event) {
           if (_this.componentNode === null) return;
+          if (_this.initTimeStamp > event.timeStamp) return;
 
           if (_this.props.preventDefault) {
             event.preventDefault();
@@ -258,6 +259,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
       };
 
       _this._uid = uid();
+      _this.initTimeStamp = performance.now();
       return _this;
     }
     /**
