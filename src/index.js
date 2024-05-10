@@ -51,6 +51,7 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
     constructor(props) {
       super(props);
       this._uid = uid();
+      this.initTimeStamp = performance.now();
     }
 
     /**
@@ -163,6 +164,8 @@ export default function onClickOutsideHOC(WrappedComponent, config) {
 
       handlersMap[this._uid] = event => {
         if (this.componentNode === null) return;
+        
+        if (this.initTimeStamp > event.timeStamp) return;
 
         if (this.props.preventDefault) {
           event.preventDefault();
