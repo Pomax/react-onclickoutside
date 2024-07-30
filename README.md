@@ -53,9 +53,9 @@ transpiled es6 classes rather than `createClass` as of v6.
 
 **Only install this HoC if you're still extending the `Component` class**, something which the React documentation doesn't even cover anymore because they went all-in on functional components with hooks.
 
-If you're using hooks, don't install this HoC and instead read [this section, below](#functional-component-with-usestate-hook)
+If you're using hooks, which React says you should be, don't install this HoC and instead read [this section, below](#functional-component-with-usestate-hook).
 
-Use `npm`:
+If you're still stuck with Component classes, then you can install this HoC using `npm`:
 
 ```
 $> npm install react-onclickoutside --save
