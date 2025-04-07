@@ -1,6 +1,6 @@
 {
   "name": "react-onclickoutside",
-  "version": "6.13.1",
+  "version": "6.13.2",
   "description": "An onClickOutside wrapper for React components",
   "main": "dist/react-onclickoutside.cjs.js",
   "module": "dist/react-onclickoutside.es.js",
