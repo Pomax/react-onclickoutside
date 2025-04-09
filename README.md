@@ -72,15 +72,15 @@ as:
 This HoC does not support functional components, as it relies on class properties and component instances. However, you almost certainly don't need this HoC in modern (React 16+) functional component code, as a simple function will do the trick just fine. E.g.:
 
 ```js
-function listenForOutsideClicks(listening, setListening, menuRef, setIsOpen) {
+function listenForOutsideClicks(listening, setListening, menuRef, yourClickHandler) {
   return () => {
     if (listening) return;
     if (!menuRef.current) return;
     setListening(true);
     [`click`, `touchstart`].forEach((type) => {
-      document.addEventListener(`click`, (evt) => {
+      document.addEventListener(type, (evt) => {
         if (menuRef.current.contains(evt.target)) return;
-        setIsOpen(false);
+        yourClickHandler();
       });
     });
   }
@@ -103,7 +103,8 @@ const Menu = () => {
     listening,
     setListening,
     menuRef,
-    setIsOpen,
+    // let's say our custom handler closes our menu on an outside click:
+    () => setIsOpen(false),
   ));
 
   return (
